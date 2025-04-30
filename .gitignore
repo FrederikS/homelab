@@ -1,5 +1,1 @@
-.env/
-*.log
-ansible.cfg
-kubeconfig
 .direnv
