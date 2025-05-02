@@ -55,6 +55,7 @@
   roles:
     - role: k3s_server_post
       become: true
+      tags: k3s_post
 
 - name: Storing kubeconfig in the playbook directory
   hosts: master

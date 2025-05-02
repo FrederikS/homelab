@@ -1,0 +1,42 @@
+---
+- name: Create fluxcd namespace
+  ansible.builtin.command:
+    cmd: "{{ k3s_kubectl_binary | default('k3s kubectl') }} create namespace flux-system"
+  register: create_namespace
+  failed_when: 
+    - create_namespace.rc != 0 
+    - '"already exists" not in create_namespace.stderr'
+  changed_when: create_namespace.rc == 0
+  tags: flux
+
+- name: Install fluxcd cli
+  ansible.builtin.shell: |
+    set -o pipefail
+    FLUX_VERSION={{ flux_version }} curl -s https://fluxcd.io/install.sh | sudo bash
+  args:
+    executable: /bin/bash
+  changed_when: true
+  tags: flux
+
+- name: Check if flux is already installed
+  ansible.builtin.command:
+    cmd: "{{ k3s_kubectl_binary | default('k3s kubectl') }} get deployment -n flux-system flux-controller"
+  register: flux_check
+  failed_when: false
+  changed_when: false
+  tags: flux
+
+- name: Bootstrap flux
+  when: flux_check.rc != 0
+  ansible.builtin.command:
+    cmd: >-
+      flux bootstrap github
+      --owner={{ flux_github_owner }}
+      --repository={{ flux_github_repository }}
+      --branch=master
+      --path={{ flux_path }}
+      --personal
+  environment:
+    GITHUB_TOKEN: "{{ flux_github_token }}"
+    KUBECONFIG: "{{ ansible_user_dir }}/.kube/config"
+  tags: flux
