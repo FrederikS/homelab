@@ -18,7 +18,7 @@
     {
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {  
-          packages = with pkgs; [ ansible python311 virtualenv ] ++
+          packages = with pkgs; [ ansible python311 virtualenv fluxcd ] ++
             (with pkgs.python311Packages; [ pip netaddr ipython ]);
         };
       });
