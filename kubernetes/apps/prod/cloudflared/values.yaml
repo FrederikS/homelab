@@ -1,0 +1,10 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cloudflared
+spec:
+  values:
+    cloudflare:
+      secretName: cloudflared-credentials
+      ingress:
+        - service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local
