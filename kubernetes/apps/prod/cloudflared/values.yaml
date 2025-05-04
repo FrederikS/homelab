@@ -8,4 +8,5 @@ spec:
       tunnelName: homelab_ingress_01
       secretName: cloudflared-credentials
       ingress:
-        - service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local
+        - hostname: "*.fdk.codes"
+          service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local
