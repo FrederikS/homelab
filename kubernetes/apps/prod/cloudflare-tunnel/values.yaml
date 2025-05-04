@@ -1,0 +1,16 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cloudflare-tunnel
+spec:
+  chart:
+    spec:
+      version: "0.3.2"
+  values:    
+    cloudflare:
+      tunnelName: homelab_ingress
+      secretName: cloudflare-tunnel-credentials
+      ingress:
+        - hostname: "*.fdk.codes"
+          service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local
+    replicaCount: 3
