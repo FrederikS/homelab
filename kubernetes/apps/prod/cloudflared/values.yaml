@@ -5,7 +5,7 @@ metadata:
 spec:
   values:
     cloudflare:
-      tunnelName: homelab_ingress_01
+      tunnelName: homelab_ingress
       secretName: cloudflared-credentials
       ingress:
         - hostname: "*.fdk.codes"
