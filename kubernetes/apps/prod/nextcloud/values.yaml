@@ -8,6 +8,8 @@ spec:
     spec:
       version: "6.6.10"
   values:
+    nextcloud:
+      host: nextcloud.fdk.codes
     ingress:
       hosts:
         - host: nextcloud.fdk.codes
