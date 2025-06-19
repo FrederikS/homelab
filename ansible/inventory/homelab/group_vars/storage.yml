@@ -1,0 +1,5 @@
+ansible_user: nfs
+
+extra_agent_args: >-
+  {{ extra_args }}
+  --node-taint storage=ceph:NoSchedule
