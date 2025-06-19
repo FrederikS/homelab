@@ -1,0 +1,16 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextcloud
+  namespace: default
+spec:
+  chart:
+    spec:
+      version: "6.6.10"
+  values:
+    ingress:
+      hosts:
+        - host: nextcloud.fdk.codes
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
