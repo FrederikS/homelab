@@ -4,4 +4,4 @@ resources:
   - cloudflare-tunnel
   - nextcloud
   - podinfo
-  - rook-ceph
+  # - rook-ceph
