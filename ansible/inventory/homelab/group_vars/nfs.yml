@@ -1,0 +1,8 @@
+ansible_user: nfs
+
+ssd_mount_point: /mnt/ssd
+export_directories:
+  - k8s-nfs
+
+nfs_exports: 
+  - "/mnt/ssd/k8s-nfs *(rw,sync,no_subtree_check,no_root_squash)"
