@@ -1,0 +1,3 @@
+---
+- name: Configure lid closed settings
+  ansible.builtin.include_tasks: lid_close.yml

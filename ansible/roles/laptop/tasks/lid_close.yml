@@ -1,0 +1,42 @@
+---
+- name: Disable suspend when screen lid is closed
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: "^HandleLidSwitch="
+    state: present
+    line: "HandleLidSwitch=ignore"
+
+- name: Disable LidSwitchIgnoreInhibited in logind setting
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: "^LidSwitchIgnoreInhibited="
+    state: present
+    line: "LidSwitchIgnoreInhibited=no"
+
+- name: Ensure acpid is installed
+  ansible.builtin.package:
+    name: acpid
+    state: present
+
+- name: Deploy ACPI lid event handler
+  ansible.builtin.copy:
+    dest: /etc/acpi/events/lid
+    content: |
+      event=button/lid.*
+      action=/etc/acpi/lid.sh %e
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy lid.sh script
+  ansible.builtin.copy:
+    src: lid.sh
+    dest: /etc/acpi/lid.sh
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Restart acpid
+  ansible.builtin.service:
+    name: acpid
+    state: restarted

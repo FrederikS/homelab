@@ -76,3 +76,10 @@
       become: true
     - role: geerlingguy.nfs
       become: true
+
+- name: Setup laptops
+  hosts: laptop
+  environment: "{{ proxy_env | default({}) }}"
+  roles:
+    - role: laptop
+      become: true

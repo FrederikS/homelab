@@ -1,0 +1,2 @@
+# interface which will be used for flannel
+flannel_iface: enp0s25
