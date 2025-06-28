@@ -174,22 +174,22 @@ spec:
   # To control where various services will be scheduled by kubernetes, use the placement configuration sections below.
   # The example under 'all' would have all services scheduled on kubernetes nodes labeled with 'role=storage-node' and
   # tolerate taints with a key of 'storage-node'.
-  placement:
-    all:
-      tolerations:
-        - key: "storage"
-          operator: "Equal"
-          value: "ceph"
-          effect: "NoSchedule"
-    osd:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: role
-                  operator: In
-                  values:
-                    - storage-node
+  # placement:
+  #   all:
+  #     tolerations:
+  #       - key: "storage"
+  #         operator: "Equal"
+  #         value: "ceph"
+  #         effect: "NoSchedule"
+  #   osd:
+  #     nodeAffinity:
+  #       requiredDuringSchedulingIgnoredDuringExecution:
+  #         nodeSelectorTerms:
+  #           - matchExpressions:
+  #               - key: role
+  #                 operator: In
+  #                 values:
+  #                   - storage-node
       # podAffinity:
       # podAntiAffinity:
       # topologySpreadConstraints:
@@ -279,13 +279,13 @@ spec:
     # Individual nodes and their config can be specified as well, but 'useAllNodes' above must be set to false. Then, only the named
     # nodes below will be used as storage resources.  Each node's 'name' field should match their 'kubernetes.io/hostname' label.
     nodes:
-      - name: "nfs1"
+      - name: "tc01"
         devices: # specific devices to use for storage can be specified for each node
           # - name: "sda"
           # - name: "nvme01" # multiple osds can be created on high performance devices
           #   config:
           #     osdsPerDevice: "5"
-          - name: "/dev/disk/by-id/usb-FIDECO_M203CPS_012345683083-0:0" # devices can be specified using full udev paths
+          - name: "/dev/disk/by-id/md-uuid-e6ffe895:30e250af:06908a8d:df149004-part1" # devices can be specified using full udev paths
         config: {} # configuration can be specified at the node level which overrides the cluster level config
       # - name: "172.17.4.301"
       #   deviceFilter: "^sd."
