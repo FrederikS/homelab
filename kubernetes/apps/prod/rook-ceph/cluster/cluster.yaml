@@ -285,7 +285,7 @@ spec:
           # - name: "nvme01" # multiple osds can be created on high performance devices
           #   config:
           #     osdsPerDevice: "5"
-          - name: "/dev/disk/by-id/md-uuid-e6ffe895:30e250af:06908a8d:df149004-part1" # devices can be specified using full udev paths
+          - name: "/dev/disk/by-id/md-uuid-e6ffe895:30e250af:06908a8d:df149004" # devices can be specified using full udev paths
         config: {} # configuration can be specified at the node level which overrides the cluster level config
       # - name: "172.17.4.301"
       #   deviceFilter: "^sd."
