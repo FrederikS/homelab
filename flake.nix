@@ -18,7 +18,7 @@
     {
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {  
-          packages = with pkgs; [ ansible ansible-lint python311 virtualenv fluxcd sops age cloudflared ] ++
+          packages = with pkgs; [ ansible ansible-lint python311 virtualenv fluxcd sops age cloudflared kustomize ] ++
             (with pkgs.python311Packages; [ pip netaddr ipython ]);
           # shellHook = ''
           #   . <(flux completion zsh)
