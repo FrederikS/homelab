@@ -7,7 +7,7 @@ spec:
   releaseName: cnpg
   chart:
     spec:
-      chart: cnpg/cloudnative-pg
+      chart: cloudnative-pg
       sourceRef:
         kind: HelmRepository
         name: cnpg
