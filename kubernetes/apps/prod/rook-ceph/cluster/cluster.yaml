@@ -289,6 +289,8 @@ spec:
             config:
               osdsPerDevice: "2"
           - name: "/dev/disk/by-id/nvme-WD_Red_SN700_1000GB_251412800347"
+            config:
+              osdsPerDevice: "2"
           # - name: "/dev/disk/by-id/nvme-SAMSUNG_MZVLB256HAHQ-000L7_S41GNX2M197040-part3"
           # - name: "/dev/md0" # devices can be specified using full udev paths
         config: {} # configuration can be specified at the node level which overrides the cluster level config
