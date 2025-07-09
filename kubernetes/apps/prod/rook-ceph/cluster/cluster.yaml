@@ -50,7 +50,7 @@ spec:
   mon:
     # Set the number of mons to be started. Generally recommended to be 3.
     # For highest availability, an odd number of mons should be specified.
-    count: 3
+    count: 1
     # The mons should be on unique nodes. For production, at least 3 nodes are recommended for this reason.
     # Mons should only be allowed on the same node for test environments where data loss is acceptable.
     allowMultiplePerNode: false
@@ -58,7 +58,7 @@ spec:
     # When higher availability of the mgr is needed, increase the count to 2.
     # In that case, one mgr will be active and one in standby. When Ceph updates which
     # mgr is active, Rook will update the mgr services to match the active mgr.
-    count: 2
+    count: 1
     allowMultiplePerNode: false
     modules:
       # List of modules to optionally enable or disable.
@@ -286,11 +286,7 @@ spec:
           #   config:
           #     osdsPerDevice: "5"
           - name: "/dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75CNX0XA00908R"
-            config:
-              osdsPerDevice: "2"
           - name: "/dev/disk/by-id/nvme-WD_Red_SN700_1000GB_251412800347"
-            config:
-              osdsPerDevice: "2"
           # - name: "/dev/disk/by-id/nvme-SAMSUNG_MZVLB256HAHQ-000L7_S41GNX2M197040-part3"
           # - name: "/dev/md0" # devices can be specified using full udev paths
         config: {} # configuration can be specified at the node level which overrides the cluster level config
@@ -335,6 +331,10 @@ spec:
       # kernelMountOptions: ""
       # Set CephFS Fuse mount options to use https://docs.ceph.com/en/latest/man/8/ceph-fuse/#options.
       # fuseMountOptions: ""
+  cephConfig:
+    global:
+      osd_pool_default_size: "1"
+      mon_warn_on_pool_no_redundancy: "false"
 
   # healthChecks
   # Valid values for daemons are 'mon', 'osd', 'status'
