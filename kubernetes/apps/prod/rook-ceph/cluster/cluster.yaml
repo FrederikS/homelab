@@ -285,8 +285,17 @@ spec:
           # - name: "nvme01" # multiple osds can be created on high performance devices
           #   config:
           #     osdsPerDevice: "5"
-          - name: "/dev/disk/by-id/ata-Samsung_SSD_870_EVO_1TB_S75CNX0XA00908R"
-          - name: "/dev/disk/by-id/nvme-WD_Red_SN700_1000GB_251412800347"
+          - name: "/dev/vda"
+          # - name: "/dev/disk/by-id/nvme-SAMSUNG_MZVLB256HAHQ-000L7_S41GNX2M197040-part3"
+          # - name: "/dev/md0" # devices can be specified using full udev paths
+        config: {} # configuration can be specified at the node level which overrides the cluster level config
+      - name: "tc02"
+        devices: # specific devices to use for storage can be specified for each node
+          # - name: "sda"
+          # - name: "nvme01" # multiple osds can be created on high performance devices
+          #   config:
+          #     osdsPerDevice: "5"
+          - name: "/dev/vda"
           # - name: "/dev/disk/by-id/nvme-SAMSUNG_MZVLB256HAHQ-000L7_S41GNX2M197040-part3"
           # - name: "/dev/md0" # devices can be specified using full udev paths
         config: {} # configuration can be specified at the node level which overrides the cluster level config

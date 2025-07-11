@@ -9,4 +9,4 @@ spec:
       version: "1.17.5"
   values:
     nodeSelector:
-      kubernetes.io/hostname: tc01
+      kubernetes.io/hostname: tc02
