@@ -30,6 +30,10 @@ spec:
   path: ./kubernetes/apps/prod/rook-ceph/cluster
   prune: true
   wait: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-gpg
   dependsOn:
     - name: rook-ceph-operator
       namespace: flux-system
