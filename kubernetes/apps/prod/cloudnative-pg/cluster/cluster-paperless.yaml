@@ -12,7 +12,7 @@ spec:
     size: 20Gi
     storageClass: rook-ceph-block
   superuserSecret:
-    name: cloudnative-pg-secret
+    name: postgres-superuser
   enableSuperuserAccess: true
 
   postgresql:
