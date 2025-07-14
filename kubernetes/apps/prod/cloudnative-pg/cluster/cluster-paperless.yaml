@@ -3,7 +3,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: postgres-paperless
-  namespace: cnpg-system
+  namespace: default
 spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:17.5
@@ -12,7 +12,7 @@ spec:
     size: 20Gi
     storageClass: rook-ceph-block
   superuserSecret:
-    name: postgres-superuser
+    name: postgres-paperless-superuser
   enableSuperuserAccess: true
 
   postgresql:
