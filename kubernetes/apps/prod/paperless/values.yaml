@@ -50,6 +50,12 @@ spec:
                   secretKeyRef:
                     name: postgres-paperless-app
                     key: dbname
+              PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
+              PAPERLESS_SOCIALACCOUNT_PROVIDERS:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
 
     ingress:
       main:
