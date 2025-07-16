@@ -61,6 +61,16 @@ spec:
               PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
               PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS: "true"
               PAPERLESS_FILENAME_FORMAT: "{{ `{{ owner_username }}/{{ created_year }}/{{ correspondent }}/{{ created }}_{{ title }}` }}"
+              PAPERLESS_GMAIL_OAUTH_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_GMAIL_OAUTH_CLIENT_ID
+              PAPERLESS_GMAIL_OAUTH_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_GMAIL_OAUTH_CLIENT_SECRET
 
     ingress:
       main:
