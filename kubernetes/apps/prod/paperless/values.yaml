@@ -56,7 +56,6 @@ spec:
                   secretKeyRef:
                     name: paperless-secret
                     key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
-              PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
 
     ingress:
       main:
