@@ -60,6 +60,7 @@ spec:
               PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"
               PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
               PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS: "true"
+              PAPERLESS_FILENAME_FORMAT: "{{ owner_username }}/{{ created_year }}/{{ correspondent }}/{{ title }}"
 
     ingress:
       main:
