@@ -1,0 +1,28 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app homepage
+  namespace: default
+spec:
+  values:
+    controllers:
+      homepage:
+        forceRename: *app
+
+        containers:
+          app:
+            env:
+              # Configure application
+              HOMEPAGE_ALLOWED_HOSTS: "dash.fdk.codes"
+
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        hosts:
+          - host: dash.fdk.codes
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
