@@ -76,6 +76,14 @@ spec:
       main:
         enabled: true
         className: nginx
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Document Management System
+          gethomepage.dev/group: Apps
+          gethomepage.dev/href: https://paperless.fdk.codes/
+          gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/paperless-ngx.webp
+          gethomepage.dev/name: Paperless
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=paperless
         hosts:
           - host: paperless.fdk.codes
             paths:
