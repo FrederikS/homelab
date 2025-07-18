@@ -64,6 +64,13 @@ data:
 
   bookmarks.yaml: |
     ---
+    - Developer:
+      - Awesome-Homelab:
+          - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/github.webp
+            href: https://github.com/ccbikai/awesome-homelab
+      - Dashboard-Icons:
+          - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/homarr.webp
+            href: https://dashboardicons.com/
 
   docker.yaml: |
     ---
