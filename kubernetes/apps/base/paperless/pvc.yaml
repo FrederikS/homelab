@@ -1,8 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-data
+  name: &name paperless-data
   namespace: default
+  labels:
+    backup: *name
 spec:
   accessModes:
     - ReadWriteOnce
