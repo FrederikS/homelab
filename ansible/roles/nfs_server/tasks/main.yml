@@ -1,7 +1,7 @@
 ---
 - name: Ensure SSD mount point exists
   ansible.builtin.file:
-    path: "{{ ssd_mount_point }}"
+    path: "{{ nfs_mount_point }}"
     state: directory
     owner: root
     group: root
@@ -10,8 +10,8 @@
 
 - name: Mount SSD
   ansible.posix.mount:
-    path: "{{ ssd_mount_point }}"
-    src: "UUID={{ ssd_device_uuid }}"
+    path: "{{ nfs_mount_point }}"
+    src: "UUID={{ nfs_device_uuid }}"
     fstype: ext4
     opts: rw,suid,dev,exec,auto,nouser,async,nofail
     state: mounted
@@ -19,7 +19,7 @@
 
 - name: Ensure NFS export directory exists
   ansible.builtin.file:
-    path: "{{ ssd_mount_point }}/{{ item }}"
+    path: "{{ nfs_mount_point }}/{{ item }}"
     state: directory
     owner: nobody
     group: nogroup
