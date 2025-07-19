@@ -29,7 +29,7 @@ spec:
               # Configure folders
               # PAPERLESS_CONSUMPTION_DIR: /data/nas/incoming
               PAPERLESS_DATA_DIR: /data/local/data
-              # PAPERLESS_EXPORT_DIR: /data/nas/export
+              PAPERLESS_EXPORT_DIR: /data/export
               PAPERLESS_MEDIA_ROOT: /data/local/media
               # Configure folder importer
               PAPERLESS_CONSUMER_POLLING: "60"
@@ -92,3 +92,7 @@ spec:
           paperless:
             app:
               - path: /data/local
+      export:
+        existingClaim: paperless-backup-nfs
+        globalMounts:
+          - path: /data/export
