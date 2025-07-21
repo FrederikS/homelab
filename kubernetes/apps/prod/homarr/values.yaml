@@ -6,10 +6,15 @@ metadata:
 spec:
   values:
 
+    env:
+      AUTH_OIDC_CLIENT_NAME: Keycloak
+      AUTH_OIDC_ISSUER: https://iam.fdk.codes/realms/fdk.codes
+
     ingress:
       enabled: true
-      className: nginx
+      ingressClassName: nginx
       hosts:
         - host: dash.fdk.codes
           paths:
             - path: /
+              pathType: ImplementationSpecific
