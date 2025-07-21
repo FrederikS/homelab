@@ -18,6 +18,8 @@ spec:
     envSecrets:
       authOidcCredentials:
         existingSecret: homarr-secret
+      dbCredentials:
+        existingSecret: homarr-secret
 
     persistence:
       homarrDatabase:
