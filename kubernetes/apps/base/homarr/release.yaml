@@ -1,0 +1,25 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app homarr
+  namespace: default
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: *app
+    namespace: default
+  values:
+    env:
+      AUTH_PROVIDERS: oidc
+      TZ: "Europe/Berlin"
+
+    envSecrets:
+      authOidcCredentials:
+        existingSecret: homarr-secret
+
+    persistence:
+      homarrDatabase:
+        enabled: "true"
+        storageClassName: rook-ceph-block
