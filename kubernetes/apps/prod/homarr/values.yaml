@@ -9,6 +9,7 @@ spec:
     env:
       AUTH_OIDC_CLIENT_NAME: Keycloak
       AUTH_OIDC_ISSUER: https://iam.fdk.codes/realms/fdk.codes
+      AUTH_OIDC_AUTO_LOGIN: "true"
 
     ingress:
       enabled: true
