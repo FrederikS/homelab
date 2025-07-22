@@ -25,3 +25,8 @@ spec:
       homarrDatabase:
         enabled: "true"
         storageClassName: rook-ceph-block
+
+    rbac:
+      enabled: true
+
+    strategyType: Recreate
