@@ -6,7 +6,9 @@ spec:
   chart:
     spec:
       version: "0.3.2"
-  values:    
+  values:
+    image:
+      tag: "2025.7.0"
     cloudflare:
       tunnelName: homelab_ingress
       secretName: cloudflare-tunnel-credentials
