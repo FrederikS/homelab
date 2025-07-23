@@ -38,13 +38,16 @@ spec:
   ingress:
     enabled: true
     className: nginx
-    annotations:
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/description: User Management
-      gethomepage.dev/group: Infrastructure
-      gethomepage.dev/href: https://iam.fdk.codes/admin/fdk.codes/console/
-      gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/keycloak.webp
-      gethomepage.dev/name: IAM
-      gethomepage.dev/pod-selector: app=keycloak
-  # Additional Options  
+  # Additional Options
   additionalOptions: []
+  unsupported:
+    podTemplate:
+      spec:
+        containers:
+          - volumeMounts:
+              - name: backup-nfs
+                mountPath: /mnt/backup
+        volumes:
+          - name: backup-nfs
+            persistentVolumeClaim:
+              claimName: keycloak-backup-nfs

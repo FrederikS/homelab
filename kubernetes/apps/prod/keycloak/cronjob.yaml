@@ -1,0 +1,103 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: keycloak-backup-job
+  namespace: keycloak
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: keycloak-backup-job
+  namespace: keycloak
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: &name keycloak-backup-job
+  namespace: keycloak
+subjects:
+  - kind: ServiceAccount
+    name: *name
+    namespace: keycloak
+roleRef:
+  kind: Role
+  name: *name
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-backup-job
+  namespace: keycloak
+data:
+  backup.sh: |
+    #!/bin/sh
+
+    TIMESTAMP=$(TZ="Europe/Berlin" date +"%Y-%m-%d_%H-%M-%S")
+    FILENAME="export-${TIMESTAMP}"
+    FILENAME_TAR="${FILENAME}.tar.gz"
+    PL_POD_NAME=$(kubectl get pod -l app=keycloak -n keycloak -o jsonpath='{.items[0].metadata.name}')
+
+    echo "Creating keycloak export"
+    kubectl exec -n keycloak ${PL_POD_NAME} --container keycloak -- \
+      /opt/keycloak/bin/kc.sh export \
+      --dir \
+      /mnt/backup/${TIMESTAMP}
+
+    echo "Creating tar file"
+    tar czf /mnt/backup/${FILENAME_TAR} -C /mnt/backup/${TIMESTAMP} .
+    rm -rf /mnt/backup/${TIMESTAMP}
+
+    echo "finished keycloak export"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: keycloak-backup
+  namespace: keycloak
+spec:
+  schedule: "0 3 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 60
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          serviceAccount: keycloak-backup-job
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+          containers:
+            - name: backup
+              image: bitnami/kubectl:latest
+              command: ["sh", "-c", "/scripts/backup.sh"]
+              volumeMounts:
+                - name: script-volume
+                  mountPath: /scripts/backup.sh
+                  subPath: backup.sh
+                - name: backup-nfs
+                  mountPath: /mnt/backup
+          restartPolicy: OnFailure
+          volumes:
+            - name: script-volume
+              configMap:
+                name: keycloak-backup-job
+                items:
+                  - key: backup.sh
+                    path: backup.sh
+                defaultMode: 0555 # read and execute
+            - name: backup-nfs
+              persistentVolumeClaim:
+                claimName: keycloak-backup-nfs

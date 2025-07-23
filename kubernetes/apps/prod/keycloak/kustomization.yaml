@@ -3,4 +3,6 @@ kind: Kustomization
 namespace: keycloak
 resources:
   - ./secret.sops.yaml
+  - ./pvc.yaml
+  - ./cronjob.yaml
   - ./keycloak.yaml
