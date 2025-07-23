@@ -27,10 +27,10 @@ spec:
     httpEnabled: true
   hostname:
     # Setting hostname
-    hostname: https://iam.fdk.codes
+    hostname: https://iam.fdk.codes/
     strict: true
     # Enabling back channel
-    backchannelDynamic: true
+    backchannelDynamic: false
   proxy:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
   # Do not create ingress
