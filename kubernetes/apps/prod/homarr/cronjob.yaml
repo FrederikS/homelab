@@ -1,0 +1,107 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: homarr-backup-job
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: homarr-backup-job
+  namespace: default
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: &name homarr-backup-job
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: *name
+    namespace: default
+roleRef:
+  kind: Role
+  name: *name
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homarr-backup-job
+  namespace: default
+data:
+  backup.sh: |
+    #!/bin/sh
+
+    TIMESTAMP=$(TZ="Europe/Berlin" date +"%Y-%m-%d_%H-%M-%S")
+    FILENAME="export-${TIMESTAMP}"
+    TARGET_DB_FILENAME="${TIMESTAMP}.sqlite"
+    FILENAME_TAR="${FILENAME}.tar.gz"
+
+    echo "starting homarr backup"
+    apt-get update && apt-get install -y sqlite3
+    sqlite3 /mnt/homarr-database/db.sqlite ".backup '/mnt/backup/${TARGET_DB_FILENAME}'"
+    tar czf /mnt/backup/${FILENAME_TAR} -C /mnt/backup ${TARGET_DB_FILENAME}
+    rm /mnt/backup/${TARGET_DB_FILENAME}
+    echo "finished homarr backup"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: homarr-backup
+  namespace: default
+spec:
+  schedule: "30 3 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 60
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          serviceAccount: homarr-backup-job
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: homarr
+                  topologyKey: kubernetes.io/hostname
+          containers:
+            - name: backup
+              image: debian:bookworm-slim
+              command: ["sh", "-c", "/scripts/backup.sh"]
+              volumeMounts:
+                - name: homarr-database
+                  mountPath: /mnt/homarr-database
+                - name: homarr-backup-nfs
+                  mountPath: /mnt/backup
+                - name: script-volume
+                  mountPath: /scripts/backup.sh
+                  subPath: backup.sh
+          restartPolicy: OnFailure
+          volumes:
+            - name: homarr-database
+              persistentVolumeClaim:
+                claimName: homarr-database
+                readOnly: true
+            - name: homarr-backup-nfs
+              persistentVolumeClaim:
+                claimName: homarr-backup-nfs
+            - name: script-volume
+              configMap:
+                name: homarr-backup-job
+                items:
+                  - key: backup.sh
+                    path: backup.sh
+                defaultMode: 0555 # read and execute
