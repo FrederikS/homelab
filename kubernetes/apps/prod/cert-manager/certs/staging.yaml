@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: fdk-codes-staging
+spec:
+  secretName: fdk-codes-staging-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: fdk.codes
+  dnsNames:
+    - fdk.codes
+    - "*.fdk.codes"
