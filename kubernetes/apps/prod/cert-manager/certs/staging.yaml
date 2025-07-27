@@ -3,7 +3,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: fdk-codes-staging
-  namespace: networking
+  namespace: ingress-nginx
 spec:
   secretName: fdk-codes-staging-tls
   issuerRef:
