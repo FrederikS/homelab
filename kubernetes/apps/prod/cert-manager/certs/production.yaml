@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: fdk-codes-prod
+  namespace: ingress-nginx
+spec:
+  secretName: fdk-codes-prod-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: fdk.codes
+  dnsNames:
+    - fdk.codes
+    - "*.fdk.codes"
