@@ -14,3 +14,6 @@ spec:
           paths:
             - path: /
               pathType: ImplementationSpecific
+      tls:
+        - hosts:
+          - podinfo.fdk.codes
