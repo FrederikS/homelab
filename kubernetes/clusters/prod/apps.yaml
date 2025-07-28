@@ -54,8 +54,6 @@ spec:
   prune: true
   wait: true
   dependsOn:
-    - name: infra-controllers
-      namespace: flux-system
     - name: cert-manager-issuers
       namespace: flux-system
 ---
