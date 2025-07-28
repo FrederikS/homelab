@@ -78,13 +78,6 @@ spec:
         className: nginx
         annotations:
           nginx.ingress.kubernetes.io/proxy-body-size: 10m
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Document Management System
-          gethomepage.dev/group: Apps
-          gethomepage.dev/href: https://paperless.fdk.codes/
-          gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/paperless-ngx.webp
-          gethomepage.dev/name: Paperless
-          gethomepage.dev/pod-selector: app.kubernetes.io/name=paperless
         hosts:
           - host: paperless.fdk.codes
             paths:
@@ -92,3 +85,6 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - paperless.fdk.codes

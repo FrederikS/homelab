@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    route.openshift.io/termination: edge
+  labels:
+    app: keycloak
+    app.kubernetes.io/instance: keycloak
+  name: keycloak-ingress
+  namespace: keycloak
+spec:
+  defaultBackend:
+    service:
+      name: keycloak-service
+      port:
+        name: http
+  ingressClassName: nginx
+  rules:
+    - host: iam.fdk.codes
+      http:
+        paths:
+          - backend:
+              service:
+                name: keycloak-service
+                port:
+                  name: http
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+      - iam.fdk.codes
+status:
+  loadBalancer:
+    ingress:
+      - ip: 192.168.0.201

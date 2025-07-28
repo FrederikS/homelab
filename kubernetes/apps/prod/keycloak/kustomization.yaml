@@ -6,3 +6,4 @@ resources:
   - ./pvc.yaml
   - ./cronjob.yaml
   - ./keycloak.yaml
+  - ./ingress.yaml

@@ -19,3 +19,6 @@ spec:
           paths:
             - path: /
               pathType: ImplementationSpecific
+      tls:
+        - hosts:
+            - dash.fdk.codes

@@ -36,8 +36,7 @@ spec:
   # Do not create ingress
   # TLS options are not supported. Ingress resource to be created separatedly.
   ingress:
-    enabled: true
-    className: nginx
+    enabled: false
   # Additional Options
   additionalOptions: []
   unsupported:
