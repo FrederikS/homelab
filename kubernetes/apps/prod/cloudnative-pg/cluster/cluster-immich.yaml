@@ -1,0 +1,30 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-immich
+  namespace: default
+spec:
+  instances: 2
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17.5
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: rook-ceph-block
+  bootstrap:
+    initdb:
+      postInitSQL:
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+  superuserSecret:
+    name: postgres-immich-superuser
+  enableSuperuserAccess: true
+  postgresql:
+    shared_preload_libraries:
+      - vchord.so
+    parameters:
+      max_connections: "300"
+      shared_buffers: 512MB
+      timezone: "Europe/Berlin"
+
+  monitoring:
+    enablePodMonitor: true

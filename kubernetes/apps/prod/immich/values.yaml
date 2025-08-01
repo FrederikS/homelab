@@ -1,0 +1,36 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app immich
+  namespace: default
+spec:
+  values:
+    controllers:
+      immich:
+        forceRename: *app
+
+        containers:
+          app:
+            env:
+              DB_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-immich-app
+                    key: uri
+
+    ingress:
+      app:
+        enabled: true
+        className: nginx
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
+        hosts:
+          - host: immich.fdk.codes
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - immich.fdk.codes

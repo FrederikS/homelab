@@ -4,3 +4,4 @@ resources:
   - ./secret.sops.yaml
   - ./cluster-paperless.yaml
   - ./cluster-keycloak.yaml
+  - ./cluster-immich.yaml
