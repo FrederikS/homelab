@@ -59,9 +59,9 @@ spec:
             port: 6379
 
     persistence:
-      data:
-        existingClaim: immich-data
+      library:
+        existingClaim: immich-library
         advancedMounts:
           immich:
             app:
-              - path: /data
+              - path: /usr/src/app/upload
