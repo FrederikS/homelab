@@ -13,8 +13,9 @@ spec:
     storageClass: rook-ceph-block
   bootstrap:
     initdb:
-      postInitSQL:
+      postInitApplicationSQL:
         - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;
   superuserSecret:
     name: postgres-immich-superuser
   enableSuperuserAccess: true
