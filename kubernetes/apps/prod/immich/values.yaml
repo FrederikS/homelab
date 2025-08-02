@@ -6,11 +6,12 @@ metadata:
 spec:
   values:
     controllers:
-      immich:
-        forceRename: *app
 
+      server:
         containers:
-          app:
+          main:
+            image:
+              tag: v1.137.3
             env:
               DB_URL:
                 valueFrom:
@@ -18,8 +19,38 @@ spec:
                     name: postgres-immich-app
                     key: uri
 
+      machine-learning:
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: razer
+        containers:
+          main:
+            image:
+              tag: v1.137.3
+
+    persistence:
+      library:
+        existingClaim: immich-library
+        advancedMounts:
+          server:
+            main:
+              - path: &mediaLocation /usr/src/app/upload
+          machine-learning:
+            main:
+              - path: *mediaLocation
+      cache:
+        type: persistentVolumeClaim
+        existingClaim: immich-ml-cache
+        advancedMounts:
+          machine-learning:
+            main:
+              - path: /cache
+                subPath: cache
+              - path: /.cache
+                subPath: dotCache
+
     ingress:
-      app:
+      server:
         enabled: true
         className: nginx
         annotations:
@@ -29,7 +60,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: server
                   port: http
         tls:
           - hosts:

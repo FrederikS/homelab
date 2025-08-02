@@ -12,6 +12,19 @@ spec:
   storageClassName: rook-ceph-block
 ---
 apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-ml-cache
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: rook-ceph-block
+---
+apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: immich-backup-nfs

@@ -12,11 +12,9 @@ spec:
     namespace: flux-system
   values:
     controllers:
-      immich:
-        forceRename: *app
-
+      server:
         containers:
-          app:
+          main:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.136.0
@@ -24,6 +22,7 @@ spec:
               # Configure application
               TZ: "Europe/Berlin"
               REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
+              IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
             resources:
               requests:
                 cpu: 100m
@@ -44,11 +43,28 @@ spec:
               limits:
                 memory: 128Mi
 
+      machine-learning:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v1.136.0
+            env:
+              TZ: "Europe/Berlin"
+              MPLCONFIGDIR: "/cache/matplotlib"
+              IMMICH_MEDIA_LOCATION: *mediaLocation
+              IMMICH_LOG_LEVEL: debug
+            resources:
+              requests:
+                cpu: 100m
+                memory: 250M
+              limits:
+                memory: 4Gi
+
     service:
-      app:
-        forceRename: *app
+      server:
         primary: true
-        controller: *app
+        controller: server
         ports:
           http:
             port: 2283
@@ -57,11 +73,8 @@ spec:
         ports:
           http:
             port: 6379
-
-    persistence:
-      library:
-        existingClaim: immich-library
-        advancedMounts:
-          immich:
-            app:
-              - path: /usr/src/app/upload
+      machine-learning:
+        controller: machine-learning
+        ports:
+          http:
+            port: 3003
