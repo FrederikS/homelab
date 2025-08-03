@@ -43,7 +43,7 @@ data:
 
     echo "starting immich backup"
     apt-get update && apt-get install -y rsync
-    rsync -av --progress /mnt/immich-library/ /mnt/backup/upload/
+    rsync -av --delete --progress /mnt/immich-library/ /mnt/backup/upload/
     echo "finished immich backup"
 ---
 apiVersion: batch/v1
