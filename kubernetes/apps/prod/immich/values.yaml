@@ -8,19 +8,8 @@ spec:
     controllers:
       server:
         pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/arch
-                        operator: In
-                        values:
-                          - amd64
-                      - key: kubernetes.io/hostname
-                        operator: NotIn
-                        values:
-                          - razer
+          nodeSelector:
+            kubernetes.io/hostname: razer
         containers:
           main:
             image:
@@ -55,14 +44,8 @@ spec:
 
       microservices:
         pod:
-          affinity:
-            podAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: immich
-                      app.kubernetes.io/controller: server
-                  topologyKey: kubernetes.io/hostname
+          nodeSelector:
+            kubernetes.io/hostname: razer
         containers:
           main:
             image:
@@ -73,7 +56,7 @@ spec:
       machine-learning:
         pod:
           nodeSelector:
-            kubernetes.io/hostname: razer
+            kubernetes.io/hostname: x240
         containers:
           main:
             image:
