@@ -9,15 +9,18 @@ spec:
       server:
         pod:
           affinity:
-            podAntiAffinity:
+            nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: immich
-                      app.kubernetes.io/controller: machine-learning
-                  topologyKey: kubernetes.io/hostname
-          nodeSelector:
-            kubernetes.io/arch: amd64
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values:
+                          - amd64
+                      - key: kubernetes.io/hostname
+                        operator: NotIn
+                        values:
+                          - razer
         containers:
           main:
             image:
