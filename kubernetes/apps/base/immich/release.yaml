@@ -20,15 +20,34 @@ spec:
               tag: v1.136.0
             env:
               # Configure application
-              TZ: "Europe/Berlin"
-              REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
-              IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
+              <<: &env-common
+                TZ: &tz Europe/Berlin
+                REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
+                IMMICH_LOG_LEVEL: debug
+                IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
+              IMMICH_WORKERS_INCLUDE: api
+            resources:
+              requests:
+                cpu: 50m
+                memory: 250Mi
+              limits:
+                memory: 2Gi
+
+      microservices:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v1.136.0
+            env:
+              <<: *env-common
+              IMMICH_WORKERS_EXCLUDE: api
             resources:
               requests:
                 cpu: 100m
                 memory: 250Mi
               limits:
-                memory: 4Gi
+                memory: 6Gi
 
       redis:
         containers:
@@ -50,21 +69,24 @@ spec:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.136.0
             env:
-              TZ: "Europe/Berlin"
+              <<: *env-common
               MPLCONFIGDIR: "/cache/matplotlib"
-              IMMICH_MEDIA_LOCATION: *mediaLocation
-              IMMICH_LOG_LEVEL: debug
             resources:
               requests:
                 cpu: 100m
                 memory: 250M
               limits:
-                memory: 4Gi
+                memory: 2Gi
 
     service:
       server:
         primary: true
         controller: server
+        ports:
+          http:
+            port: 2283
+      microservices:
+        controller: microservices
         ports:
           http:
             port: 2283

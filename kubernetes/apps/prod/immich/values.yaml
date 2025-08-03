@@ -13,11 +13,40 @@ spec:
             image:
               tag: v1.137.3
             env:
-              DB_URL:
-                valueFrom:
-                  secretKeyRef:
-                    name: postgres-immich-app
-                    key: uri
+              <<: &db-env
+                # DB_URL:
+                #   valueFrom:
+                #     secretKeyRef:
+                #       name: postgres-immich-app
+                #       key: uri
+                DB_HOSTNAME:
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-immich-app
+                      key: host
+                DB_USERNAME:
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-immich-app
+                      key: username
+                DB_PASSWORD:
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-immich-app
+                      key: password
+                DB_DATABASE_NAME:
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-immich-app
+                      key: dbname
+
+      microservices:
+        containers:
+          main:
+            image:
+              tag: v1.137.3
+            env:
+              <<: *db-env
 
       machine-learning:
         pod:
@@ -35,6 +64,9 @@ spec:
           server:
             main:
               - path: &mediaLocation /usr/src/app/upload
+          microservices:
+            main:
+              - path: *mediaLocation
           machine-learning:
             main:
               - path: *mediaLocation
