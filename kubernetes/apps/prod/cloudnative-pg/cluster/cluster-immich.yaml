@@ -11,6 +11,17 @@ spec:
   storage:
     size: 20Gi
     storageClass: rook-ceph-block
+  resources:
+    requests:
+      memory: 1Gi
+    limits:
+      memory: 2Gi
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: required
+    nodeSelector:
+      kubernetes.io/arch: amd64
   bootstrap:
     initdb:
       postInitApplicationSQL:

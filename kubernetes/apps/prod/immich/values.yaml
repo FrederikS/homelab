@@ -5,9 +5,20 @@ metadata:
   namespace: default
 spec:
   values:
-    controllers:
 
+    controllers:
       server:
+        pod:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: immich
+                      app.kubernetes.io/controller: microservices
+                  topologyKey: kubernetes.io/hostname
+          nodeSelector:
+            kubernetes.io/arch: amd64
         containers:
           main:
             image:
@@ -41,6 +52,9 @@ spec:
                       key: dbname
 
       microservices:
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: razer
         containers:
           main:
             image:
