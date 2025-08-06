@@ -41,7 +41,7 @@ data:
   backup.sh: |
     #!/bin/sh
 
-    TIMESTAMP=$(TZ="Europe/Berlin" date +"%Y-%m-%d_%H-%M-%S")
+    TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
     FILENAME="export-${TIMESTAMP}"
     FILENAME_TAR="${FILENAME}.tar.gz"
     PL_POD_NAME=$(kubectl get pod -l app=keycloak -n keycloak -o jsonpath='{.items[0].metadata.name}')

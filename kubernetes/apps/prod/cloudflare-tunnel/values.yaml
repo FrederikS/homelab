@@ -13,6 +13,6 @@ spec:
       tunnelName: homelab_ingress
       secretName: cloudflare-tunnel-credentials
       ingress:
-        - hostname: "*.fdk.codes"
+        - hostname: "*.${SECRET_DOMAIN}"
           service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local
     replicaCount: 3

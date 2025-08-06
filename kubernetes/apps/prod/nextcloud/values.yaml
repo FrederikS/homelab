@@ -9,10 +9,10 @@ spec:
       version: "6.6.10"
   values:
     nextcloud:
-      host: nextcloud.fdk.codes
+      host: "nextcloud.${SECRET_DOMAIN}"
     ingress:
       hosts:
-        - host: nextcloud.fdk.codes
+        - host: "nextcloud.${SECRET_DOMAIN}"
           paths:
             - path: /
               pathType: ImplementationSpecific

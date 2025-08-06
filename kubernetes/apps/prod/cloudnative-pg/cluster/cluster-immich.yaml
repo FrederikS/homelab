@@ -38,7 +38,7 @@ spec:
     parameters:
       max_connections: "300"
       shared_buffers: 512MB
-      timezone: "Europe/Berlin"
+      timezone: "${TIMEZONE}"
 
   monitoring:
     enablePodMonitor: true

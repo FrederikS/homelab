@@ -13,14 +13,14 @@ spec:
           app:
             env:
               # Configure application
-              HOMEPAGE_ALLOWED_HOSTS: "dash.fdk.codes"
+              HOMEPAGE_ALLOWED_HOSTS: "dash.${SECRET_DOMAIN}"
 
     ingress:
       main:
         enabled: true
         className: nginx
         hosts:
-          - host: dash.fdk.codes
+          - host: "dash.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

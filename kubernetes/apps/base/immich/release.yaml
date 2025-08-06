@@ -21,7 +21,7 @@ spec:
             env:
               # Configure application
               <<: &env-common
-                TZ: &tz Europe/Berlin
+                TZ: &tz "${TIMEZONE}"
                 REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
                 IMMICH_LOG_LEVEL: debug
                 IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload

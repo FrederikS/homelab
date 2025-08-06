@@ -90,7 +90,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
-          - host: immich.fdk.codes
+          - host: "immich.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -98,4 +98,4 @@ spec:
                   port: http
         tls:
           - hosts:
-              - immich.fdk.codes
+              - "immich.${SECRET_DOMAIN}"

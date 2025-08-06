@@ -18,7 +18,7 @@ spec:
                   secretKeyRef:
                     name: paperless-secret
                     key: PAPERLESS_SECRET_KEY
-              PAPERLESS_URL: https://paperless.fdk.codes
+              PAPERLESS_URL: "https://paperless.${SECRET_DOMAIN}"
               # Configure admin user
               PAPERLESS_ADMIN_USER:
                 valueFrom:
@@ -79,7 +79,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/proxy-body-size: 10m
         hosts:
-          - host: paperless.fdk.codes
+          - host: "paperless.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -87,4 +87,4 @@ spec:
                   port: http
         tls:
           - hosts:
-              - paperless.fdk.codes
+              - "paperless.${SECRET_DOMAIN}"

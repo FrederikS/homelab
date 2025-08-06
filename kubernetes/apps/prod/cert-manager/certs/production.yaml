@@ -2,13 +2,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: fdk-codes-prod
+  name: "${SECRET_DOMAIN/./-}-prod"
 spec:
-  secretName: fdk-codes-prod-tls
+  secretName: "${SECRET_DOMAIN/./-}-prod-tls"
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: fdk.codes
-  dnsNames:
-    - fdk.codes
-    - "*.fdk.codes"
+  commonName: "${SECRET_DOMAIN}"
+  dnsNames: ["${SECRET_DOMAIN}", "*.${SECRET_DOMAIN}"]

@@ -8,7 +8,7 @@ spec:
 
     env:
       AUTH_OIDC_CLIENT_NAME: Keycloak
-      AUTH_OIDC_ISSUER: https://iam.fdk.codes/realms/fdk.codes
+      AUTH_OIDC_ISSUER: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"
       AUTH_OIDC_AUTO_LOGIN: "true"
       #LOG_LEVEL: "debug"
 
@@ -16,10 +16,10 @@ spec:
       enabled: true
       ingressClassName: nginx
       hosts:
-        - host: dash.fdk.codes
+        - host: "dash.${SECRET_DOMAIN}"
           paths:
             - path: /
               pathType: ImplementationSpecific
       tls:
         - hosts:
-            - dash.fdk.codes
+            - "dash.${SECRET_DOMAIN}"

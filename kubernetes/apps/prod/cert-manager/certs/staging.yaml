@@ -2,13 +2,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: fdk-codes-staging
+  name: "${SECRET_DOMAIN/./-}-staging"
 spec:
-  secretName: fdk-codes-staging-tls
+  secretName: "${SECRET_DOMAIN/./-}-staging-tls"
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: fdk.codes
-  dnsNames:
-    - fdk.codes
-    - "*.fdk.codes"
+  commonName: "${SECRET_DOMAIN}"
+  dnsNames: ["${SECRET_DOMAIN}", "*.${SECRET_DOMAIN}"]

@@ -13,7 +13,7 @@ spec:
   values:
     env:
       AUTH_PROVIDERS: oidc
-      TZ: "Europe/Berlin"
+      TZ: "${TIMEZONE}"
 
     envSecrets:
       authOidcCredentials:

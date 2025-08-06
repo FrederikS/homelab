@@ -10,10 +10,10 @@ spec:
   values:
     ingress:
       hosts:
-        - host: podinfo.fdk.codes
+        - host: "podinfo.${SECRET_DOMAIN}"
           paths:
             - path: /
               pathType: ImplementationSpecific
       tls:
         - hosts:
-          - podinfo.fdk.codes
+          - "podinfo.${SECRET_DOMAIN}"

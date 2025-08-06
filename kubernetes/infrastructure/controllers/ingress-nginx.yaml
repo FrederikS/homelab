@@ -38,7 +38,7 @@ spec:
       # logLevel: debug
       # nginxDebug: true
       extraArgs:
-        default-ssl-certificate: "cert-manager/fdk-codes-prod-tls"
+        default-ssl-certificate: "cert-manager/${SECRET_DOMAIN/./-}-prod-tls"
       config:
         use-forwarded-headers: true
         proxy-buffer-size: "128k"

@@ -41,7 +41,7 @@ data:
   backup.sh: |
     #!/bin/sh
 
-    TIMESTAMP=$(TZ="Europe/Berlin" date +"%Y-%m-%d_%H-%M-%S")
+    TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
     FILENAME="export-${TIMESTAMP}"
     FILENAME_ZIP="${FILENAME}.zip"
     PL_POD_NAME=$(kubectl get pod -l app.kubernetes.io/name=paperless -n default -o jsonpath='{.items[0].metadata.name}')
