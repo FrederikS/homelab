@@ -20,6 +20,8 @@ spec:
   dependsOn:
     - name: config
       namespace: flux-system
+    - name: cloudnative-pg-clusters
+      namespace: flux-system
   postBuild:
     substituteFrom:
       - kind: ConfigMap
