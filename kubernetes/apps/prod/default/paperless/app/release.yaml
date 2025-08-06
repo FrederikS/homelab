@@ -1,0 +1,179 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: paperless
+  namespace: default
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      paperless:
+        forceRename: paperless
+
+        pod:
+          annotations:
+            k8up.io/backup: "true"
+            k8up.io/backupcommand: sh -c 'document_exporter --zip $PAPERLESS_EXPORT_DIR'
+            k8up.io/file-extension: .zip
+            k8up.io/backupcommand-container: app
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/paperless-ngx/paperless-ngx
+              tag: 2.17.1
+            env:
+              # Configure application
+              PAPERLESS_PORT: "8000"
+              PAPERLESS_TIME_ZONE: "${TIMEZONE}"
+              PAPERLESS_WEBSERVER_WORKERS: "2"
+              PAPERLESS_TASK_WORKERS: "2"
+              # Configure folders
+              # PAPERLESS_CONSUMPTION_DIR: /data/nas/incoming
+              PAPERLESS_DATA_DIR: /data/local/data
+              PAPERLESS_EXPORT_DIR: /data/nfs/export
+              PAPERLESS_MEDIA_ROOT: /data/local/media
+              # Configure folder importer
+              PAPERLESS_CONSUMER_POLLING: "60"
+              PAPERLESS_CONSUMER_RECURSIVE: "true"
+              PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+              # Configure OCR
+              PAPERLESS_OCR_LANGUAGE: deu
+              PAPERLESS_OCR_LANGUAGES: deu eng
+              # Configure redis integration
+              PAPERLESS_REDIS: redis://paperless-redis.default.svc.cluster.local:6379
+              PAPERLESS_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_SECRET_KEY
+              PAPERLESS_URL: "https://paperless.${SECRET_DOMAIN}"
+              # Configure admin user
+              PAPERLESS_ADMIN_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_ADMIN_USER
+              PAPERLESS_ADMIN_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_ADMIN_PASSWORD
+              PAPERLESS_DBHOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-paperless-app
+                    key: host
+              PAPERLESS_DBUSER:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-paperless-app
+                    key: user
+              PAPERLESS_DBPASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-paperless-app
+                    key: password
+              PAPERLESS_DBNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-paperless-app
+                    key: dbname
+              PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
+              PAPERLESS_SOCIALACCOUNT_PROVIDERS:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+              PAPERLESS_SOCIAL_AUTO_SIGNUP: "true"
+              PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"
+              PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
+              PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS: "true"
+              PAPERLESS_FILENAME_FORMAT: "{{ `{{ owner_username }}/{{ created_year }}/{{ correspondent }}/{{ created }}_{{ title }}` }}"
+              PAPERLESS_GMAIL_OAUTH_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_GMAIL_OAUTH_CLIENT_ID
+              PAPERLESS_GMAIL_OAUTH_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-secret
+                    key: PAPERLESS_GMAIL_OAUTH_CLIENT_SECRET
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 25m
+                memory: 2Gi
+              limits:
+                memory: 6Gi
+
+      redis:
+        containers:
+          redis:
+            image:
+              repository: ghcr.io/valkey-io/valkey
+              tag: 8.1.3
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+    service:
+      app:
+        forceRename: paperless
+        primary: true
+        controller: paperless
+        ports:
+          http:
+            port: 8000
+      redis:
+        controller: redis
+        ports:
+          http:
+            port: 6379
+
+    persistence:
+      data:
+        existingClaim: paperless-data
+        advancedMounts:
+          paperless:
+            app:
+              - path: /data/local
+      export:
+        existingClaim: paperless-backup-nfs
+        globalMounts:
+          - path: /data/nfs/export
+
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: 10m
+        hosts:
+          - host: "paperless.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - "paperless.${SECRET_DOMAIN}"
