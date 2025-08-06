@@ -37,7 +37,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /mnt/nfs/backup/apps/immich
-    server: 192.168.0.104
+    server: ${BACKUP_NFS_IP}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

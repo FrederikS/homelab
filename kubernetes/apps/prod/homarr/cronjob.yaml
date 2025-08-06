@@ -46,7 +46,7 @@ data:
     TARGET_DB_FILENAME="${TIMESTAMP}.sqlite"
     FILENAME_TAR="${FILENAME}.tar.gz"
 
-    echo "starting homarr backup"
+    echo "starting homarr backup ${FILENAME}"
     apt-get update && apt-get install -y sqlite3
     sqlite3 /mnt/homarr-database/db.sqlite ".backup '/mnt/backup/${TARGET_DB_FILENAME}'"
     tar czf /mnt/backup/${FILENAME_TAR} -C /mnt/backup ${TARGET_DB_FILENAME}
