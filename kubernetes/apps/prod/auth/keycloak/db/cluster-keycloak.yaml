@@ -1,0 +1,25 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-keycloak
+  namespace: auth
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: rook-ceph-block
+  superuserSecret:
+    name: postgres-keycloak-superuser
+  enableSuperuserAccess: true
+
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 512MB
+      timezone: "${TIMEZONE}"
+
+  monitoring:
+    enablePodMonitor: true
