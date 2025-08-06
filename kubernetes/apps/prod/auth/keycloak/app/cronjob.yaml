@@ -64,6 +64,7 @@ metadata:
   name: keycloak-backup
   namespace: auth
 spec:
+  suspend: true
   schedule: "0 3 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2

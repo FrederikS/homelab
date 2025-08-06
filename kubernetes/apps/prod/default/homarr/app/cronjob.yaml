@@ -59,6 +59,7 @@ metadata:
   name: homarr-backup
   namespace: default
 spec:
+  suspend: true
   schedule: "30 3 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2

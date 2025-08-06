@@ -52,6 +52,7 @@ metadata:
   name: immich-backup
   namespace: default
 spec:
+  suspend: true
   schedule: "30 2 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2

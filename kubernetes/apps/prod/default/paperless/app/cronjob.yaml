@@ -64,6 +64,7 @@ metadata:
   name: paperless-backup
   namespace: default
 spec:
+  suspend: true
   schedule: "0 4 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
