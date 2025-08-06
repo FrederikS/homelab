@@ -58,7 +58,7 @@ function apply_sops_secrets() {
     log debug "Applying secrets"
 
     local -r secrets=(
-        "${ROOT_DIR}/kubernetes/clusters/prod/vars/cluster-secrets.sops.yaml"
+        "${ROOT_DIR}/kubernetes/config/prod/vars/cluster-secrets.sops.yaml"
         # "${ROOT_DIR}/kubernetes/components/common/sops-age.sops.yaml"
     )
 
@@ -87,7 +87,7 @@ function apply_config_maps() {
     log debug "Applying config maps"
 
     local -r configs=(
-        "${ROOT_DIR}/kubernetes/clusters/prod/vars/cluster-settings.yaml"
+        "${ROOT_DIR}/kubernetes/config/prod/vars/cluster-settings.yaml"
     )
 
     for config in "${configs[@]}"; do
