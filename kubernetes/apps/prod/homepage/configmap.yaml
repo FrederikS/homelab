@@ -1,0 +1,81 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: &app homepage
+  namespace: default
+data:
+  settings.yaml: |
+    ---
+    title: Dashboard
+    favicon: https://raw.githubusercontent.com/FrederikS/fdk.codes/refs/heads/master/static/android-chrome-512x512.png
+    # theme: dark
+    # color: neutral
+    # useEqualHeights: true
+    # layout: # key by group name in services.yaml
+    #   Apps & Services:
+    #     style: row
+    #     columns: 3
+    #   Infrastructure:
+    #     style: row
+    #     columns: 3
+    #   Monitoring:
+    #     style: row
+    #     columns: 3
+    #   Storage:
+    #     style: row
+    #     columns: 3
+    #   Databases:
+    #     style: row
+    #     columns: 3
+    quicklaunch:
+      searchDescriptions: true
+      hideInternetSearch: true
+      showSearchSuggestions: true
+      hideVisitURL: true
+      # provider: google # google, duckduckgo, bing, baidu, brave or custom
+
+  widgets.yaml: |
+    ---
+    - logo:
+        icon: https://raw.githubusercontent.com/FrederikS/fdk.codes/refs/heads/master/static/android-chrome-512x512.png
+    - datetime:
+        text_size: md
+        locale: de
+        format:
+          dateStyle: short
+          timeStyle: short
+          hourCycle: h23
+    # - kubernetes:
+    #     cluster:
+    #       show: false
+    #       cpu: false
+    #       memory: false
+    #       showLabel: false
+    #       label: "cluster"
+    #     nodes:
+    #       show: true
+    #       cpu: true
+    #       memory: true
+    #       showLabel: true
+
+  services.yaml: |
+    ---
+
+  bookmarks.yaml: |
+    ---
+    - Developer:
+      - Awesome-Homelab:
+          - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/github.webp
+            href: https://github.com/ccbikai/awesome-homelab
+      - Dashboard-Icons:
+          - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/homarr.webp
+            href: https://dashboardicons.com/
+
+  docker.yaml: |
+    ---
+
+  kubernetes.yaml: |
+    ---
+    mode: cluster
+    ingress: true

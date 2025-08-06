@@ -1,0 +1,25 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homarr
+  namespace: default
+spec:
+  values:
+
+    env:
+      AUTH_OIDC_CLIENT_NAME: Keycloak
+      AUTH_OIDC_ISSUER: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"
+      AUTH_OIDC_AUTO_LOGIN: "true"
+      #LOG_LEVEL: "debug"
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - host: "dash.${SECRET_DOMAIN}"
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls:
+        - hosts:
+            - "dash.${SECRET_DOMAIN}"
