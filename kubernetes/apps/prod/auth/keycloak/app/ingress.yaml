@@ -8,7 +8,6 @@ metadata:
     app: keycloak
     app.kubernetes.io/instance: keycloak
   name: keycloak-ingress
-  namespace: auth
 spec:
   defaultBackend:
     service:

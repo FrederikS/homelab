@@ -4,6 +4,7 @@ metadata:
   name: homarr
   namespace: flux-system
 spec:
+  targetNamespace: default
   interval: 1h
   retryInterval: 1m
   timeout: 5m

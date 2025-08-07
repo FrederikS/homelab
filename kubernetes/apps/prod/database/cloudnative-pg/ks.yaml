@@ -4,6 +4,7 @@ metadata:
   name: cloudnative-pg-operator
   namespace: flux-system
 spec:
+  targetNamespace: database
   interval: 1h
   retryInterval: 1m
   timeout: 5m
