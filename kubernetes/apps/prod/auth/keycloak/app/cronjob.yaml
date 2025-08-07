@@ -39,7 +39,7 @@ data:
     TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
     FILENAME="export-$${TIMESTAMP}"
     FILENAME_TAR="$${FILENAME}.tar.gz"
-    PL_POD_NAME=$(kubectl get pod -l app=keycloak -n keycloak -o jsonpath='{.items[0].metadata.name}')
+    PL_POD_NAME=$(kubectl get pod -l app=keycloak -n auth -o jsonpath='{.items[0].metadata.name}')
 
     echo "Creating keycloak export"
     kubectl exec -n keycloak $${PL_POD_NAME} --container keycloak -- \
