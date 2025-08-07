@@ -37,19 +37,19 @@ data:
     #!/bin/sh
 
     TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
-    FILENAME="export-${TIMESTAMP}"
-    FILENAME_TAR="${FILENAME}.tar.gz"
+    FILENAME="export-$${TIMESTAMP}"
+    FILENAME_TAR="$${FILENAME}.tar.gz"
     PL_POD_NAME=$(kubectl get pod -l app=keycloak -n keycloak -o jsonpath='{.items[0].metadata.name}')
 
     echo "Creating keycloak export"
-    kubectl exec -n keycloak ${PL_POD_NAME} --container keycloak -- \
+    kubectl exec -n keycloak $${PL_POD_NAME} --container keycloak -- \
       /opt/keycloak/bin/kc.sh export \
       --dir \
-      /mnt/backup/${TIMESTAMP}
+      /mnt/backup/$${TIMESTAMP}
 
     echo "Creating tar file"
-    tar czf /mnt/backup/${FILENAME_TAR} -C /mnt/backup/${TIMESTAMP} .
-    rm -rf /mnt/backup/${TIMESTAMP}
+    tar czf /mnt/backup/$${FILENAME_TAR} -C /mnt/backup/$${TIMESTAMP} .
+    rm -rf /mnt/backup/$${TIMESTAMP}
 
     echo "finished keycloak export"
 ---
@@ -58,7 +58,6 @@ kind: CronJob
 metadata:
   name: keycloak-backup
 spec:
-  suspend: true
   schedule: "0 3 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2

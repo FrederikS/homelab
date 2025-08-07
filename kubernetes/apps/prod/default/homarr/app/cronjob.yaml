@@ -37,15 +37,15 @@ data:
     #!/bin/sh
 
     TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
-    FILENAME="export-${TIMESTAMP}"
-    TARGET_DB_FILENAME="${TIMESTAMP}.sqlite"
-    FILENAME_TAR="${FILENAME}.tar.gz"
+    FILENAME="export-$${TIMESTAMP}"
+    TARGET_DB_FILENAME="$${TIMESTAMP}.sqlite"
+    FILENAME_TAR="$${FILENAME}.tar.gz"
 
-    echo "starting homarr backup ${FILENAME}"
+    echo "starting homarr backup $${FILENAME}"
     apt-get update && apt-get install -y sqlite3
-    sqlite3 /mnt/homarr-database/db.sqlite ".backup '/mnt/backup/${TARGET_DB_FILENAME}'"
-    tar czf /mnt/backup/${FILENAME_TAR} -C /mnt/backup ${TARGET_DB_FILENAME}
-    rm /mnt/backup/${TARGET_DB_FILENAME}
+    sqlite3 /mnt/homarr-database/db.sqlite ".backup '/mnt/backup/$${TARGET_DB_FILENAME}'"
+    tar czf /mnt/backup/$${FILENAME_TAR} -C /mnt/backup $${TARGET_DB_FILENAME}
+    rm /mnt/backup/$${TARGET_DB_FILENAME}
     echo "finished homarr backup"
 ---
 apiVersion: batch/v1
@@ -53,7 +53,6 @@ kind: CronJob
 metadata:
   name: homarr-backup
 spec:
-  suspend: true
   schedule: "30 3 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2

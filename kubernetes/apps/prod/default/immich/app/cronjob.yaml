@@ -46,7 +46,6 @@ kind: CronJob
 metadata:
   name: immich-backup
 spec:
-  suspend: true
   schedule: "30 2 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2

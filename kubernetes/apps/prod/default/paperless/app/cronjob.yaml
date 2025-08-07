@@ -37,18 +37,18 @@ data:
     #!/bin/sh
 
     TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
-    FILENAME="export-${TIMESTAMP}"
-    FILENAME_ZIP="${FILENAME}.zip"
+    FILENAME="export-$${TIMESTAMP}"
+    FILENAME_ZIP="$${FILENAME}.zip"
     PL_POD_NAME=$(kubectl get pod -l app.kubernetes.io/name=paperless -n default -o jsonpath='{.items[0].metadata.name}')
 
     echo "Creating paperless-ngx backup"
-    kubectl exec -n default ${PL_POD_NAME} --container app -- \
+    kubectl exec -n default $${PL_POD_NAME} --container app -- \
       document_exporter \
       --no-progress-bar \
       --split-manifest \
       --use-folder-prefix \
       --zip \
-      --zip-name ${FILENAME} \
+      --zip-name $${FILENAME} \
       /data/nfs/export
 
     echo "finished paperless-ngx backup"
@@ -58,7 +58,6 @@ kind: CronJob
 metadata:
   name: paperless-backup
 spec:
-  suspend: true
   schedule: "0 4 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
