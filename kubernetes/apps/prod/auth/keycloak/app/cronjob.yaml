@@ -42,7 +42,7 @@ data:
     PL_POD_NAME=$(kubectl get pod -l app=keycloak -n auth -o jsonpath='{.items[0].metadata.name}')
 
     echo "Creating keycloak export"
-    kubectl exec -n keycloak $${PL_POD_NAME} --container keycloak -- \
+    kubectl exec -n auth $${PL_POD_NAME} --container keycloak -- \
       /opt/keycloak/bin/kc.sh export \
       --dir \
       /mnt/backup/$${TIMESTAMP}
