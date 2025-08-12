@@ -1,0 +1,29 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-memos
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: rook-ceph-block
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: required
+    nodeSelector:
+      kubernetes.io/arch: amd64
+  superuserSecret:
+    name: postgres-memos-superuser
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 512MB
+      timezone: "${TIMEZONE}"
+
+  monitoring:
+    enablePodMonitor: true

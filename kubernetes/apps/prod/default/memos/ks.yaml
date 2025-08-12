@@ -1,0 +1,44 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: memos-db
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/apps/prod/default/memos/db
+  prune: true
+  wait: true
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: flux-system
+    - name: cloudnative-pg-operator
+      namespace: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: memos
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/apps/prod/default/memos/app
+  prune: true
+  wait: true
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: flux-system
+    - name: memos-db
+      namespace: flux-system
