@@ -14,13 +14,6 @@ spec:
       paperless:
         forceRename: paperless
 
-        pod:
-          annotations:
-            k8up.io/backup: "true"
-            k8up.io/backupcommand: sh -c 'document_exporter --zip $PAPERLESS_EXPORT_DIR'
-            k8up.io/file-extension: .zip
-            k8up.io/backupcommand-container: app
-
         containers:
           app:
             image:
