@@ -37,6 +37,14 @@ spec:
               tag: v0.97.2
             env:
               TZ: "${TIMEZONE}"
+              TRILIUM_OAUTH_ISSUER_NAME: Keycloak
+              TRILIUM_OAUTH_ISSUER_BASE_URL: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"
+              TRILIUM_OAUTH_CLIENT_ID: trilium
+              TRILIUM_OAUTH_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: trilium-secret
+                    key: TRILIUM_OAUTH_CLIENT_SECRET
             resources:
               requests:
                 cpu: 100m
