@@ -6,3 +6,4 @@ resources:
   - "./immich/ks.yaml"
   - "./paperless/ks.yaml"
   - "./memos/ks.yaml"
+  - "./nocodb/ks.yaml"
