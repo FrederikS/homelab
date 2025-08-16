@@ -4,4 +4,5 @@ resources:
   - "./secret.sops.yaml"
   - "./cluster.yaml"
   - "./storageclass.yaml"
+  - "./objectstorage.yaml"
   # - "./toolbox.yaml"

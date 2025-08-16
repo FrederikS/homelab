@@ -1,0 +1,32 @@
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStore
+metadata:
+  name: rook-ceph-object-store
+spec:
+  metadataPool:
+    failureDomain: host
+    replicated:
+      size: 2
+  dataPool:
+    failureDomain: host
+    # For production it is recommended to use more chunks, such as 4+2 or 8+4
+    erasureCoded:
+      dataChunks: 2
+      codingChunks: 1
+  preservePoolsOnDelete: true
+  gateway:
+    # sslCertificateRef:
+    port: 80
+    # securePort: 443
+    instances: 1
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: rook-ceph-bucket
+# Change "rook-ceph" provisioner prefix to match the operator namespace if needed
+provisioner: rook-ceph.ceph.rook.io/bucket
+reclaimPolicy: Delete
+parameters:
+  objectStoreName: rook-ceph-object-store
+  objectStoreNamespace: rook-ceph
