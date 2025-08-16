@@ -7,3 +7,4 @@ resources:
   - "./paperless/ks.yaml"
   - "./memos/ks.yaml"
   - "./grist/ks.yaml"
+  - "./affine/ks.yaml"

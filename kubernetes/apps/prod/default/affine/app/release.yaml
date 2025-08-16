@@ -1,0 +1,133 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app affine
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+  maxHistory: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      affine:
+        pod:
+          nodeSelector:
+            kubernetes.io/arch: amd64
+        containers:
+          app:
+            image: &appImage
+              repository: ghcr.io/toeverything/affine
+              tag: 0.24.0
+            env:
+              TZ: "${TIMEZONE:=Etc/UTC}"
+              NODE_ENV: production
+              # Server configuration
+              # AFFINE_SERVER_HTTPS: "true"
+              AFFINE_SERVER_HOST: &host "affine.${SECRET_DOMAIN}"
+              AFFINE_SERVER_EXTERNAL_URL: "https://affine.${SECRET_DOMAIN}"
+              PORT: &port "3010"
+              # AFFINE_INDEXER_ENABLED: true
+              <<: &common-env # Redis configuration
+                REDIS_SERVER_HOST: affine-redis.default.svc.cluster.local
+                # Database configuration
+                DATABASE_URL:
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-affine-app
+                      key: uri
+                # Storage
+                DB_DATA_LOCATION: /data/database
+                UPLOAD_LOCATION: /data/uploads
+                CONFIG_LOCATION: /data/config
+              # Authentication
+              OAUTH_EMAIL_LOGIN: "false"
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+
+        initContainers:
+          migrations:
+            image: *appImage
+            env:
+              <<: *common-env
+            command:
+              - sh
+              - -c
+              - "node ./scripts/self-host-predeploy.js"
+
+      redis:
+        containers:
+          redis:
+            image:
+              repository: ghcr.io/valkey-io/valkey
+              tag: 8.1.3
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+
+      redis:
+        controller: redis
+        ports:
+          http:
+            port: 6379
+
+    ingress:
+      app:
+        className: nginx
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      data:
+        existingClaim: *app
+        advancedMounts:
+          affine:
+            app:
+              - path: /data
+            migrations:
+              - path: /data
+
+      redis:
+        existingClaim: affine-redis
+        advancedMounts:
+          redis:
+            app:
+              - path: /data
