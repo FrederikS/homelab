@@ -84,8 +84,10 @@ spec:
     service:
       consensusnode:
         controller: consensusnode
-        # type: LoadBalancer
         annotations:
+          external-dns.alpha.kubernetes.io/hostname: &host "anysync.${SECRET_DOMAIN}"
+        type: LoadBalancer
+        loadBalancerIP: 192.168.0.202
         ports:
           yamux:
             port: 4530
@@ -94,7 +96,10 @@ spec:
             protocol: UDP
       coordinator:
         controller: coordinator
-        # type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: *host
+        type: LoadBalancer
+        loadBalancerIP: 192.168.0.202
         ports:
           yamux:
             port: 4830
@@ -102,9 +107,11 @@ spec:
             port: 5830
             protocol: UDP
       filenode:
-        controller: filenode
-        # type: LoadBalancer
         annotations:
+          external-dns.alpha.kubernetes.io/hostname: *host
+        controller: filenode
+        type: LoadBalancer
+        loadBalancerIP: 192.168.0.202
         ports:
           yamux:
             port: 4730
@@ -112,9 +119,11 @@ spec:
             port: 5730
             protocol: UDP
       node-1:
-        controller: node-1
-        # type: LoadBalancer
         annotations:
+          external-dns.alpha.kubernetes.io/hostname: *host
+        controller: node-1
+        type: LoadBalancer
+        loadBalancerIP: 192.168.0.202
         ports:
           yamux:
             port: 4430
@@ -126,20 +135,6 @@ spec:
         ports:
           http:
             port: 6379
-
-    ingress:
-      consensusnode:
-        className: nginx
-        hosts:
-          - host: &host "anysync.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: consensusnode
-                  port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:

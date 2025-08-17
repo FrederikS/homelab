@@ -38,9 +38,3 @@ spec:
   dependsOn:
     - name: anytype-sync-db
       namespace: flux-system
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: anytype-sync-secret
-      - kind: Secret
-        name: anytype-sync-bucket
