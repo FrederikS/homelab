@@ -42,5 +42,3 @@ spec:
     txtPrefix: homelab.
     txtOwnerId: homelab-prod
     domainFilters: ["${SECRET_DOMAIN}"]
-    serviceMonitor:
-      enabled: true
