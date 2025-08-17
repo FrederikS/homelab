@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - "./namespace.yaml"
   - "./ingress/ks.yaml"
+  - "./external-dns/ks.yaml"
   - "./cloudflare-tunnel/ks.yaml"
