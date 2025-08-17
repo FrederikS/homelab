@@ -85,7 +85,8 @@ spec:
       consensusnode:
         controller: consensusnode
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: &host "anysync.${SECRET_DOMAIN}"
+          metallb.universe.tf/allow-shared-ip: any-sync
+          external-dns.alpha.kubernetes.io/hostname: "anysync.${SECRET_DOMAIN}"
         type: LoadBalancer
         loadBalancerIP: 192.168.0.202
         ports:
@@ -97,7 +98,8 @@ spec:
       coordinator:
         controller: coordinator
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: *host
+          metallb.universe.tf/allow-shared-ip: any-sync
+          # external-dns.alpha.kubernetes.io/hostname: *host
         type: LoadBalancer
         loadBalancerIP: 192.168.0.202
         ports:
@@ -108,7 +110,8 @@ spec:
             protocol: UDP
       filenode:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: *host
+          metallb.universe.tf/allow-shared-ip: any-sync
+          # external-dns.alpha.kubernetes.io/hostname: *host
         controller: filenode
         type: LoadBalancer
         loadBalancerIP: 192.168.0.202
@@ -120,7 +123,8 @@ spec:
             protocol: UDP
       node-1:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: *host
+          metallb.universe.tf/allow-shared-ip: any-sync
+          # external-dns.alpha.kubernetes.io/hostname: *host
         controller: node-1
         type: LoadBalancer
         loadBalancerIP: 192.168.0.202
