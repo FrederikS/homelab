@@ -34,7 +34,7 @@ spec:
           trilium:
             image:
               repository: ghcr.io/triliumnext/trilium
-              tag: v0.97.2
+              tag: v0.98.0
             env:
               TZ: "${TIMEZONE}"
               TRILIUM_OAUTH_ISSUER_NAME: Keycloak
