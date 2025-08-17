@@ -168,3 +168,6 @@ spec:
           node-1:
             app:
               - path: /storage
+                subPath: storage
+              - path: /anyStorage
+                subPath: anyStorage
