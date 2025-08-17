@@ -8,3 +8,4 @@ resources:
   - "./memos/ks.yaml"
   - "./grist/ks.yaml"
   - "./affine/ks.yaml"
+  - "./anytype"

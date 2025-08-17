@@ -1,0 +1,175 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: any-sync
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsUser: 1000
+    #     runAsGroup: 1000
+    #     runAsNonRoot: true
+    #     fsGroup: 1000
+    #     fsGroupChangePolicy: "OnRootMismatch"
+
+    controllers:
+      consensusnode:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/anyproto/any-sync-consensusnode
+              tag: v0.3.0
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+
+      coordinator:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/anyproto/any-sync-coordinator
+              tag: v0.6.0
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+
+      filenode:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/anyproto/any-sync-filenode
+              tag: v0.9.0
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+
+      node-1:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/anyproto/any-sync-node
+              tag: v0.8.0
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+
+      redis:
+        containers:
+          redis:
+            image:
+              repository: redis/redis-stack-server
+              tag: 7.4.0-v6
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+    service:
+      consensusnode:
+        controller: consensusnode
+        # type: LoadBalancer
+        annotations:
+        ports:
+          yamux:
+            port: 4530
+          quic:
+            port: 5530
+            protocol: UDP
+      coordinator:
+        controller: coordinator
+        # type: LoadBalancer
+        ports:
+          yamux:
+            port: 4830
+          quic:
+            port: 5830
+            protocol: UDP
+      filenode:
+        controller: filenode
+        # type: LoadBalancer
+        annotations:
+        ports:
+          yamux:
+            port: 4730
+          quic:
+            port: 5730
+            protocol: UDP
+      node-1:
+        controller: node-1
+        # type: LoadBalancer
+        annotations:
+        ports:
+          yamux:
+            port: 4430
+          quic:
+            port: 5430
+            protocol: UDP
+      redis:
+        controller: redis
+        ports:
+          http:
+            port: 6379
+
+    ingress:
+      consensusnode:
+        className: nginx
+        hosts:
+          - host: &host "anysync.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: consensusnode
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        name: anytype-sync-config-secret
+        type: secret
+        advancedMounts:
+          consensusnode:
+            app:
+              - path: /etc/any-sync-consensusnode/config.yml
+                subPath: any-sync-consensusnode.yaml
+          coordinator:
+            app:
+              - path: /etc/any-sync-coordinator/config.yml
+                subPath: any-sync-coordinator.yaml
+              - path: /etc/any-sync-coordinator/network.yml
+                subPath: network.yaml
+          filenode:
+            app:
+              - path: /etc/any-sync-filenode/config.yml
+                subPath: any-sync-filenode.yaml
+              - path: /root/.aws/credentials
+                subPath: s3.conf
+                readOnly: true
+          node-1:
+            app:
+              - path: /etc/any-sync-node/config.yml
+                subPath: any-sync-node-1.yaml
+      data:
+        existingClaim: anytype-sync
+        advancedMounts:
+          node-1:
+            app:
+              - path: /storage

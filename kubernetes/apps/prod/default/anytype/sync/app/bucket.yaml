@@ -1,0 +1,7 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: anytype-sync-bucket
+spec:
+  generateBucketName: anytype-sync-bucket
+  storageClassName: rook-ceph-bucket
