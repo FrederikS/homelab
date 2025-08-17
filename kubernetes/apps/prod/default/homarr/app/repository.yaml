@@ -1,9 +1,13 @@
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
   name: homarr
 spec:
-  interval: 10m
-  url: oci://ghcr.io/homarr-labs/charts/homarr
+  interval: 30m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
   ref:
     tag: 5.8.0
+  url: oci://ghcr.io/homarr-labs/charts/homarr
