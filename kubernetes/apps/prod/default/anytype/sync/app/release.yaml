@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/anyproto/any-sync-consensusnode
-              tag: v0.3.0
+              tag: v0.2.4
             resources:
               requests:
                 cpu: 10m
@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/anyproto/any-sync-coordinator
-              tag: v0.6.0
+              tag: v0.5.2
             resources:
               requests:
                 cpu: 10m
@@ -49,7 +49,7 @@ spec:
           app:
             image:
               repository: ghcr.io/anyproto/any-sync-filenode
-              tag: v0.9.0
+              tag: v0.8.13
             resources:
               requests:
                 cpu: 10m
@@ -61,7 +61,7 @@ spec:
           app:
             image:
               repository: ghcr.io/anyproto/any-sync-node
-              tag: v0.8.0
+              tag: v0.7.9
             resources:
               requests:
                 cpu: 10m
@@ -99,7 +99,6 @@ spec:
         controller: coordinator
         annotations:
           metallb.universe.tf/allow-shared-ip: any-sync
-          # external-dns.alpha.kubernetes.io/hostname: *host
         type: LoadBalancer
         loadBalancerIP: 192.168.0.202
         ports:
@@ -111,7 +110,6 @@ spec:
       filenode:
         annotations:
           metallb.universe.tf/allow-shared-ip: any-sync
-          # external-dns.alpha.kubernetes.io/hostname: *host
         controller: filenode
         type: LoadBalancer
         loadBalancerIP: 192.168.0.202
@@ -124,7 +122,6 @@ spec:
       node-1:
         annotations:
           metallb.universe.tf/allow-shared-ip: any-sync
-          # external-dns.alpha.kubernetes.io/hostname: *host
         controller: node-1
         type: LoadBalancer
         loadBalancerIP: 192.168.0.202
