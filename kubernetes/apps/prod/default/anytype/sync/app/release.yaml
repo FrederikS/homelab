@@ -170,5 +170,5 @@ spec:
             app:
               - path: /storage
                 subPath: storage
-              # - path: /anyStorage
-              #   subPath: anyStorage
+              - path: /anyStorage
+                subPath: anyStorage
