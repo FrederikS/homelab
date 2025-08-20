@@ -41,7 +41,7 @@ kind: Kustomization
 metadata:
   name: anytype-sync
   namespace: flux-system
-  annotations:
+  labels:
     substitution.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: default
