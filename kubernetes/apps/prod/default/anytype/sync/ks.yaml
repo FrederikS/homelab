@@ -24,6 +24,8 @@ kind: Kustomization
 metadata:
   name: anytype-sync
   namespace: flux-system
+  annotations:
+    substitution.flux.home.arpa/disabled: "true"
 spec:
   targetNamespace: default
   interval: 1h
@@ -38,3 +40,22 @@ spec:
   dependsOn:
     - name: anytype-sync-db
       namespace: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-gpg
+  dependsOn:
+    - name: config
+      namespace: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-settings
+      - kind: Secret
+        name: cluster-secrets
+      - kind: Secret
+        name: anytype-sync-secret
+        namespace: default
+      - kind: Secret
+        name: anytype-sync-bucket
+        namespace: default
