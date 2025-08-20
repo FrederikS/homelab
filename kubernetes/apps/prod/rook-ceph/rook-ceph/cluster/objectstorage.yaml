@@ -28,24 +28,3 @@ reclaimPolicy: Delete
 parameters:
   objectStoreName: rook-ceph-object-store
   objectStoreNamespace: rook-ceph
----
-apiVersion: ceph.rook.io/v1
-kind: CephObjectStoreUser
-metadata:
-  name: anytype-sync
-spec:
-  store: rook-ceph-object-store
-  displayName: anytype-sync
-  quotas:
-    maxBuckets: 10
-    maxSize: 20G
-    maxObjects: 10000
-  capabilities:
-    bucket: "*"
-  keys:
-    - accessKeyRef:
-        name: rook-ceph-object-store-any-sync-user
-        key: AWS_ACCESS_KEY_ID
-      secretKeyRef:
-        name: rook-ceph-object-store-any-sync-user
-        key: AWS_SECRET_ACCESS_KEY
