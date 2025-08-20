@@ -2,6 +2,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: anytype-sync-config
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/apps/prod/default/anytype/sync/config
+  prune: true
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: anytype-sync-db
   namespace: flux-system
 spec:
@@ -38,6 +55,8 @@ spec:
   prune: true
   wait: true
   dependsOn:
+    - name: anytype-sync-config
+      namespace: flux-system
     - name: anytype-sync-db
       namespace: flux-system
   decryption:
