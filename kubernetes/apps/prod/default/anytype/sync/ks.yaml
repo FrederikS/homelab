@@ -38,3 +38,6 @@ spec:
   dependsOn:
     - name: anytype-sync-db
       namespace: flux-system
+  postBuild:
+    substitute:
+      ANYSYNC_LB_IP: 192.168.0.202
