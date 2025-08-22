@@ -233,7 +233,46 @@ spec:
   # These labels can be passed as LabelSelector to Prometheus
   #   monitoring:
   #   crashcollector:
-  resources: {}
+  placement:
+    all:
+      tolerations:
+        - key: "storage"
+          operator: "Equal"
+          value: "ceph"
+          effect: "NoSchedule"
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                    - storage
+  resources:
+    osd:
+      requests:
+        memory: 2Gi
+        cpu: 500m
+      limits:
+        memory: 2Gi
+    mon:
+      requests:
+        memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 512Mi
+    mgr:
+      requests:
+        memory: 1Gi
+        cpu: 200m
+      limits:
+        memory: 1Gi
+    crashcollector:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 128Mi
   #The requests and limits set here, allow the mgr pod to use half of one CPU core and 1 gigabyte of memory
   #   mgr:
   #     limits:
@@ -267,7 +306,8 @@ spec:
     useAllNodes: false
     useAllDevices: false
     #deviceFilter:
-    config: {}
+    config:
+      osdMemoryTarget: 2147483648
       # crushRoot: "custom-root" # specify a non-default root label for the CRUSH map
       # metadataDevice: "md0" # specify a non-rotational storage so ceph-volume will use it as block db device of bluestore.
       # databaseSizeMB: "1024" # uncomment if the disks are smaller than 100 GB
@@ -335,7 +375,8 @@ spec:
       enabled: false
 
     # cephfs driver specific settings.
-    cephfs: {}
+    cephfs:
+      {}
       # Set CephFS Kernel mount options to use https://docs.ceph.com/en/latest/man/8/mount.ceph/#options.
       # kernelMountOptions: ""
       # Set CephFS Fuse mount options to use https://docs.ceph.com/en/latest/man/8/ceph-fuse/#options.
@@ -344,6 +385,11 @@ spec:
     global:
       osd_pool_default_size: "1"
       mon_warn_on_pool_no_redundancy: "false"
+    osd:
+      osd_max_backfills: "1"
+      osd_recovery_max_active: "1"
+      osd_recovery_sleep: "0.1"
+      osd_scrub_sleep: "0.1"
 
   # healthChecks
   # Valid values for daemons are 'mon', 'osd', 'status'

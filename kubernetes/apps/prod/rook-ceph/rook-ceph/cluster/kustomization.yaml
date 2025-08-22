@@ -6,3 +6,31 @@ resources:
   - "./storageclass.yaml"
   - "./objectstorage.yaml"
   # - "./toolbox.yaml"
+patches:
+  - target:
+      kind: Node
+      name: tc01
+    patch: |-
+      - op: add
+        path: /metadata/labels/role
+        value: storage
+      - op: add
+        path: /spec/taints/-
+        value:
+          key: storage
+          value: ceph
+          effect: NoSchedule
+
+  - target:
+      kind: Node
+      name: tc02
+    patch: |-
+      - op: add
+        path: /metadata/labels/role
+        value: storage
+      - op: add
+        path: /spec/taints/-
+        value:
+          key: storage
+          value: ceph
+          effect: NoSchedule
