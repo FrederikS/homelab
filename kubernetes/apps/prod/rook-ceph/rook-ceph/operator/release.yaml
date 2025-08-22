@@ -17,7 +17,7 @@ spec:
       retries: 3
   values:
     nodeSelector:
-      kubernetes.io/hostname: tc02
+      kubernetes.io/arch: amd64
     csi:
       pluginTolerations:
         - key: "arm"
