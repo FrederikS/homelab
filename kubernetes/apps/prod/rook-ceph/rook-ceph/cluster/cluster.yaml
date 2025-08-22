@@ -240,14 +240,6 @@ spec:
           operator: "Equal"
           value: "ceph"
           effect: "NoSchedule"
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: role
-                  operator: In
-                  values:
-                    - storage
   resources:
     osd:
       requests:
