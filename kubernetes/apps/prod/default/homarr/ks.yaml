@@ -19,4 +19,4 @@ spec:
     - name: rook-ceph-cluster
       namespace: flux-system
   components:
-    - "../../../../components/nfs"
+    - "../../../../../components/nfs"
