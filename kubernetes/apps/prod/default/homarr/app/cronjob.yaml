@@ -78,9 +78,8 @@ spec:
               volumeMounts:
                 - name: homarr-database
                   mountPath: /mnt/homarr-database
-                - name: app-backup-nfs
+                - name: backup-nfs
                   mountPath: /mnt/backup
-                  subPath: homarr
                 - name: script-volume
                   mountPath: /scripts/backup.sh
                   subPath: backup.sh
@@ -90,9 +89,9 @@ spec:
               persistentVolumeClaim:
                 claimName: homarr-database
                 readOnly: true
-            - name: app-backup-nfs
+            - name: backup-nfs
               persistentVolumeClaim:
-                claimName: app-backup-nfs
+                claimName: backup-nfs-${APP}
             - name: script-volume
               configMap:
                 name: homarr-backup-job

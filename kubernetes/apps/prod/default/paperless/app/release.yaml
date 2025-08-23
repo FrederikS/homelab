@@ -150,12 +150,11 @@ spec:
             app:
               - path: /data/local
       export:
-        existingClaim: app-backup-nfs
+        existingClaim: backup-nfs-${APP}
         advancedMounts:
           paperless:
             app:
               - path: /data/nfs/export
-                subPath: *app
 
     ingress:
       main:

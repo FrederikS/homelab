@@ -44,7 +44,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: keycloak
+  name: &appname keycloak
   namespace: flux-system
 spec:
   targetNamespace: auth
@@ -63,4 +63,7 @@ spec:
     - name: keycloak-db
       namespace: flux-system
   components:
-    - "../../../../../components/nfs"
+    - "../../../../../components/app-backup-nfs"
+  postBuild:
+    substitute:
+      APP: *appname
