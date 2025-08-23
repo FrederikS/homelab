@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: paperless
+  name: &app paperless
 spec:
   interval: 30m
   chartRef:
@@ -12,7 +13,7 @@ spec:
   values:
     controllers:
       paperless:
-        forceRename: paperless
+        forceRename: *app
 
         containers:
           app:
@@ -129,9 +130,9 @@ spec:
 
     service:
       app:
-        forceRename: paperless
+        forceRename: *app
         primary: true
-        controller: paperless
+        controller: *app
         ports:
           http:
             port: 8000
@@ -152,6 +153,7 @@ spec:
         existingClaim: paperless-backup-nfs
         globalMounts:
           - path: /data/nfs/export
+            subPath: *app
 
     ingress:
       main:

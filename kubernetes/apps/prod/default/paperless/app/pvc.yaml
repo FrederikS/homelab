@@ -11,28 +11,13 @@ spec:
   storageClassName: rook-ceph-block
 ---
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: paperless-backup-nfs
-spec:
-  storageClassName: paperless-backup-nfs
-  capacity:
-    storage: 20Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  nfs:
-    path: /mnt/nfs/backup/apps/paperless
-    server: ${BACKUP_NFS_IP}
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: paperless-backup-nfs
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: paperless-backup-nfs
+  storageClassName: app-backup-nfs
   resources:
     requests:
-      storage: 20Gi
+      storage: 1Mi
