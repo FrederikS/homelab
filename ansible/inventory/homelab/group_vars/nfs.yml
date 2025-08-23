@@ -1,11 +1,13 @@
 nfs_mount_point: /mnt/nfs
 export_directories:
+  - backup/apps
   - backup/apps/paperless
   - backup/apps/keycloak
   - backup/apps/homarr
   - backup/apps/immich
 
 nfs_exports:
+  - "/mnt/nfs/backup/apps *(rw,sync,no_subtree_check,no_root_squash)"
   - "/mnt/nfs/backup/apps/paperless *(rw,sync,no_subtree_check,no_root_squash)"
   - "/mnt/nfs/backup/apps/keycloak *(rw,sync,no_subtree_check,no_root_squash)"
   - "/mnt/nfs/backup/apps/homarr *(rw,sync,no_subtree_check,no_root_squash)"

@@ -80,6 +80,7 @@ spec:
                   mountPath: /mnt/homarr-database
                 - name: homarr-backup-nfs
                   mountPath: /mnt/backup
+                  subPath: homarr
                 - name: script-volume
                   mountPath: /scripts/backup.sh
                   subPath: backup.sh
