@@ -46,7 +46,8 @@ spec:
           - volumeMounts:
               - name: backup-nfs
                 mountPath: /mnt/backup
+                subPath: keycloak
         volumes:
           - name: backup-nfs
             persistentVolumeClaim:
-              claimName: keycloak-backup-nfs
+              claimName: app-backup-nfs

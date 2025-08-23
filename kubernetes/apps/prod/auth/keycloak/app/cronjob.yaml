@@ -83,6 +83,7 @@ spec:
                   subPath: backup.sh
                 - name: backup-nfs
                   mountPath: /mnt/backup
+                  subPath: keycloak
           restartPolicy: OnFailure
           volumes:
             - name: script-volume
@@ -94,4 +95,4 @@ spec:
                 defaultMode: 0555 # read and execute
             - name: backup-nfs
               persistentVolumeClaim:
-                claimName: keycloak-backup-nfs
+                claimName: app-backup-nfs
