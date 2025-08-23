@@ -152,6 +152,7 @@ spec:
       export:
         existingClaim: app-backup-nfs
         advancedMounts:
+          paperless:
             app:
               - path: /data/nfs/export
                 subPath: *app
