@@ -11,7 +11,7 @@ data:
     FILENAME_TAR="$${FILENAME}.tar.gz"
 
     echo "starting grist backup $${FILENAME}"
-    tar czf /mnt/backup/$${FILENAME_TAR} -C /mnt/grist/persist /mnt/grist/persist
+    tar czf /mnt/backup/$${FILENAME_TAR} -C /mnt/grist .
     echo "finished grist backup"
 ---
 apiVersion: batch/v1
