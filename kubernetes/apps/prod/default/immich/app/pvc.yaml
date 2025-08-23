@@ -21,30 +21,3 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: rook-ceph-block
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: immich-backup-nfs
-spec:
-  storageClassName: immich-backup-nfs
-  capacity:
-    storage: 200Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  nfs:
-    path: /mnt/nfs/backup/apps/immich
-    server: ${BACKUP_NFS_IP}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: immich-backup-nfs
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: immich-backup-nfs
-  resources:
-    requests:
-      storage: 200Gi

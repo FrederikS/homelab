@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -21,10 +22,11 @@ spec:
     - name: cloudnative-pg-operator
       namespace: flux-system
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: immich
+  name: &appname immich
   namespace: flux-system
 spec:
   targetNamespace: default
@@ -42,3 +44,8 @@ spec:
       namespace: flux-system
     - name: immich-db
       namespace: flux-system
+  components:
+    - "../../../../../components/app-backup-nfs"
+  postBuild:
+    substitute:
+      APP: *appname
