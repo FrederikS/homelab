@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grist-backup-job
+data:
+  backup.sh: |
+    #!/bin/sh
+
+    TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
+    FILENAME="export-$${TIMESTAMP}"
+    FILENAME_TAR="$${FILENAME}.tar.gz"
+
+    echo "starting grist backup $${FILENAME}"
+    tar czf /mnt/backup/$${FILENAME_TAR} -C /mnt/grist/persist /mnt/grist/persist
+    echo "finished grist backup"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: grist-backup
+spec:
+  schedule: "45 3 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 60
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: grist
+                  topologyKey: kubernetes.io/hostname
+          containers:
+            - name: backup
+              image: debian:bookworm-slim
+              command: ["sh", "-c", "/scripts/backup.sh"]
+              volumeMounts:
+                - name: grist
+                  mountPath: /mnt/grist
+                - name: backup-nfs
+                  mountPath: /mnt/backup
+                - name: script-volume
+                  mountPath: /scripts/backup.sh
+                  subPath: backup.sh
+          restartPolicy: OnFailure
+          volumes:
+            - name: grist
+              persistentVolumeClaim:
+                claimName: grist
+                readOnly: true
+            - name: backup-nfs
+              persistentVolumeClaim:
+                claimName: backup-nfs-${APP}
+            - name: script-volume
+              configMap:
+                name: grist-backup-job
+                items:
+                  - key: backup.sh
+                    path: backup.sh
+                defaultMode: 0555 # read and execute
