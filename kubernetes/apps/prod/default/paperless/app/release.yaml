@@ -151,9 +151,10 @@ spec:
               - path: /data/local
       export:
         existingClaim: paperless-backup-nfs
-        globalMounts:
-          - path: /data/nfs/export
-            subPath: *app
+        advancedMounts:
+            app:
+              - path: /data/nfs/export
+                subPath: *app
 
     ingress:
       main:
