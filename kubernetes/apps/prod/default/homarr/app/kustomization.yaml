@@ -4,5 +4,4 @@ resources:
   - "./secret.sops.yaml"
   - "./repository.yaml"
   - "./release.yaml"
-  - "./pvc.yaml"
   - "./cronjob.yaml"

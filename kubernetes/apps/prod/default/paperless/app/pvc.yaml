@@ -9,15 +9,3 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: rook-ceph-block
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-backup-nfs
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: app-backup-nfs
-  resources:
-    requests:
-      storage: 1Mi

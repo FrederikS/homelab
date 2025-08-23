@@ -150,7 +150,7 @@ spec:
             app:
               - path: /data/local
       export:
-        existingClaim: paperless-backup-nfs
+        existingClaim: app-backup-nfs
         advancedMounts:
             app:
               - path: /data/nfs/export
