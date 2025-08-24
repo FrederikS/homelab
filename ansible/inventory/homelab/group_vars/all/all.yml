@@ -41,10 +41,10 @@ kube_vip_arp: true
 kube_vip_bgp: false
 
 # bgp parameters for kube-vip
-kube_vip_bgp_routerid: "127.0.0.1"  # Defines the router ID for the BGP server
-kube_vip_bgp_as: "64513"  # Defines the AS for the BGP server
-kube_vip_bgp_peeraddress: "192.168.30.1"  # Defines the address for the BGP peer
-kube_vip_bgp_peeras: "64512"  # Defines the AS for the BGP peer
+kube_vip_bgp_routerid: "127.0.0.1" # Defines the router ID for the BGP server
+kube_vip_bgp_as: "64513" # Defines the AS for the BGP server
+kube_vip_bgp_peeraddress: "192.168.30.1" # Defines the address for the BGP peer
+kube_vip_bgp_peeras: "64512" # Defines the AS for the BGP peer
 
 # apiserver_endpoint is virtual ip-address which will be configured on each master
 apiserver_endpoint: 192.168.0.200
@@ -187,15 +187,4 @@ flux_enabled: true
 flux_version: 2.5.1
 flux_github_owner: FrederikS
 flux_github_repository: homelab
-flux_github_token: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          35316630643764366331366165666334636431633161333732666366626566653931343134613437
-          6363343961663639316633316334633263643965373262370a623462306331326661636137653830
-          33366539666437316562313166616538633431346534666438613933363339376439353631663163
-          3133356264636561360a303734653631346535396262356639303565363664633564646235646132
-          36346435326464663861626538653935663061313862393062323932346537373039366331343132
-          62376662636462303032613839626565346530613639653835396539313139396138623463373735
-          32326431646134613464356562643739366131663130343231363538343430643165383938343337
-          32663331336563396239326335663765323731656638636132633034393663303262613238313264
-          6434
 flux_path: kubernetes/clusters/prod

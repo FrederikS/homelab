@@ -27,7 +27,7 @@ spec:
             pathType: ImplementationSpecific
   tls:
     - hosts:
-      - "iam.${SECRET_DOMAIN}"
+        - "iam.${SECRET_DOMAIN}"
 status:
   loadBalancer:
     ingress:

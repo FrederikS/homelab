@@ -1,4 +1,12 @@
 creation_rules:
-  - path_regex: .*.yaml
+  - path_regex: kubernetes/.*\.sops\.yaml
     encrypted_regex: ^(data|stringData)$
     pgp: E9F6BEBC269B2E8B8AE07E3784A740B5B323BDD3
+  - path_regex: ansible/.*\.sops\.ya?ml
+    pgp: E9F6BEBC269B2E8B8AE07E3784A740B5B323BDD3
+  # https://github.com/ansible-collections/community.sops/issues/153
+  - path_regex: /dev/stdin
+    pgp: E9F6BEBC269B2E8B8AE07E3784A740B5B323BDD3
+stores:
+  yaml:
+    indent: 2

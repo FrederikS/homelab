@@ -190,9 +190,9 @@ spec:
   #                 operator: In
   #                 values:
   #                   - storage-node
-      # podAffinity:
-      # podAntiAffinity:
-      # topologySpreadConstraints:
+  # podAffinity:
+  # podAntiAffinity:
+  # topologySpreadConstraints:
   # The above placement information can also be specified for mon, osd, and mgr components
   #   mon:
   # Monitor deployments may contain an anti-affinity rule for avoiding monitor
@@ -330,7 +330,8 @@ spec:
           - name: "/dev/sdb"
           # - name: "/dev/disk/by-id/nvme-SAMSUNG_MZVLB256HAHQ-000L7_S41GNX2M197040-part3"
           # - name: "/dev/md0" # devices can be specified using full udev paths
-        config: {} # configuration can be specified at the node level which overrides the cluster level config
+        config:
+          {} # configuration can be specified at the node level which overrides the cluster level config
           # osdsPerDevice: "2" # this value can be overridden at the node or device level
       # - name: "172.17.4.301"
       #   deviceFilter: "^sd."
