@@ -48,13 +48,11 @@
                 pre-commit
                 nodejs
                 prettier
-                shellcheck
               ]
               ++ (with pkgs.python311Packages; [
                 pip
                 netaddr
                 ipython
-                typos
               ]);
             # shellHook = ''
             #   . <(flux completion zsh)

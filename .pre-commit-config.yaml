@@ -147,21 +147,3 @@ repos:
         name: Lint yaml files
         args: [-c=.yamllint.yaml]
         stages: [pre-commit]
-  ### NOTE: ".typos.toml" may be required to have _already been committed_
-  ### in order for typos pre-commit hook to read it.
-  ### In this case, comment out this block until ".typos.toml" has been committed successfully
-  # renovate: datasource=github-tags depName=crate-ci/typos
-  # - repo: https://github.com/crate-ci/typos
-  #   rev: "v1.35.5"
-  #   hooks:
-  #     - id: typos
-  #       name: Spellcheck with Typos
-  #       args: ["--config", ".typos.toml"]
-  #       exclude: |
-  #         (?x)^(
-  #           ^.*(typos\.toml)$ |
-  #           ^.*(\.typos\.toml)$ |
-  #           ^.*(\.sops\.yaml)$ |
-  #           ^.*(\.git.*)$
-  #         )$
-  #       stages: [pre-commit]
