@@ -8,12 +8,12 @@ data:
     #!/bin/bash
     TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
     FILENAME_TAR="export-$${TIMESTAMP}.tar.gz"
-    TARGET_DB_DUMP_FILENAME="memos_$${{TIMESTAMP}}.dump"
+    TARGET_DB_DUMP_FILENAME="memos_$${TIMESTAMP}.dump"
 
     echo "starting memos backup $${FILENAME_TAR}"
-    pg_dump $${{POSTGRES_URL}} -Fc > $${{TARGET_DB_DUMP_FILENAME}}
-    tar czf /mnt/backup/$${FILENAME_TAR} $${{TARGET_DB_DUMP_FILENAME}}
-    rm $${{TARGET_DB_DUMP_FILENAME}}
+    pg_dump $${POSTGRES_URL} -Fc > $${TARGET_DB_DUMP_FILENAME}
+    tar czf /mnt/backup/$${FILENAME_TAR} $${TARGET_DB_DUMP_FILENAME}
+    rm $${TARGET_DB_DUMP_FILENAME}
     echo "finished memos backup"
 ---
 apiVersion: batch/v1
@@ -31,7 +31,6 @@ spec:
       ttlSecondsAfterFinished: 86400
       template:
         spec:
-          serviceAccount: memos-backup-job
           containers:
             - name: backup
               image: postgres:17
