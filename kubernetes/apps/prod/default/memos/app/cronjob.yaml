@@ -11,7 +11,7 @@ data:
     TARGET_DB_DUMP_FILENAME="memos_$${{TIMESTAMP}}.dump"
 
     echo "starting memos backup $${FILENAME_TAR}"
-    pg_dump ${{POSTGRES_URL}} -Fc > $${{TARGET_DB_DUMP_FILENAME}}
+    pg_dump $${{POSTGRES_URL}} -Fc > $${{TARGET_DB_DUMP_FILENAME}}
     tar czf /mnt/backup/$${FILENAME_TAR} $${{TARGET_DB_DUMP_FILENAME}}
     rm $${{TARGET_DB_DUMP_FILENAME}}
     echo "finished memos backup"
