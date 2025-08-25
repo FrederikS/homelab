@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memos-backup-job
+data:
+  backup.sh: |
+    #!/bin/bash
+    TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
+    FILENAME_TAR="export-$${TIMESTAMP}.tar.gz"
+    TARGET_DB_DUMP_FILENAME="memos_$${{TIMESTAMP}}.dump"
+
+    echo "starting memos backup $${FILENAME_TAR}"
+    pg_dump ${{POSTGRES_URL}} -Fc > $${{TARGET_DB_DUMP_FILENAME}}
+    tar czf /mnt/backup/$${FILENAME_TAR} $${{TARGET_DB_DUMP_FILENAME}}
+    rm $${{TARGET_DB_DUMP_FILENAME}}
+    echo "finished memos backup"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memos-backup
+spec:
+  schedule: "15 4 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 60
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          serviceAccount: memos-backup-job
+          containers:
+            - name: backup
+              image: postgres:17
+              command: ["sh", "-c", "/scripts/backup.sh"]
+              volumeMounts:
+                - name: backup-nfs
+                  mountPath: /mnt/backup
+                - name: script-volume
+                  mountPath: /scripts/backup.sh
+                  subPath: backup.sh
+              env:
+                - name: POSTGRES_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-memos-app
+                      key: uri
+          restartPolicy: OnFailure
+          volumes:
+            - name: backup-nfs
+              persistentVolumeClaim:
+                claimName: backup-nfs-${APP}
+            - name: script-volume
+              configMap:
+                name: memos-backup-job
+                items:
+                  - key: backup.sh
+                    path: backup.sh
+                defaultMode: 0555 # read and execute
