@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: k8s-gateway
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: k8s-gateway
+  interval: 15m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: k8s-gateway
+
+    image:
+      registry: ghcr.io
+      repository: k8s-gateway/k8s_gateway
+      tag: 1.5.2
+      pullPolicy: IfNotPresent
+
+    domain: ${SECRET_DOMAIN}
+    ttl: 1
+    service:
+      type: LoadBalancer
+      loadBalancerIP: ${LB_IP}
+      port: 53
+      externalTrafficPolicy: Cluster # don't change!
+
+    watchedResources: ["Ingress", "Service"]
