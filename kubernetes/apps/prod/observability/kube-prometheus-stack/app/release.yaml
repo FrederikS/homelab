@@ -100,7 +100,7 @@ spec:
         selector:
           k8s-app: kube-apiserver
     kubeControllerManager:
-      enabled: true
+      enabled: false
       endpoints: &cm
         - 192.168.0.104
         - 192.168.0.105
@@ -120,6 +120,7 @@ spec:
     kubeProxy:
       enabled: false
     kubeScheduler:
+      enabled: false
       endpoints: *cm
       serviceMonitor: *sm
     kubeStateMetrics:
