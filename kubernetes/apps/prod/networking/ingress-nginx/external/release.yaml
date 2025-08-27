@@ -45,3 +45,10 @@ spec:
         # allow-snippet-annotations: true
         # annotations-risk-level: Critical
         # log-format-upstream: '{"host:": "$http_host", "x-forwarded-proto": "$http_x_forwarded_proto", "X-Forwarded-Port": "$http_x_forwarded_port", "x-forwarded-host": "$http_x_forwarded_host", "x_forwarded_for": "$proxy_add_x_forwarded_for", "status": $status, "vhost": "$host", "method": "$request_method", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent" }'
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          namespace: networking
+          namespaceSelector:
+            any: true
