@@ -23,11 +23,10 @@ spec:
   values:
     ## ref: https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
     # fullnameOverride: kps
+
     crds:
-      enabled: true
-      upgradeJob:
-        enabled: true
-        forceConflicts: true
+      enabled: false
+
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
