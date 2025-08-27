@@ -19,5 +19,5 @@ spec:
       secretName: cloudflare-tunnel-credentials
       ingress:
         - hostname: "*.${SECRET_DOMAIN}"
-          service: http://ingress-nginx-controller.networking.svc.cluster.local
+          service: http://nginx-external-controller.networking.svc.cluster.local
     replicaCount: 3

@@ -57,7 +57,7 @@ spec:
 
     ingress:
       app:
-        className: nginx
+        className: external
         hosts:
           - host: &host "grist.${SECRET_DOMAIN}"
             paths:

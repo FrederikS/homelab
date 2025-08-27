@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: ingress-nginx
+  name: ingress-nginx-external
   namespace: flux-system
 spec:
   targetNamespace: networking
@@ -12,9 +13,12 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/apps/prod/networking/ingress/nginx
+  path: ./kubernetes/apps/prod/networking/ingress-nginx/external
   prune: true
   wait: true
   dependsOn:
     - name: cert-manager-certificates
       namespace: flux-system
+  postBuild:
+    substitute:
+      LB_IP: 192.168.0.201

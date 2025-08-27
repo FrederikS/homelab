@@ -35,7 +35,7 @@ spec:
 
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: external
       hosts:
         - host: "dash.${SECRET_DOMAIN}"
           paths:

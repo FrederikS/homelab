@@ -1,7 +1,9 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: ingress-nginx
+  name: nginx-external
 spec:
   interval: 30m
   chart:
@@ -11,22 +13,34 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: ingress-nginx
+        namespace: flux-system
       interval: 12h
   values:
     controller:
       service:
         type: LoadBalancer
+        loadBalancerIP: ${LB_IP}
       # logLevel: debug
       # nginxDebug: true
+      ingressClassResource:
+        name: external
+        default: false
+        controllerValue: k8s.io/external
+      admissionWebhooks:
+        objectSelector:
+          matchExpressions:
+            - key: ingress-class
+              operator: In
+              values: [external]
       extraArgs:
         default-ssl-certificate: "cert-manager/${SECRET_DOMAIN/./-}-prod-tls"
       config:
         use-forwarded-headers: true
         proxy-buffer-size: "128k"
         proxy-busy-buffers-size: "256k"
+        # taken from https://github.com/ai-robots-txt/ai.robots.txt
+        block-user-agents: "AdsBot-Google,Amazonbot,anthropic-ai,Applebot-Extended,Bytespider,CCBot,ChatGPT-User,ClaudeBot,Claude-Web,cohere-ai,Diffbot,FacebookBot,FriendlyCrawler,Google-Extended,GoogleOther,GPTBot,img2dataset,omgili,omgilibot,peer39_crawler,peer39_crawler/1.0,PerplexityBot,YouBot,"
         # error-log-level: "debug"
         # allow-snippet-annotations: true
         # annotations-risk-level: Critical
         # log-format-upstream: '{"host:": "$http_host", "x-forwarded-proto": "$http_x_forwarded_proto", "X-Forwarded-Port": "$http_x_forwarded_port", "x-forwarded-host": "$http_x_forwarded_host", "x_forwarded_for": "$proxy_add_x_forwarded_for", "status": $status, "vhost": "$host", "method": "$request_method", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent" }'
-    admissionWebhooks:
-      enabled: false

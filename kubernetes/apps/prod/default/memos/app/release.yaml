@@ -55,7 +55,7 @@ spec:
 
     ingress:
       app:
-        className: nginx
+        className: external
         hosts:
           - host: &host "memos.${SECRET_DOMAIN}"
             paths:

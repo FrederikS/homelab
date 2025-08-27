@@ -159,7 +159,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: nginx
+        className: external
         annotations:
           nginx.ingress.kubernetes.io/proxy-body-size: 10m
         hosts:
