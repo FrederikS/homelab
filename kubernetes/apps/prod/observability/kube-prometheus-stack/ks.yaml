@@ -13,6 +13,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/apps/prod/monitoring/kube-prometheus-stack/app
+  path: ./kubernetes/apps/prod/observability/kube-prometheus-stack/app
   prune: true
   wait: true
