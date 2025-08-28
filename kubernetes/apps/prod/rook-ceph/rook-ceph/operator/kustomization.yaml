@@ -1,5 +1,24 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - "./repository.yaml"
   - "./release.yaml"
+patchesStrategicMerge:
+  - | # Patch for RBD CSI Metrics Service
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: rook-ceph-rbd-csi-ceph-com-liveness
+      namespace: rook-ceph
+      labels:
+        app: csi-metrics
+
+  - | # Patch for CephFS CSI Metrics Service
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: rook-ceph-cephfs-csi-ceph-com-liveness
+      namespace: rook-ceph
+      labels:
+        app: csi-metrics
