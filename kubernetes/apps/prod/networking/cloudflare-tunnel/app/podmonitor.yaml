@@ -11,4 +11,4 @@ spec:
     matchLabels:
       app.kubernetes.io/name: cloudflare-tunnel
   podMetricsEndpoints:
-    - port: "2000"
+    - portNumber: 2000
