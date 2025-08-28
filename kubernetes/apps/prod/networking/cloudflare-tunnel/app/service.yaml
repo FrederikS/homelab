@@ -8,5 +8,7 @@ spec:
   selector:
     app.kubernetes.io/name: cloudflare-tunnel
   ports:
-    - port: http
+    - name: http
+      port: 2000
+      protocol: TCP
       targetPort: 2000
