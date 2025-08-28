@@ -22,21 +22,3 @@ spec:
         - hostname: "*.${SECRET_DOMAIN}"
           service: http://nginx-external-controller.networking.svc.cluster.local
     replicaCount: 3
-  postRenderers:
-    - kustomize:
-        patches:
-          # to make podmonitor work
-          - patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: cloudflare-tunnel
-                namespace: networking
-              spec:
-                template:
-                  spec:
-                    containers:
-                      - name: cloudflare-tunnel
-                        ports:
-                          - name: metrics
-                            containerPort: 2000

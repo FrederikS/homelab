@@ -5,4 +5,5 @@ resources:
   - "./secret.sops.yaml"
   - "./repository.yaml"
   - "./release.yaml"
-  - "./podmonitor.yaml"
+  - "./service.yaml"
+  - "./service-monitor.yaml"

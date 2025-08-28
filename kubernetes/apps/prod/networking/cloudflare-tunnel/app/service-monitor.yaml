@@ -1,6 +1,5 @@
----
 apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
+kind: ServiceMonitor
 metadata:
   name: cloudflare-tunnel
 spec:
@@ -10,5 +9,8 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: cloudflare-tunnel
-  podMetricsEndpoints:
-    - port: metrics
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 1m
+      scrapeTimeout: 10s
