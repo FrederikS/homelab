@@ -22,30 +22,30 @@ spec:
     monitoring:
       enabled: true
     csi:
-      enableLiveness: true
-      serviceMonitor:
-        enabled: true
+      #   enableLiveness: true
+      #   serviceMonitor:
+      #     enabled: true
       pluginTolerations:
         - key: "arm"
           operator: "Exists"
         - key: "node-role.kubernetes.io/master"
           operator: "Exists"
-  postRenderers:
-    - kustomize:
-        patches:
-          - patch: |-
-              apiVersion: v1
-              kind: Service
-              metadata:
-                name: rook-ceph-rbd-csi-ceph-com-liveness
-                namespace: rook-ceph
-                labels:
-                  app: csi-metrics
-          - patch: |-
-              apiVersion: v1
-              kind: Service
-              metadata:
-                name: rook-ceph-cephfs-csi-ceph-com-liveness
-                namespace: rook-ceph
-                labels:
-                  app: csi-metrics
+  # postRenderers:
+  #   - kustomize:
+  #       patches:
+  #         - patch: |-
+  #             apiVersion: v1
+  #             kind: Service
+  #             metadata:
+  #               name: rook-ceph-rbd-csi-ceph-com-liveness
+  #               namespace: rook-ceph
+  #               labels:
+  #                 app: csi-metrics
+  #         - patch: |-
+  #             apiVersion: v1
+  #             kind: Service
+  #             metadata:
+  #               name: rook-ceph-cephfs-csi-ceph-com-liveness
+  #               namespace: rook-ceph
+  #               labels:
+  #                 app: csi-metrics
