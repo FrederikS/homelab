@@ -1,0 +1,14 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: cloudflare-tunnel
+spec:
+  namespaceSelector:
+    matchNames:
+      - networking
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cloudflare-tunnel
+  podMetricsEndpoints:
+    - port: 2000

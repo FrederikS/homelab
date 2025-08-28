@@ -25,6 +25,18 @@ spec:
         - 1.1.1.1
         - 9.9.9.9
 
+    prometheus:
+      enabled: true
+      servicemonitor:
+        enabled: true
+        prometheusInstance: observability
+        targetPort: 9402
+        path: /metrics
+        interval: 60s
+        scrapeTimeout: 10s
+        labels: {}
+        honorLabels: false
+
     resources:
       requests:
         cpu: 35m

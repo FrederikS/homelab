@@ -2,7 +2,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: rook-ceph-exporter
-  namespace: rook-ceph # namespace:cluster
 spec:
   namespaceSelector:
     matchNames:
