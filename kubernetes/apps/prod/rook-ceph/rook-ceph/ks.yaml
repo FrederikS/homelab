@@ -35,3 +35,5 @@ spec:
   dependsOn:
     - name: rook-ceph-operator
       namespace: flux-system
+    - name: kube-prometheus-stack
+      namespace: flux-system
