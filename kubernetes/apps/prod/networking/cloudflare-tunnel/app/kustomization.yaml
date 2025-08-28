@@ -6,6 +6,3 @@ resources:
   - "./repository.yaml"
   - "./release.yaml"
   - "./podmonitor.yaml"
-
-patchesStrategicMerge:
-  - "./deployment-patch.yaml"
