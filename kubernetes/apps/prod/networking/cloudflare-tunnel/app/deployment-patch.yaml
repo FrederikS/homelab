@@ -1,0 +1,14 @@
+# to fix pod monitor
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflare-tunnel
+  namespace: networking
+spec:
+  template:
+    spec:
+      containers:
+        - name: cloudflare-tunnel
+          ports:
+            - name: metrics
+              containerPort: 2000

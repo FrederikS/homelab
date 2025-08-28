@@ -191,10 +191,10 @@ spec:
           - prometheus.${SECRET_DOMAIN}
         pathType: Prefix
       prometheusSpec:
-        additionalScrapeConfigsSecret:
-          enabled: false
-          name: prometheus-additional-scrape-configs
-          key: additionalScrapeConfigs
+        # additionalScrapeConfigsSecret:
+        #   enabled: false
+        #   name: prometheus-additional-scrape-configs
+        #   key: additionalScrapeConfigs
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
         enableAdminAPI: true
         # externalLabels:
