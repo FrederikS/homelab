@@ -5,4 +5,6 @@ resources:
   - "./cluster.yaml"
   - "./storageclass.yaml"
   - "./objectstorage.yaml"
+  - "./service-monitor.yaml"
+  - "./exporter-service-monitor.yaml"
   # - "./toolbox.yaml"
