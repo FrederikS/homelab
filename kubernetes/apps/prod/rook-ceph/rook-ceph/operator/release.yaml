@@ -33,21 +33,19 @@ spec:
   postRenderers:
     - kustomize:
         patches:
-          - target:
-              kind: Service
-              name: rook-ceph-rbd-csi-ceph-com-liveness
-            patch: |
+          - patch: |-
               apiVersion: v1
               kind: Service
               metadata:
+                name: rook-ceph-rbd-csi-ceph-com-liveness
+                namespace: rook-ceph
                 labels:
                   app: csi-metrics
-          - target:
-              kind: Service
-              name: rook-ceph-cephfs-csi-ceph-com-liveness
-            patch: |
+          - patch: |-
               apiVersion: v1
               kind: Service
               metadata:
+                name: rook-ceph-cephfs-csi-ceph-com-liveness
+                namespace: rook-ceph
                 labels:
                   app: csi-metrics
