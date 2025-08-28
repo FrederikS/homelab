@@ -18,7 +18,12 @@ spec:
   values:
     nodeSelector:
       kubernetes.io/arch: amd64
+    monitoring:
+      enabled: true
     csi:
+      enableLiveness: true
+      serviceMonitor:
+        enabled: true
       pluginTolerations:
         - key: "arm"
           operator: "Exists"
