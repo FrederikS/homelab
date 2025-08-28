@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-system-monitoring
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/addons/monitoring
+  prune: true
+  wait: true
+  timeout: 5m0s
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-gpg
+  dependsOn:
+    - name: kube-prometheus-stack
+      namespace: flux-system
