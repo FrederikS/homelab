@@ -37,13 +37,17 @@ spec:
               kind: Service
               name: rook-ceph-rbd-csi-ceph-com-liveness
             patch: |
-              - op: add
-                path: /metadata/labels/app
-                value: csi-metrics
+              apiVersion: v1
+              kind: Service
+              metadata:
+                labels:
+                  app: csi-metrics
           - target:
               kind: Service
               name: rook-ceph-cephfs-csi-ceph-com-liveness
             patch: |
-              - op: add
-                path: /metadata/labels/app
-                value: csi-metrics
+              apiVersion: v1
+              kind: Service
+              metadata:
+                labels:
+                  app: csi-metrics
