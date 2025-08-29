@@ -19,7 +19,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.139.4
+              tag: v1.140.0
             env:
               # Configure application
               TZ: &tz "${TIMEZONE}"
@@ -63,7 +63,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.139.4
+              tag: v1.140.0
             env:
               TZ: *tz
               REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
