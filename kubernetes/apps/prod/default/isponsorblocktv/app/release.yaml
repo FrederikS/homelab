@@ -37,12 +37,12 @@ spec:
               limits:
                 memory: 2Gi
 
-    # persistence:
-    #   config:
-    #     enabled: true
-    #     type: secret
-    #     name: isponsorblocktv-secret
-    #     globalMounts:
-    #       - path: /app/data/config.json
-    #         subPath: config.json
-    #         readOnly: true
+    persistence:
+      config:
+        enabled: true
+        type: secret
+        name: isponsorblocktv-secret
+        globalMounts:
+          - path: /app/data/config.json
+            subPath: config.json
+            readOnly: true
