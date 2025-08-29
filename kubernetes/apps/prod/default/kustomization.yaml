@@ -8,4 +8,5 @@ resources:
   - "./memos/ks.yaml"
   - "./grist/ks.yaml"
   - "./affine/ks.yaml"
+  - "./isponsorblocktv/ks.yaml"
   - "./anytype"
