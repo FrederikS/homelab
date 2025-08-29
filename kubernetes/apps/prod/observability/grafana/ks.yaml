@@ -19,3 +19,5 @@ spec:
   dependsOn:
     - name: kube-prometheus-stack
       namespace: flux-system
+    - name: loki
+      namespace: flux-system

@@ -47,7 +47,7 @@ spec:
         apiVersion: 1
         deleteDatasources:
           # - { name: Alertmanager, orgId: 1 }
-          # - { name: Loki, orgId: 1 }
+          - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
         datasources:
           - name: Prometheus
@@ -58,13 +58,13 @@ spec:
             jsonData:
               prometheusType: Prometheus
             isDefault: true
-          # - name: Loki
-          #   type: loki
-          #   uid: loki
-          #   access: proxy
-          #   url: http://loki-headless.observability.svc.cluster.local:3100
-          #   jsonData:
-          #     maxLines: 250
+          - name: Loki
+            type: loki
+            uid: loki
+            access: proxy
+            url: http://loki-headless.observability.svc.cluster.local:3100
+            jsonData:
+              maxLines: 250
           # - name: Alertmanager
           #   type: alertmanager
           #   uid: alertmanager
@@ -170,9 +170,9 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
-        # flux-logs:
-        #   url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
-        #   datasource: loki
+        flux-logs:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
+          datasource: loki
       kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
