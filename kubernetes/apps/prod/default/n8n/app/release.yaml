@@ -51,6 +51,7 @@ spec:
               N8N_RUNNERS_ENABLED: "true"
               N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
               WEBHOOK_URL: https://n8n.${SECRET_DOMAIN}/
+              N8N_PROXY_HOPS: 1
               N8N_ENCRYPTION_KEY:
                 valueFrom:
                   secretKeyRef:
