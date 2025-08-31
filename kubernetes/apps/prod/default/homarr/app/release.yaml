@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -9,6 +10,10 @@ spec:
     kind: OCIRepository
     name: *app
   values:
+    image:
+      repository: ghcr.io/homarr-labs/homarr
+      tag: v1.35.0
+
     env:
       AUTH_PROVIDERS: oidc
       TZ: "${TIMEZONE}"
