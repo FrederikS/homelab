@@ -21,6 +21,8 @@ spec:
     controllers:
       n8n:
         pod:
+          nodeSelector:
+            kubernetes.io/arch: amd64
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
