@@ -20,6 +20,9 @@ spec:
   values:
     controllers:
       *app :
+        pod:
+          nodeSelector:
+            kubernetes.io/arch: amd64
         containers:
           app:
             image:
