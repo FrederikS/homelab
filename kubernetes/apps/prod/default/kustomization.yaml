@@ -9,4 +9,5 @@ resources:
   - "./grist/ks.yaml"
   - "./affine/ks.yaml"
   - "./n8n/ks.yaml"
+  - "./changedetection/ks.yaml"
   - "./anytype"
