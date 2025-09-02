@@ -80,7 +80,7 @@ spec:
       export:
         existingClaim: backup-nfs-${APP}
         advancedMounts:
-          paperless:
+          n8n:
             app:
               - path: /data/nfs/export
 
