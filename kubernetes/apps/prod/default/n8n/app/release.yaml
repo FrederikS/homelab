@@ -77,6 +77,12 @@ spec:
           n8n:
             app:
               - path: /home/node/.n8n
+      export:
+        existingClaim: backup-nfs-${APP}
+        advancedMounts:
+          paperless:
+            app:
+              - path: /data/nfs/export
 
     ingress:
       app:
