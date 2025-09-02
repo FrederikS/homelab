@@ -23,11 +23,11 @@ spec:
         pod:
           nodeSelector:
             kubernetes.io/arch: amd64
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
+          # securityContext:
+          #   runAsUser: 1000
+          #   runAsGroup: 1000
+          #   fsGroup: 1000
+          #   fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
           app:
@@ -36,6 +36,7 @@ spec:
               tag: 1.110.0
             env:
               NODE_ENV: production
+              DB_SQLITE_POOL_SIZE: 10
               DB_SQLITE_VACUUM_ON_STARTUP: true
               EXECUTIONS_DATA_PRUNE: true
               EXECUTIONS_DATA_MAX_AGE: 7
