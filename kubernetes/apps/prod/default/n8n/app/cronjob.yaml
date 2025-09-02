@@ -37,7 +37,7 @@ data:
     #!/bin/sh
 
     TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
-    FILENAME_ARCHIVE="export-$${TIMESTAMP}"
+    FILENAME_ARCHIVE="export-$${TIMESTAMP}.tar.gz"
     PL_POD_NAME=$(kubectl get pod -l app.kubernetes.io/name=n8n -n default -o jsonpath='{.items[0].metadata.name}')
 
     echo "Creating n8n backup"
