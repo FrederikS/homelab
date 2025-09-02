@@ -41,10 +41,10 @@ data:
     PL_POD_NAME=$(kubectl get pod -l app.kubernetes.io/name=n8n -n default -o jsonpath='{.items[0].metadata.name}')
 
     echo "Creating n8n backup"
-    kubectl exec -n default ${PL_POD_NAME} --container app -- sh -c \
+    kubectl exec -n default $${PL_POD_NAME} --container app -- sh -c \
       "n8n export:workflow --backup --output workflows \
-       && tar cfvz ${FILENAME_ARCHIVE} workflows \
-       && mv ${FILENAME_ARCHIVE} /data/nfs/export \
+       && tar cfvz $${FILENAME_ARCHIVE} workflows \
+       && mv $${FILENAME_ARCHIVE} /data/nfs/export \
        && rm -rf workflows"
 
     echo "finished n8n-ngx backup"
