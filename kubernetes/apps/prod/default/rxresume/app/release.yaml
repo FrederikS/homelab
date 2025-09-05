@@ -55,12 +55,12 @@ spec:
               TZ: ${TIMEZONE}
               PORT: &port 3001
               NODE_ENV: production
-              PUBLIC_URL: https://rxresume.${SECRET_DOMAIN}
+              PUBLIC_URL: http://rxresume.${SECRET_DOMAIN}
               CHROME_URL: ws://localhost:3000
               DISABLE_SIGNUPS: "false"
               DISABLE_EMAIL_AUTH: "true"
               # -- OpenID (Optional) --
-              VITE_OPENID_NAME: OpenID
+              VITE_OPENID_NAME: Keycloak
               OPENID_AUTHORIZATION_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
               OPENID_CALLBACK_URL: https://rxresume.${SECRET_DOMAIN}/api/auth/openid/callback
               OPENID_CLIENT_ID: rxresume
