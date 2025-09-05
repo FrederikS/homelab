@@ -29,7 +29,7 @@ metadata:
   name: &appname rxresume
   namespace: flux-system
 spec:
-  targetNamespace: observability
+  targetNamespace: default
   path: ./kubernetes/apps/prod/default/rxresume/app
   prune: true
   sourceRef:
