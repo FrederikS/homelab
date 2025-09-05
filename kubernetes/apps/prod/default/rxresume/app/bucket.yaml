@@ -1,0 +1,7 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  namespace: rook-ceph
+spec:
+  bucketName: ${APP}
+  storageClassName: rook-ceph-bucket

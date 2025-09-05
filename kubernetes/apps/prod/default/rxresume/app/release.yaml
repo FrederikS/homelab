@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app rxresume
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 15m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      rxresume:
+        containers:
+          chrome:
+            image:
+              repository: ghcr.io/browserless/chromium
+              tag: v2.18.0
+            env:
+              TZ: ${TIMEZONE}
+              DEBUG: "browserless*,-*:trace,-*:verbose"
+              ENABLE_DEBUGGER: "false"
+              TIMEOUT: "60000"
+              CONCURRENT: "10"
+              EXIT_ON_HEALTH_FAILURE: "true"
+              HEALTH: "true"
+              CHROME_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: rxresume-secret
+                    key: CHROME_TOKEN
+            securityContext:
+              runAsUser: 999
+              runAsGroup: 999
+              allowPrivilegeEscalation: false
+              capabilities: { drop: [ALL] }
+
+          app:
+            image:
+              repository: ghcr.io/amruthpillai/reactive-resume
+              tag: v4.4.6
+            env:
+              TZ: ${TIMEZONE}
+              PORT: &port 3001
+              NODE_ENV: production
+              PUBLIC_URL: https://rxresume.${SECRET_DOMAIN}
+              CHROME_URL: ws://localhost:3000
+              # S3
+              STORAGE_URL: http://rook-ceph-rgw-rook-ceph-object-store.rook-ceph.svc.cluster.local
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-rxresume-app
+                    key: uri
+              STORAGE_ENDPOINT:
+                valueFrom:
+                  configMapKeyRef:
+                    name: rxresume-bucket
+                    key: BUCKET_HOST
+              STORAGE_BUCKET:
+                valueFrom:
+                  configMapKeyRef:
+                    name: rxresume-bucket
+                    key: BUCKET_NAME
+              STORAGE_PORT:
+                valueFrom:
+                  configMapKeyRef:
+                    name: rxresume-bucket
+                    key: BUCKET_PORT
+              STORAGE_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: rxresume-bucket
+                    key: AWS_ACCESS_KEY_ID
+              STORAGE_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: rxresume-bucket
+                    key: AWS_SECRET_ACCESS_KEY
+            envFrom:
+              - secretRef:
+                  name: rxresume-secret
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                cpu: 3000m
+                memory: 600Mi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: &host rxresume.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          rxresume:
+            app:
+              - path: /tmp
+                subPath: tmp
