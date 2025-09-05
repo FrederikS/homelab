@@ -57,6 +57,15 @@ spec:
               NODE_ENV: production
               PUBLIC_URL: https://rxresume.${SECRET_DOMAIN}
               CHROME_URL: ws://localhost:3000
+              # -- OpenID (Optional) --
+              VITE_OPENID_NAME: OpenID
+              OPENID_AUTHORIZATION_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
+              OPENID_CALLBACK_URL: http://localhost:3000/api/auth/openid/callback
+              OPENID_CLIENT_ID: rxresume
+              OPENID_ISSUER: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}
+              OPENID_SCOPE: openid profile email
+              OPENID_TOKEN_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
+              OPENID_USER_INFO_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
               # S3
               STORAGE_URL: http://rook-ceph-rgw-rook-ceph-object-store.rook-ceph.svc.cluster.local
               DATABASE_URL:
