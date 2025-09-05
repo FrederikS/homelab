@@ -20,6 +20,9 @@ spec:
   values:
     controllers:
       rxresume:
+        pod:
+          nodeSelector:
+            kubernetes.io/arch: amd64
         containers:
           chrome:
             image:
