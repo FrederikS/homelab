@@ -118,7 +118,9 @@ spec:
 
     ingress:
       app:
-        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: rxresume.${SECRET_DOMAIN}
+        className: external
         hosts:
           - host: &host rxresume.${SECRET_DOMAIN}
             paths:
