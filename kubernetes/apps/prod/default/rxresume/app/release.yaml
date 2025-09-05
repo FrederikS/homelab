@@ -57,6 +57,8 @@ spec:
               NODE_ENV: production
               PUBLIC_URL: https://rxresume.${SECRET_DOMAIN}
               CHROME_URL: ws://localhost:3000
+              DISABLE_SIGNUPS: "false"
+              DISABLE_EMAIL_AUTH: "true"
               # -- OpenID (Optional) --
               VITE_OPENID_NAME: OpenID
               OPENID_AUTHORIZATION_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
