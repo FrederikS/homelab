@@ -60,7 +60,7 @@ spec:
               # -- OpenID (Optional) --
               VITE_OPENID_NAME: OpenID
               OPENID_AUTHORIZATION_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
-              OPENID_CALLBACK_URL: http://localhost:3000/api/auth/openid/callback
+              OPENID_CALLBACK_URL: https://rxresume.${SECRET_DOMAIN}/api/auth/openid/callback
               OPENID_CLIENT_ID: rxresume
               OPENID_ISSUER: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}
               OPENID_SCOPE: openid profile email
