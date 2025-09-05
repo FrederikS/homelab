@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres-memos
+  name: postgres-rxresume
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:17.5
