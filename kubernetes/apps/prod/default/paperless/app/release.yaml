@@ -161,6 +161,7 @@ spec:
         enabled: true
         className: external
         annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/proxy-body-size: 10m
         hosts:
           - host: "paperless.${SECRET_DOMAIN}"

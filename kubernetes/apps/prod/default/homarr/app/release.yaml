@@ -40,6 +40,8 @@ spec:
 
     ingress:
       enabled: true
+      annotations:
+        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
       ingressClassName: external
       hosts:
         - host: "dash.${SECRET_DOMAIN}"

@@ -4,6 +4,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
     route.openshift.io/termination: edge
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   labels:
     app: keycloak
     app.kubernetes.io/instance: keycloak
