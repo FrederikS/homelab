@@ -69,7 +69,7 @@ spec:
               OPENID_TOKEN_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
               OPENID_USER_INFO_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
               # S3
-              STORAGE_URL: http://rook-ceph-rgw-rook-ceph-object-store.rook-ceph.svc.cluster.local
+              STORAGE_URL: https://s3.${SECRET_DOMAIN}/rxresume
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:

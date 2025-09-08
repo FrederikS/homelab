@@ -1,3 +1,4 @@
+---
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStore
 metadata:
@@ -28,3 +29,30 @@ reclaimPolicy: Delete
 parameters:
   objectStoreName: rook-ceph-object-store
   objectStoreNamespace: rook-ceph
+---
+apiVersion: networking.k8s.io/v1
+kind: ceph-object-store
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+  name: keycloak-ingress
+spec:
+  defaultBackend:
+    service:
+      name: rook-ceph-rgw-rook-ceph-object-store
+      port:
+        name: http
+  ingressClassName: external
+  rules:
+    - host: "s3.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - backend:
+              service:
+                name: rook-ceph-rgw-rook-ceph-object-store
+                port:
+                  name: http
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - "s3.${SECRET_DOMAIN}"
