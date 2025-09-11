@@ -28,7 +28,7 @@ spec:
               tag: 1.3.2
             env:
               TZ: ${TIMEZONE}
-              DOCKER_ENABLE_SECURITY: "false"
+              DOCKER_ENABLE_SECURITY: "true"
               SYSTEM_ENABLEANALYTICS: "false"
               DISABLE_ADDITIONAL_FEATURES: "false"
               SECURITY_ENABLELOGIN: "true"
@@ -37,7 +37,7 @@ spec:
               SECURITY_OAUTH2_PROVIDER: "keycloak"
               SECURITY_OAUTH2_CLIENT_KEYCLOAK_ISSUER: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"
               SECURITY_OAUTH2_CLIENT_KEYCLOAK_SCOPES: openid, profile, email
-              SECURITY_OAUTH2_CLIENT_KEYCLOAK_USEASUSERNAME: email
+              SECURITY_OAUTH2_CLIENT_KEYCLOAK_USEASUSERNAME: preferred_username
               INSTALL_BOOK_AND_ADVANCED_HTML_OPS: "true"
               JAVA_CUSTOM_OPTS: "-Dmanagement.endpoints.web.exposure.include=prometheus,health,info -Dmanagement.endpoint.health.show-details=always -Dmanagement.metrics.export.prometheus.enabled=true -Denterprisemanagement.metrics.enabled=true"
             envFrom:
