@@ -37,7 +37,7 @@ spec:
               SECURITY_OAUTH2_PROVIDER: "keycloak"
               SECURITY_OAUTH2_CLIENT_KEYCLOAK_ISSUER: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"
               SECURITY_OAUTH2_CLIENT_KEYCLOAK_SCOPES: openid, profile, email
-              SECURITY_OAUTH2_CLIENT_KEYCLOAK_USEASUSERNAME: email | preferred_name
+              SECURITY_OAUTH2_CLIENT_KEYCLOAK_USEASUSERNAME: email
               INSTALL_BOOK_AND_ADVANCED_HTML_OPS: "true"
             envFrom:
               - secretRef:
