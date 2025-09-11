@@ -39,6 +39,7 @@ spec:
               SECURITY_OAUTH2_CLIENT_KEYCLOAK_SCOPES: openid, profile, email
               SECURITY_OAUTH2_CLIENT_KEYCLOAK_USEASUSERNAME: email
               INSTALL_BOOK_AND_ADVANCED_HTML_OPS: "true"
+              JAVA_CUSTOM_OPTS: "-Dmanagement.endpoints.web.exposure.include=prometheus,health,info -Dmanagement.endpoint.health.show-details=always -Dmanagement.metrics.export.prometheus.enabled=true -Denterprisemanagement.metrics.enabled=true"
             envFrom:
               - secretRef:
                   name: stirling-pdf-secret
@@ -56,23 +57,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 128M
+                memory: 256M
               limits:
                 memory: 512M
-            securityContext:
-              # allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
 
     service:
       app:
@@ -83,9 +70,9 @@ spec:
 
     ingress:
       app:
-        # annotations:
-        # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
         hosts:
           - host: &host "pdf.${SECRET_DOMAIN}"
             paths:
