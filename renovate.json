@@ -11,7 +11,7 @@
   ],
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-  "ignorePaths": ["**/*.sops.*"],
+  "ignorePaths": ["**/*.sops.*", "./kubernetes/apps/prod/archive/**/*.yaml"],
   "ansible": {
     "enabled": false
   },

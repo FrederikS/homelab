@@ -7,7 +7,6 @@ resources:
   - "./paperless/ks.yaml"
   - "./memos/ks.yaml"
   - "./grist/ks.yaml"
-  - "./affine/ks.yaml"
   - "./n8n/ks.yaml"
   - "./rxresume/ks.yaml"
   - "./stirling-pdf/ks.yaml"
