@@ -11,4 +11,5 @@ resources:
   - "./n8n/ks.yaml"
   - "./rxresume/ks.yaml"
   - "./stirling-pdf/ks.yaml"
+  - "./it-tools/ks.yaml"
   - "./anytype"
