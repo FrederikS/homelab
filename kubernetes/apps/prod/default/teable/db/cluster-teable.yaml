@@ -1,0 +1,42 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-teable
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: rook-ceph-block
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: required
+    nodeSelector:
+      kubernetes.io/arch: amd64
+  superuserSecret:
+    name: postgres-teable-superuser
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      timezone: "${TIMEZONE}"
+      shared_buffers: 256MB
+      effective_cache_size: 1GB
+      maintenance_work_mem: 64MB
+      work_mem: 16MB
+
+      # Connection settings
+      max_connections: "100"
+
+      # Write-ahead logging
+      wal_buffers: 16MB
+      checkpoint_completion_target: "0.9"
+
+      # Query optimization
+      random_page_cost: "1.1" # For SSD storage
+      effective_io_concurrency: "200"
+
+  monitoring:
+    enablePodMonitor: true

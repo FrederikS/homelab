@@ -1,0 +1,145 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app teable
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 15m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    controllers:
+      teable:
+        containers:
+          app:
+            image: &appImage
+              repository: ghcr.io/teableio/teable
+              tag: bfabf7f78e181b4b4b40949f80507fd9310ea98f
+            args:
+              - skip-migrate
+            env:
+              <<: &common-env
+                PUBLIC_ORIGIN: https://teable.${SECRET_DOMAIN}
+                BACKEND_CACHE_PROVIDER: redis
+                BACKEND_CACHE_REDIS_URI: redis://teable-redis.default.svc.cluster.local:6379
+                PRISMA_DATABASE_URL:
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-teable-app
+                      key: uri
+                SOCIAL_AUTH_PROVIDERS: oidc
+                BACKEND_OIDC_CALLBACK_URL: https://teable.${SECRET_DOMAIN}/api/auth/oidc/callback
+                BACKEND_OIDC_USER_INFO_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
+                BACKEND_OIDC_TOKEN_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
+                BACKEND_OIDC_AUTHORIZATION_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
+                BACKEND_OIDC_ISSUER: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}
+                BACKEND_OIDC_OTHER: '{"scope": ["email", "profile"]}'
+            envFrom:
+              - secretRef:
+                  name: teable-secret
+            resources:
+              requests:
+                cpu: 200m
+                memory: 400Mi
+              limits:
+                memory: 4Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+        initContainers:
+          migrations:
+            image: *appImage
+            args:
+              - migrate-only
+            env:
+              <<: *common-env
+            envFrom:
+              - secretRef:
+                  name: teable-secret
+            resources:
+              requests:
+                cpu: 100m
+                memory: 102Mi
+              limits:
+                cpu: 1000m
+                memory: 1024Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+
+      redis:
+        containers:
+          redis:
+            image:
+              repository: ghcr.io/valkey-io/valkey
+              tag: 8.1.3
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 3000
+      redis:
+        controller: redis
+        ports:
+          http:
+            port: 6379
+
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
+        hosts:
+          - host: &host "teable.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      data:
+        existingClaim: *app
+        advancedMounts:
+          teable:
+            app:
+              - path: /app/.assets
+      cache:
+        existingClaim: teable-cache
+        advancedMounts:
+          redis:
+            redis:
+              - path: /data
