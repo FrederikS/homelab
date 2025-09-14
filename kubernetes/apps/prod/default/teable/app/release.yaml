@@ -45,6 +45,7 @@ spec:
                 BACKEND_OIDC_AUTHORIZATION_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
                 BACKEND_OIDC_ISSUER: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}
                 BACKEND_OIDC_OTHER: '{"scope": ["email", "profile"]}'
+                PASSWORD_LOGIN_DISABLED: "true"
             envFrom:
               - secretRef:
                   name: teable-secret
