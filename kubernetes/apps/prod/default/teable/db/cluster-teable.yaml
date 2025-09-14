@@ -19,6 +19,10 @@ spec:
   superuserSecret:
     name: postgres-teable-superuser
   enableSuperuserAccess: true
+  bootstrap:
+    initdb:
+      postInitApplicationSQL:
+        - ALTER USER app WITH SUPERUSER;
   postgresql:
     parameters:
       timezone: "${TIMEZONE}"
