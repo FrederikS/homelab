@@ -23,7 +23,7 @@ spec:
           app:
             image: &appImage
               repository: ghcr.io/toeverything/affine
-              tag: 0.24.1
+              tag: 0.24.2
             env:
               TZ: "${TIMEZONE:=Etc/UTC}"
               NODE_ENV: production
