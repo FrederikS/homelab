@@ -5,10 +5,19 @@ kind: HelmRelease
 metadata:
   name: opencloud
 spec:
-  interval: 30m
   chartRef:
     kind: OCIRepository
-    name: opencloud
+    name: app-template
+    namespace: flux-system
+  interval: 15m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
   values:
     controllers:
       opencloud:
