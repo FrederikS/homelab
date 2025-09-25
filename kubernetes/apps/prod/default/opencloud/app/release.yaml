@@ -66,6 +66,7 @@ spec:
               PROXY_ACCESS_TOKEN_VERIFY_METHOD: "none"
               PROXY_AUTOPROVISION_ACCOUNTS: "true"
               PROXY_AUTOPROVISION_CLAIM_USERNAME: "preferred_username"
+              PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yaml
               PROXY_OIDC_REWRITE_WELLKNOWN: "true"
               # PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
               PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
@@ -116,6 +117,15 @@ spec:
               - *host
 
     persistence:
+      config:
+        type: configMap
+        name: opencloud-configmap
+        globalMounts:
+          - path: /etc/opencloud/csp.yaml
+            subPath: csp.yaml
+          # - path: /etc/opencloud/proxy.yaml
+          # subPath: proxy.yaml
+
       data:
         existingClaim: opencloud
         globalMounts:
