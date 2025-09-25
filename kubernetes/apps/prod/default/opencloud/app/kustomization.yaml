@@ -11,5 +11,7 @@ configMapGenerator:
     files:
       - "./resources/csp.yaml"
       # - ./resources/proxy.yaml
+generatorOptions:
+  disableNameSuffixHash: true
 configurations:
   - "./resources/kustomizeconfig.yaml"

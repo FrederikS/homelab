@@ -7,7 +7,7 @@ directives:
     - "https://companion.${SECRET_DOMAIN}/"
     - "wss://companion.${SECRET_DOMAIN}/"
     - "https://raw.githubusercontent.com/opencloud-eu/awesome-apps/"
-    - "https://idm.${SECRET_DOMAIN}/"
+    - "https://iam.${SECRET_DOMAIN}/"
   default-src:
     - "'none'"
   font-src:
