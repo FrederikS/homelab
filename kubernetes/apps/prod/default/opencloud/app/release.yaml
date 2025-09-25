@@ -48,24 +48,31 @@ spec:
                     name: opencloud-secret
                     key: IDM_ADMIN_PASSWORD
 
-              OC_ADMIN_USER_ID: "fdk"
+              # IDP_DOMAIN: iam.${SECRET_DOMAIN}
+              # IDP_ACCOUNT_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/account
+
+              OC_ADMIN_USER_ID: ""
               OC_ENABLE_OCM: false
               OC_EXCLUDE_RUN_SERVICES: idp
               OC_OIDC_ISSUER: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"
-              OC_INSECURE: false
+              OC_INSECURE: true
+              # OC_LDAP_URI: ldaps://ldap-server:1636
+              # OC_LDAP_SERVER_WRITE_ENABLED: true
               OC_LOG_LEVEL: info
               OC_URL: https://opencloud.${SECRET_DOMAIN}
 
-              SETTINGS_SETUP_DEFAULT_ASSIGNMENTS: "true"
+              SETTINGS_SETUP_DEFAULT_ASSIGNMENTS: "false"
 
+              PROXY_ACCESS_TOKEN_VERIFY_METHOD: "none"
               PROXY_AUTOPROVISION_ACCOUNTS: "true"
+              PROXY_AUTOPROVISION_CLAIM_USERNAME: "preferred_username"
               PROXY_OIDC_REWRITE_WELLKNOWN: "true"
+              # PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
               PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
               PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM: "oc_role"
               PROXY_TLS: false
               PROXY_USER_OIDC_CLAIM: "preferred_username"
               PROXY_USER_CS3_CLAIM: "username"
-              # PROXY_ACCESS_TOKEN_VERIFY_METHOD: "none"
 
               WEB_OPTION_ACCOUNT_EDIT_LINK_HREF: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/account"
               WEB_OIDC_CLIENT_ID: opencloud
