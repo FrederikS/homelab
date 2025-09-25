@@ -12,4 +12,5 @@ resources:
   - "./stirling-pdf/ks.yaml"
   - "./it-tools/ks.yaml"
   - "./teable/ks.yaml"
+  - "./opencloud/ks.yaml"
   - "./anytype"
