@@ -24,27 +24,26 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/linuxserver/obsidian
+              repository: lscr.io/linuxserver/obsidian
               tag: 1.9.12
             env:
               TZ: ${TIMEZONE}
               PUID: 1000
               PGID: 1000
-            args:
-              - --shm-size="1gb"
             resources:
               requests:
                 cpu: 100m
-                memory: 1024M
+                memory: 250Mi
               limits:
-                memory: 1536M
+                memory: 1Gi
+            restartPolicy: Always
 
     service:
       app:
         controller: *app
         ports:
           http:
-            port: 8080
+            port: 3000
 
     ingress:
       app:
