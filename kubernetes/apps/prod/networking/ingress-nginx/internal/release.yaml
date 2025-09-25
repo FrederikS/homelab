@@ -35,7 +35,9 @@ spec:
               values: [internal]
       extraArgs:
         default-ssl-certificate: "cert-manager/${SECRET_DOMAIN/./-}-prod-tls"
+      allowSnippetAnnotations: true
       config:
+        annotations-risk-level: Critical
         proxy-buffer-size: "128k"
         proxy-busy-buffers-size: "256k"
         # taken from https://github.com/ai-robots-txt/ai.robots.txt

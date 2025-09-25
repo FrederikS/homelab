@@ -36,7 +36,6 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 1Gi
-            restartPolicy: Always
 
     service:
       app:
@@ -65,3 +64,9 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /config
+      shm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
+        globalMounts:
+          - path: /dev/shm
