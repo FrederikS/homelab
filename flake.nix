@@ -22,7 +22,12 @@
         nixpkgs.lib.genAttrs supportedSystems (
           system:
           f {
-            pkgs = import nixpkgs { inherit overlays system; };
+            pkgs = import nixpkgs {
+              inherit overlays system;
+              config = {
+                allowUnfree = true;
+              };
+            };
           }
         );
     in
@@ -48,6 +53,8 @@
                 pre-commit
                 nodejs
                 prettier
+                awscli2
+                claude-code
               ]
               ++ (with pkgs.python311Packages; [
                 pip
