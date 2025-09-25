@@ -38,17 +38,38 @@ spec:
               - "-c"
               - "opencloud init || true; opencloud server"
             env:
+              GRAPH_ASSIGN_DEFAULT_USER_ROLE: "false"
+              GRAPH_USERNAME_MATCH: "none"
+
               IDM_CREATE_DEMO_USERS: false
               IDM_ADMIN_PASSWORD:
                 valueFrom:
                   secretKeyRef:
                     name: opencloud-secret
                     key: IDM_ADMIN_PASSWORD
+
+              OC_ADMIN_USER_ID: "fdk"
               OC_ENABLE_OCM: false
+              OC_EXCLUDE_RUN_SERVICES: idp
+              OC_OIDC_ISSUER: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"
               OC_INSECURE: false
               OC_LOG_LEVEL: info
               OC_URL: https://opencloud.${SECRET_DOMAIN}
+
+              SETTINGS_SETUP_DEFAULT_ASSIGNMENTS: "true"
+
+              PROXY_AUTOPROVISION_ACCOUNTS: "true"
+              PROXY_OIDC_REWRITE_WELLKNOWN: "true"
+              PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
+              PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM: "oc_role"
               PROXY_TLS: false
+              PROXY_USER_OIDC_CLAIM: "preferred_username"
+              PROXY_USER_CS3_CLAIM: "username"
+              # PROXY_ACCESS_TOKEN_VERIFY_METHOD: "none"
+
+              WEB_OPTION_ACCOUNT_EDIT_LINK_HREF: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/account"
+              WEB_OIDC_CLIENT_ID: opencloud
+              WEB_OIDC_SCOPE: "openid profile email"
             probes:
               liveness:
                 enabled: true
