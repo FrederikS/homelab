@@ -63,7 +63,7 @@ spec:
 
               SETTINGS_SETUP_DEFAULT_ASSIGNMENTS: "false"
 
-              PROXY_ACCESS_TOKEN_VERIFY_METHOD: "none"
+              # PROXY_ACCESS_TOKEN_VERIFY_METHOD: "none"
               PROXY_AUTOPROVISION_ACCOUNTS: "true"
               PROXY_AUTOPROVISION_CLAIM_USERNAME: "preferred_username"
               PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yaml
@@ -71,6 +71,7 @@ spec:
               # PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
               PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
               PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM: "oc_roles"
+
               PROXY_TLS: false
               PROXY_USER_OIDC_CLAIM: "preferred_username"
               PROXY_USER_CS3_CLAIM: "username"
@@ -103,7 +104,9 @@ spec:
 
     ingress:
       app:
-        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
         hosts:
           - host: &host "opencloud.${SECRET_DOMAIN}"
             paths:
@@ -123,8 +126,8 @@ spec:
         globalMounts:
           - path: /etc/opencloud/csp.yaml
             subPath: csp.yaml
-          - path: /etc/opencloud/proxy.yaml
-            subPath: proxy.yaml
+          # - path: /etc/opencloud/proxy.yaml
+          #   subPath: proxy.yaml
 
       data:
         existingClaim: opencloud
@@ -133,6 +136,7 @@ spec:
             subPath: data
           - path: /etc/opencloud
             subPath: config
+
       tmpfs:
         type: emptyDir
         globalMounts:
