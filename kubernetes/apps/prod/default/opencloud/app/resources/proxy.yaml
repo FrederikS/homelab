@@ -7,5 +7,3 @@ role_assignment:
         claim_value: admin
       - role_name: user
         claim_value: user
-      - role_name: guest
-        claim_value: guest
