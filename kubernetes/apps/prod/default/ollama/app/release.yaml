@@ -89,17 +89,7 @@ spec:
 
     persistence:
       models:
-        type: custom
-        volumeSpec:
-          ephemeral:
-            volumeClaimTemplate:
-              spec:
-                accessModes:
-                  - ReadWriteOnce
-                storageClassName: rook-ceph-block
-                resources:
-                  requests:
-                    storage: 50Gi
+        existingClaim: ollama
         advancedMounts:
           ollama:
             app:
