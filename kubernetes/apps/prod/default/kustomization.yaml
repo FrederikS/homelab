@@ -13,4 +13,5 @@ resources:
   - "./it-tools/ks.yaml"
   - "./teable/ks.yaml"
   - "./opencloud/ks.yaml"
+  - "./ollama/ks.yaml"
   - "./anytype"
