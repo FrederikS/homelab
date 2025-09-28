@@ -84,6 +84,7 @@ spec:
 
     service:
       app:
+        controller: openwebui
         ports:
           http:
             port: 8080
@@ -111,7 +112,8 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: openwebui
-        globalMounts:
-          - path: /app/backend/data
+        advancedMounts:
+          openwebui:
+            app:
+              - path: /app/backend/data
