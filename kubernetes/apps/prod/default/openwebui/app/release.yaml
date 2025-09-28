@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: v0.6.30
+              tag: v0.6.31
             env:
               # Open-webui settings
               ENABLE_OPENAI_API: "False"
@@ -35,7 +35,7 @@ spec:
               WEBSOCKET_MANAGER: "redis"
               WEBSOCKET_REDIS_URL: "redis://openwebui-redis.default.svc.cluster.local"
               # Auth
-              ENABLE_OAUTH_SIGNUP: "false"
+              ENABLE_OAUTH_SIGNUP: "true"
               OAUTH_MERGE_ACCOUNTS_BY_EMAIL: "true"
               OAUTH_PROVIDER_NAME: "Keycloak"
               OPENID_PROVIDER_URL: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/.well-known/openid-configuration"
@@ -97,7 +97,9 @@ spec:
 
     ingress:
       app:
-        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
         hosts:
           - host: &host "openwebui.${SECRET_DOMAIN}"
             paths:
