@@ -15,4 +15,3 @@ resources:
   - "./opencloud/ks.yaml"
   - "./ollama/ks.yaml"
   - "./openwebui/ks.yaml"
-  - "./anytype"
