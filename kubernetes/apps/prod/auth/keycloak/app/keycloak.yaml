@@ -4,7 +4,7 @@ metadata:
   name: keycloak
 spec:
   # Number of instances in the cluster
-  instances: 2
+  instances: 1
   # External Database connection
   db:
     vendor: postgres
