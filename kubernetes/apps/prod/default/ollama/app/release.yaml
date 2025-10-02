@@ -21,11 +21,21 @@ spec:
   values:
     controllers:
       ollama:
+        pod:
+          tolerations:
+            - key: "ai"
+              operator: "Equal"
+              value: "workload"
+              effect: "NoSchedule"
+          nodeSelector:
+            role: ai
         containers:
           app:
             image:
-              repository: intelanalytics/ipex-llm-inference-cpp-xpu
-              tag: latest@sha256:74c7fba6e12a083ff664ae54e1ff16a977a39caa03d272125db406eeddaee09e
+              # repository: intelanalytics/ipex-llm-inference-cpp-xpu
+              # tag: latest@sha256:74c7fba6e12a083ff664ae54e1ff16a977a39caa03d272125db406eeddaee09e
+              repository: ollama/ollama
+              tag: 0.12.3
 
             command:
               - sh
@@ -37,24 +47,24 @@ spec:
               OLLAMA_MODELS: &modelPath /models
               OLLAMA_HOST: "0.0.0.0"
               no_proxy: "localhost,127.0.0.1"
-              DEVICE: iGPU
-              OLLAMA_INTEL_GPU: "true"
-              OLLAMA_NUM_GPU: "999"
-              ZES_ENABLE_SYSMAN: "1"
+              # DEVICE: iGPU
+              # OLLAMA_INTEL_GPU: "true"
+              # OLLAMA_NUM_GPU: "999"
+              # ZES_ENABLE_SYSMAN: "1"
 
             resources:
               requests:
-                cpu: 200m
-                memory: 6Gi
-                gpu.intel.com/i915: 1
+                cpu: 2
+                memory: 12Gi
+                # gpu.intel.com/i915: 1
               limits:
-                memory: 8Gi
-                gpu.intel.com/i915: 1
-            securityContext:
-              privileged: false
-              capabilities:
-                add:
-                  - SYS_ADMIN
+                memory: 24Gi
+                # gpu.intel.com/i915: 1
+            # securityContext:
+            #   privileged: false
+            #   capabilities:
+            #     add:
+            #       - SYS_ADMIN
 
             probes:
               readiness:
@@ -98,8 +108,8 @@ spec:
               - path: *modelPath
                 subPath: models
 
-      dev:
-        type: hostPath
-        hostPath: /dev/dri
-        globalMounts:
-          - readOnly: true
+      # dev:
+      #   type: hostPath
+      #   hostPath: /dev/dri
+      #   globalMounts:
+      #     - readOnly: true
