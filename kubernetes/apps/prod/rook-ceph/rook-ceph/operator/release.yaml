@@ -30,6 +30,10 @@ spec:
           operator: "Exists"
         - key: "node-role.kubernetes.io/master"
           operator: "Exists"
+        - key: "ai"
+          operator: "Equal"
+          value: "workload"
+          effect: "NoSchedule"
   # postRenderers:
   #   - kustomize:
   #       patches:
