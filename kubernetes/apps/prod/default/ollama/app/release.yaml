@@ -37,11 +37,11 @@ spec:
               repository: ollama/ollama
               tag: 0.12.3
 
-            command:
-              - sh
-              - -c
-              - >-
-                mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
+            # command:
+            #   - sh
+            #   - -c
+            #   - >-
+            #     mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
 
             env:
               OLLAMA_MODELS: &modelPath /models
