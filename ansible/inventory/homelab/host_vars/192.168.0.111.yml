@@ -1,0 +1,3 @@
+ansible_user: ansible
+# interface which will be used for flannel
+flannel_iface: enp4s0

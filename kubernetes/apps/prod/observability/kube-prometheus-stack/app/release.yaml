@@ -109,7 +109,6 @@ spec:
         - 192.168.0.104
         - 192.168.0.105
         - 192.168.0.106
-        - 192.168.0.108
       serviceMonitor: &sm
         metricRelabelings:
           - action: drop

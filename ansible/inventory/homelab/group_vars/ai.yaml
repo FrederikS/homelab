@@ -1,0 +1,7 @@
+# Configure this node as an AI-only on-demand node
+# Add taint to prevent regular workloads from being scheduled
+# Only pods with matching tolerations will be scheduled here
+extra_agent_args: >-
+  {{ extra_args }}
+  --node-label role=ai
+  --node-taint ai=workload:NoSchedule
