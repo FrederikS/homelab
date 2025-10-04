@@ -28,7 +28,8 @@ spec:
               value: "workload"
               effect: "NoSchedule"
           nodeSelector:
-            role: ai
+            nvidia.com/gpu.present: "true"
+          runtimeClassName: nvidia
         containers:
           app:
             image:
@@ -46,7 +47,11 @@ spec:
             env:
               OLLAMA_MODELS: &modelPath /models
               OLLAMA_HOST: "0.0.0.0"
-              no_proxy: "localhost,127.0.0.1"
+              OLLAMA_LOAD_TIMEOUT: 10m
+              OLLAMA_KV_CACHE_TYPE: q8_0
+              OLLAMA_FLASH_ATTENTION: 1
+              # OLLAMA_CONTEXT_LENGTH: 8192
+              # no_proxy: "localhost,127.0.0.1"
               # DEVICE: iGPU
               # OLLAMA_INTEL_GPU: "true"
               # OLLAMA_NUM_GPU: "999"
@@ -56,15 +61,17 @@ spec:
               requests:
                 cpu: 2
                 memory: 12Gi
+                nvidia.com/gpu: 1
                 # gpu.intel.com/i915: 1
               limits:
                 memory: 24Gi
+                nvidia.com/gpu: 1
                 # gpu.intel.com/i915: 1
-            # securityContext:
-            #   privileged: false
-            #   capabilities:
-            #     add:
-            #       - SYS_ADMIN
+            securityContext:
+              privileged: false
+              capabilities:
+                add:
+                  - SYS_ADMIN
 
             probes:
               readiness:
