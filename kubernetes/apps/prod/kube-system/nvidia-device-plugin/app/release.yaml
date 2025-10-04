@@ -11,6 +11,11 @@ spec:
   interval: 1h
   values:
     runtimeClassName: nvidia
+    tolerations:
+      - key: "ai"
+        operator: "Equal"
+        value: "workload"
+        effect: "NoSchedule"
     nodeSelector:
       nvidia.com/gpu.present: "true"
     securityContext:
