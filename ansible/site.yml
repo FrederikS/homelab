@@ -85,3 +85,9 @@
   roles:
     - role: laptop
       become: true
+
+- name: Setup nvidia devices
+  hosts: nvidia
+  roles:
+    - role: nvidia.nvidia_driver
+      become: true
