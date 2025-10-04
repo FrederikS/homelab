@@ -39,6 +39,11 @@ spec:
             - pci
             - system
             - usb
+      tolerations:
+        - key: "ai"
+          operator: "Equal"
+          value: "workload"
+          effect: "NoSchedule"
 
     prometheus:
       enable: true
