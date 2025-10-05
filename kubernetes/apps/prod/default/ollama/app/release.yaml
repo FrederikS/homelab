@@ -68,10 +68,7 @@ spec:
                 nvidia.com/gpu: 1
                 # gpu.intel.com/i915: 1
             securityContext:
-              privileged: false
-              capabilities:
-                add:
-                  - SYS_ADMIN
+              privileged: true
 
             probes:
               readiness:
