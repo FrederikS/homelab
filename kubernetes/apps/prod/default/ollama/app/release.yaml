@@ -64,7 +64,7 @@ spec:
                 nvidia.com/gpu: 1
                 # gpu.intel.com/i915: 1
               limits:
-                memory: 24Gi
+                memory: 30Gi
                 nvidia.com/gpu: 1
                 # gpu.intel.com/i915: 1
             securityContext:
@@ -100,6 +100,21 @@ spec:
         ports:
           http:
             port: 11434
+
+    ingress:
+      app:
+        className: internal
+
+        hosts:
+          - host: &host ollama.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
 
     persistence:
       models:
