@@ -91,3 +91,5 @@
   roles:
     - role: nvidia.nvidia_driver
       become: true
+    - role: nvidia
+      become: true

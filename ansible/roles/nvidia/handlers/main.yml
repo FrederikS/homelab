@@ -1,0 +1,8 @@
+---
+- name: Restart docker
+  ansible.builtin.systemd:
+    name: docker
+    daemon_reload: true
+    state: restarted
+  when: not nvidia_docker_skip_docker_restart
+  become: true
