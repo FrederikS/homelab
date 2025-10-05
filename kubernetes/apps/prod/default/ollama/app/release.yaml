@@ -104,6 +104,11 @@ spec:
     ingress:
       app:
         className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+          nginx.ingress.kubernetes.io/proxy-next-upstream-timeout: "0"
 
         hosts:
           - host: &host ollama.${SECRET_DOMAIN}
