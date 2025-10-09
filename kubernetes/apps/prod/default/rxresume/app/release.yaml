@@ -27,7 +27,7 @@ spec:
           browserless:
             image:
               repository: ghcr.io/browserless/chromium
-              tag: v2.37.0
+              tag: v2.37.1
             env:
               TZ: ${TIMEZONE}
               DEBUG: "browserless*,-*:trace,-*:verbose"
