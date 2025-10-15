@@ -7,4 +7,4 @@ resources:
   - "./objectstorage.yaml"
   - "./service-monitor.yaml"
   - "./exporter-service-monitor.yaml"
-  # - "./toolbox.yaml"
+  - "./toolbox.yaml"
