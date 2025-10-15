@@ -4,6 +4,7 @@ metadata:
   name: rook-ceph-tools
   labels:
     app: rook-ceph-tools
+    substitution.flux.home.arpa/disabled: "true"
 spec:
   replicas: 1
   selector:
@@ -13,7 +14,6 @@ spec:
     metadata:
       labels:
         app: rook-ceph-tools
-        substitution.flux.home.arpa/disabled: "true"
     spec:
       dnsPolicy: ClusterFirstWithHostNet
       serviceAccountName: rook-ceph-default
