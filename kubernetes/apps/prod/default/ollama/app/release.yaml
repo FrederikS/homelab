@@ -36,7 +36,7 @@ spec:
               # repository: intelanalytics/ipex-llm-inference-cpp-xpu
               # tag: latest@sha256:74c7fba6e12a083ff664ae54e1ff16a977a39caa03d272125db406eeddaee09e
               repository: ollama/ollama
-              tag: 0.12.5
+              tag: 0.12.6
 
             # command:
             #   - sh
