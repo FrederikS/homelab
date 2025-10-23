@@ -27,6 +27,8 @@ spec:
         existingSecret: homarr-secret
       dbCredentials:
         existingSecret: homarr-secret
+      dbEncryption:
+        existingSecret: homarr-secret
 
     persistence:
       homarrDatabase:
