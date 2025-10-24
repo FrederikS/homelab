@@ -184,7 +184,7 @@ custom_registries_yaml: |
 #   NO_PROXY: "*.domain.local,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
 
 flux_enabled: true
-flux_version: 2.6.4
+flux_version: 2.7.2
 flux_github_owner: FrederikS
 flux_github_repository: homelab
 flux_path: kubernetes/clusters/prod
