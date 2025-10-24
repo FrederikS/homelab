@@ -64,7 +64,7 @@ spec:
                 nvidia.com/gpu: 1
                 # gpu.intel.com/i915: 1
               limits:
-                memory: 30Gi
+                memory: 20Gi
                 nvidia.com/gpu: 1
                 # gpu.intel.com/i915: 1
             securityContext:
