@@ -25,9 +25,10 @@ spec:
           app:
             image:
               repository: ghcr.io/usememos/memos
-              tag: 0.25.1
+              tag: 0.25.2
             env:
               TZ: ${TIMEZONE}
+              MEMOS_MODE: prod
               MEMOS_PORT: "5230" # https://github.com/usememos/memos/issues/1782
               MEMOS_DRIVER: postgres
               MEMOS_DSN:
@@ -37,10 +38,27 @@ spec:
                     key: uri
             resources:
               requests:
-                cpu: 25m
-                memory: 105M
+                memory: 128Mi
+                cpu: 100m
               limits:
-                memory: 105M
+                memory: 512Mi
+                cpu: 500m
+            probes:
+              liveness:
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 5230
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+              readiness:
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 5230
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
