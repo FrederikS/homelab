@@ -99,7 +99,5 @@ spec:
             app:
               - path: /cache
                 subPath: cache
-              - path: /config/log
-                subPath: log
               - path: /tmp
                 subPath: tmp
