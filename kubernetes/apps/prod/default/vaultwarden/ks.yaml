@@ -19,3 +19,6 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: flux-system

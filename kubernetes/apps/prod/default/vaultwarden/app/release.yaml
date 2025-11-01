@@ -37,6 +37,9 @@ spec:
               DOMAIN: https://vaultwarden.${SECRET_DOMAIN}
               TZ: "${TIMEZONE}"
               SIGNUPS_ALLOWED: false
+              SMTP_HOST: smtp.gmail.com
+              SMTP_PORT: 465
+              SMTP_SECURITY: force_tls
               WEBSOCKET_ENABLED: true
             envFrom:
               - secretRef:
