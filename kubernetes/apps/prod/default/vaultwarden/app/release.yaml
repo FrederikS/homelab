@@ -79,18 +79,6 @@ spec:
         tls:
           - hosts:
               - *host
-      admin:
-        className: internal
-        hosts:
-          - host: *host
-            paths:
-              - path: /admin
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:
