@@ -68,15 +68,23 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/server-snippet: |
-            location /admin {
-              return 403;
-            }
         className: external
         hosts:
           - host: &host "vaultwarden.${SECRET_DOMAIN}"
             paths:
               - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+      admin:
+        className: internal
+        hosts:
+          - host: *host
+            paths:
+              - path: /admin
                 service:
                   identifier: app
                   port: http
