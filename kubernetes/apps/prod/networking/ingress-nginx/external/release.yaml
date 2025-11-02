@@ -38,13 +38,14 @@ spec:
       extraArgs:
         default-ssl-certificate: "cert-manager/${SECRET_DOMAIN/./-}-prod-tls"
       config:
+        allow-snippet-annotations: true
+        annotations-risk-level: Critical
         use-forwarded-headers: true
         proxy-buffer-size: "128k"
         proxy-busy-buffers-size: "256k"
         # taken from https://github.com/ai-robots-txt/ai.robots.txt
         block-user-agents: "AdsBot-Google,Amazonbot,anthropic-ai,Applebot-Extended,Bytespider,CCBot,ChatGPT-User,ClaudeBot,Claude-Web,cohere-ai,Diffbot,FacebookBot,FriendlyCrawler,Google-Extended,GoogleOther,GPTBot,img2dataset,omgili,omgilibot,peer39_crawler,peer39_crawler/1.0,PerplexityBot,YouBot,"
         # error-log-level: "debug"
-        # allow-snippet-annotations: true
         # annotations-risk-level: Critical
         # log-format-upstream: '{"host:": "$http_host", "x-forwarded-proto": "$http_x_forwarded_proto", "X-Forwarded-Port": "$http_x_forwarded_port", "x-forwarded-host": "$http_x_forwarded_host", "x_forwarded_for": "$proxy_add_x_forwarded_for", "status": $status, "vhost": "$host", "method": "$request_method", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent" }'
       metrics:
