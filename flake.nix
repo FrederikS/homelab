@@ -55,6 +55,7 @@
                 prettier
                 awscli2
                 claude-code
+                libargon2
               ]
               ++ (with pkgs.python311Packages; [
                 pip
