@@ -16,9 +16,11 @@ spec:
   path: ./kubernetes/apps/prod/default/vaultwarden/app
   prune: true
   wait: true
-  postBuild:
-    substitute:
-      APP: *appname
   dependsOn:
     - name: rook-ceph-cluster
       namespace: flux-system
+  components:
+    - "../../../../../components/app-backup-nfs"
+  postBuild:
+    substitute:
+      APP: *appname

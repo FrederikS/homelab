@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: vaultwarden/server
-              tag: testing@sha256:df3047aa8ebe10dd47c2ae0b2292a06fe94a9cfdac00e8654a8bea00b7f7e611
+              tag: 1.34.3
             env:
               DOMAIN: https://vaultwarden.${SECRET_DOMAIN}
               SIGNUPS_ALLOWED: false
