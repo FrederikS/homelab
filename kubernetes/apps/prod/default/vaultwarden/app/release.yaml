@@ -39,9 +39,9 @@ spec:
               SMTP_HOST: smtp.gmail.com
               SMTP_PORT: 465
               SMTP_SECURITY: force_tls
-              SSO_ENABLED: "true"
-              SSO_ONLY: "true"
-              SSO_AUTHORITY: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}
+              # SSO_ENABLED: "true"
+              # SSO_ONLY: "true"
+              # SSO_AUTHORITY: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}
               TZ: "${TIMEZONE}"
               WEBSOCKET_ENABLED: true
             envFrom:
