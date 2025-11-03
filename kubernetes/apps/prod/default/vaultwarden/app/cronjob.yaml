@@ -37,11 +37,11 @@ data:
     #!/bin/sh
 
     TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
-    TARGET_ARCHIVE="export-$${TIMESTAMP}.zip"
+    BACKUP_FILE_ZIP="export-$${TIMESTAMP}.zip"
 
-    echo "starting vaultwarden backup $${TARGET_ARCHIVE}"
-    # apt-get update && apt-get install -y sqlite3
-    zip -9 -r "/mnt/backup/$${TARGET_ARCHIVE}" /mnt/vw-data*
+    echo "starting vaultwarden backup $${BACKUP_FILE_ZIP}"
+    apt-get update && apt-get install -y 7zip
+    7z a -tzip -mx=9 -p"$${ZIP_PASSWORD}" "/mnt/backup/$${BACKUP_FILE_ZIP}" "/mnt/vw-data/*"
     echo "finished vaultwarden backup"
 ---
 apiVersion: batch/v1
@@ -71,6 +71,12 @@ spec:
             - name: backup
               image: debian:bookworm-slim
               command: ["sh", "-c", "/scripts/backup.sh"]
+              env:
+                - name: ZIP_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: vaultwarden-secret
+                      key: BACKUP_ZIP_PASSWORD
               volumeMounts:
                 - name: vw-data
                   mountPath: /mnt/vw-data
