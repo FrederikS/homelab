@@ -36,6 +36,7 @@ spec:
 
             env:
               # GRIST_ORG_IN_PATH: true
+              ALLOWED_WEBHOOK_DOMAINS: "n8n.${SECRET_DOMAIN}"
               GRIST_FORCE_LOGIN: true
               APP_HOME_URL: &baseUrl "https://grist.${SECRET_DOMAIN}"
               GRIST_OIDC_SP_HOST: *baseUrl
