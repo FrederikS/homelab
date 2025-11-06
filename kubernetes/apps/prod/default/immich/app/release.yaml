@@ -99,7 +99,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.2.2
+              tag: v2.2.3
             env:
               TZ: *tz
               REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
