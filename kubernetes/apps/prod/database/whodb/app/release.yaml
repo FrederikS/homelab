@@ -22,13 +22,10 @@ spec:
     controllers:
       whodb:
         containers:
-          whodb:
+          app:
             image:
               repository: docker.io/clidey/whodb
               tag: 0.71.0
-            envFrom:
-              - secretRef:
-                  name: whodb
             resources:
               requests:
                 cpu: 30m
