@@ -4,3 +4,4 @@ resources:
   - "./namespace.yaml"
   - "./cloudnative-pg/ks.yaml"
   - "./chartdb/ks.yaml"
+  - "./whodb/ks.yaml"
