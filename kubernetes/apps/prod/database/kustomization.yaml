@@ -5,3 +5,4 @@ resources:
   - "./cloudnative-pg/ks.yaml"
   - "./chartdb/ks.yaml"
   - "./whodb/ks.yaml"
+  - "./dbeaver/ks.yaml"

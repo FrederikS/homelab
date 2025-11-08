@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app dbbeaver
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 15m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      dbbeaver:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: dbeaver/cloudbeaver
+              tag: 25.2.2
+            env:
+              HTTP_PORT: &port 8978
+            resources:
+              requests:
+                cpu: 50m
+              limits:
+                memory: 500Mi
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: &host "dbeaver.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      workspace:
+        existingClaim: *app
+        globalMounts:
+          - path: /opt/cloudbeaver/workspace
