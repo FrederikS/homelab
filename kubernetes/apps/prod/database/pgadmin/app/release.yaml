@@ -54,14 +54,14 @@ spec:
             port: *port
 
     ingress:
-      app:
+      pgadmin:
         className: internal
         hosts:
           - host: &host "pgadmin.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: pgadmin
                   port: http
         tls:
           - hosts:
