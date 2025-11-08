@@ -21,7 +21,7 @@ spec:
   values:
     controllers:
       dbeaver:
-        strategy: RollingUpdate
+        strategy: Recreate
         containers:
           app:
             image:
