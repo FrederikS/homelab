@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app dbbeaver
+  name: &app dbeaver
 spec:
   chartRef:
     kind: OCIRepository
@@ -20,7 +20,7 @@ spec:
       retries: 3
   values:
     controllers:
-      dbbeaver:
+      dbeaver:
         strategy: RollingUpdate
         containers:
           app:
