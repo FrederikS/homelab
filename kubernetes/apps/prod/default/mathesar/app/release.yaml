@@ -103,4 +103,6 @@ spec:
         name: mathesar-secret
         items:
           - key: sso.yml
-            path: /code/sso.yml
+            path: sso.yml
+        globalMounts:
+          - path: /code/sso.yml
