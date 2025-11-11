@@ -43,7 +43,7 @@ spec:
                     values:
                       - amd64
     service:
-      whodb:
+      app:
         controller: whodb
         ports:
           http:
