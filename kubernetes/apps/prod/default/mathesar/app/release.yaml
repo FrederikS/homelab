@@ -52,12 +52,12 @@ spec:
                 secretKeyRef:
                   name: postgres-mathesar-app
                   key: host
-            envFrom:
-              - secretRef:
+              OIDC_CONFIG_DICT:
+                secretKeyRef:
                   name: mathesar-secret
+                  key: OIDC_CONFIG_DICT
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -98,11 +98,3 @@ spec:
             subPath: media
           - path: /code/.secrets
             subPath: secrets
-      sso:
-        type: secret
-        name: mathesar-secret
-        items:
-          - key: sso.yml
-            path: sso.yml
-        globalMounts:
-          - path: /code/sso.yml
