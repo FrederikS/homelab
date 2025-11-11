@@ -1,0 +1,36 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-mathesar
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.6
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: rook-ceph-block
+  superuserSecret:
+    name: postgres-mathesar-superuser
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      timezone: "${TIMEZONE}"
+      shared_buffers: 256MB
+      effective_cache_size: 1GB
+      maintenance_work_mem: 64MB
+      work_mem: 16MB
+
+      # Connection settings
+      max_connections: "100"
+
+      # Write-ahead logging
+      wal_buffers: 16MB
+      checkpoint_completion_target: "0.9"
+
+      # Query optimization
+      random_page_cost: "1.1" # For SSD storage
+      effective_io_concurrency: "200"
+
+  monitoring:
+    enablePodMonitor: true

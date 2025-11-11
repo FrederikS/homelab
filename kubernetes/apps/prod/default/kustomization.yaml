@@ -16,3 +16,4 @@ resources:
   - "./ollama/ks.yaml"
   - "./openwebui/ks.yaml"
   - "./vaultwarden/ks.yaml"
+  - "./mathesar/ks.yaml"
