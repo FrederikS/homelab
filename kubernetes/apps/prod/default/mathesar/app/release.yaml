@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: mathesar/mathesar
-              tag: 0.7.0
+              tag: 0.7.1
             env:
               ALLOWED_HOSTS: mathesar.${SECRET_DOMAIN}
               DOMAIN_NAME: https://mathesar.${SECRET_DOMAIN}
