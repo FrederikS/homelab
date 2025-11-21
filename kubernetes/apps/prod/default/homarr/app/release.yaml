@@ -12,7 +12,7 @@ spec:
   values:
     image:
       repository: ghcr.io/homarr-labs/homarr
-      tag: v1.43.2
+      tag: v1.44.0
 
     env:
       AUTH_PROVIDERS: oidc
