@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/sharevb/it-tools
-              tag: 2025.8.31-13b8f041
+              tag: 2025.10.19
             env:
               TZ: ${TIMEZONE}
             securityContext:
