@@ -28,6 +28,8 @@ spec:
             runAsNonRoot: true
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
+          nodeSelector:
+            kubernetes.io/arch: amd64
         containers:
           opencloud:
             image:
