@@ -17,6 +17,3 @@ spec:
   path: ./kubernetes/apps/prod/observability/kube-prometheus-stack/app
   prune: true
   wait: true
-  dependsOn:
-    - name: prometheus-operator-crds
-      namespace: flux-system
