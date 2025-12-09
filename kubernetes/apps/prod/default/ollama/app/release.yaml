@@ -13,11 +13,13 @@ spec:
   install:
     remediation:
       retries: -1
+    timeout: 10m
   upgrade:
     cleanupOnFail: true
     remediation:
       strategy: rollback
       retries: 3
+    timeout: 10m
   values:
     controllers:
       ollama:
@@ -36,7 +38,7 @@ spec:
               # repository: intelanalytics/ipex-llm-inference-cpp-xpu
               # tag: latest@sha256:74c7fba6e12a083ff664ae54e1ff16a977a39caa03d272125db406eeddaee09e
               repository: ollama/ollama
-              tag: 0.13.1
+              tag: 0.13.2
 
             # command:
             #   - sh
