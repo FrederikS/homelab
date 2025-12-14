@@ -15,6 +15,20 @@ spec:
         pod:
           nodeSelector:
             kubernetes.io/arch: amd64
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - immich
+                      - key: app.kubernetes.io/controller
+                        operator: In
+                        values:
+                          - microservices
+                  topologyKey: kubernetes.io/hostname
         containers:
           main:
             image:
@@ -59,6 +73,20 @@ spec:
         pod:
           nodeSelector:
             kubernetes.io/arch: amd64
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - immich
+                      - key: app.kubernetes.io/controller
+                        operator: In
+                        values:
+                          - server
+                  topologyKey: kubernetes.io/hostname
         containers:
           main:
             image:
