@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/n8n-io/n8n
-              tag: latest@sha256:c8ea89d97e420858c61d39ead4f310284dba3a4462521ec169e54a0254f213c2
+              tag: latest@sha256:e3a4256dd2aa3b987e10da3c1194081575933987b26a604a4f52d2bdd62a5b72
             env:
               NODE_ENV: production
               DB_SQLITE_POOL_SIZE: 10
@@ -49,10 +49,11 @@ spec:
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
               N8N_DIAGNOSTICS_ENABLED: "false"
-              N8N_RUNNERS_ENABLED: "true"
+              N8N_RUNNERS_ENABLED: "false"
               N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
               WEBHOOK_URL: https://n8n.${SECRET_DOMAIN}/
               N8N_PROXY_HOPS: 1
+              N8N_SKIP_AUTH_ON_OAUTH_CALLBACK: "false"
               N8N_ENCRYPTION_KEY:
                 valueFrom:
                   secretKeyRef:
