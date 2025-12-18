@@ -16,6 +16,10 @@ spec:
   managed:
     roles:
       - name: postgresus
+        superuser: false
+        login: true
+        passwordSecret:
+          name: postgres-mathesar-postgresus-user
   bootstrap:
     initdb:
       postInitApplicationSQL:
