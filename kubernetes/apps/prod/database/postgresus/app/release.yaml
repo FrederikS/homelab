@@ -99,7 +99,7 @@ spec:
       key:
         type: secret
         name: postgresus-secret
+        defaultMode: 700
         globalMounts:
           - path: /postgresus-data/secret.key
-            readOnly: true
             subPath: secret.key
