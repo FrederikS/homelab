@@ -6,3 +6,4 @@ resources:
   - "./chartdb/ks.yaml"
   - "./dbeaver/ks.yaml"
   - "./pgadmin/ks.yaml"
+  - "./postgresus/ks.yaml"
