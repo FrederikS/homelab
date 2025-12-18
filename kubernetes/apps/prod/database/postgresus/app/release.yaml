@@ -83,7 +83,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: backup-nfs-${APP}
+        existingClaim: ${APP}
         globalMounts:
           - path: /postgresus-data
             readOnly: false
