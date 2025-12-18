@@ -31,8 +31,8 @@ spec:
         containers:
           app:
             image:
-              # renovate: datasource=github-releases depName=mathesar-foundation/mathesar
               repository: mathesar/mathesar
+              # renovate: datasource=github-releases depName=mathesar-foundation/mathesar
               tag: 0.7.1
             env:
               ALLOWED_HOSTS: mathesar.${SECRET_DOMAIN}
