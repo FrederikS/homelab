@@ -13,13 +13,6 @@ spec:
   superuserSecret:
     name: postgres-mathesar-superuser
   enableSuperuserAccess: true
-  managed:
-    roles:
-      - name: postgresus
-        superuser: false
-        login: true
-        passwordSecret:
-          name: postgres-mathesar-postgresus-user
   bootstrap:
     initdb:
       postInitApplicationSQL:
