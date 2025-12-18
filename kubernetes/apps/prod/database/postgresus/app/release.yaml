@@ -85,21 +85,5 @@ spec:
       data:
         existingClaim: ${APP}
         globalMounts:
-          - path: /postgresus-data/pgdata
+          - path: /postgresus-data
             readOnly: false
-      backups:
-        existingClaim: backup-nfs-${APP}
-        globalMounts:
-          - path: /postgresus-data/temp
-            readOnly: false
-            subPath: temp
-          - path: /postgresus-data/backups
-            readOnly: false
-            subPath: backups
-      key:
-        type: secret
-        name: postgresus-secret
-        defaultMode: 384
-        globalMounts:
-          - path: /postgresus-data/secret.key
-            subPath: secret.key

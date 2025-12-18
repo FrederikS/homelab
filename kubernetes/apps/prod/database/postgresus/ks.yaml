@@ -15,8 +15,6 @@ spec:
   path: ./kubernetes/apps/prod/database/postgresus/app
   prune: true
   wait: true
-  components:
-    - "../../../../../components/app-backup-nfs"
   postBuild:
     substitute:
       APP: *appname
