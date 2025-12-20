@@ -17,3 +17,4 @@ resources:
   - "./openwebui/ks.yaml"
   - "./vaultwarden/ks.yaml"
   - "./mathesar/ks.yaml"
+  - "./super-productivity/ks.yaml"
