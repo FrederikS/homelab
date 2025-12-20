@@ -13,11 +13,13 @@ spec:
   install:
     remediation:
       retries: -1
+    timeout: 10m
   upgrade:
     cleanupOnFail: true
     remediation:
       strategy: rollback
       retries: 3
+    timeout: 10m
   values:
     controllers:
       postgresus:
@@ -26,7 +28,7 @@ spec:
           app:
             image:
               repository: rostislavdugin/postgresus
-              tag: v2.8.1
+              tag: v2.10.0
             probes:
               liveness: &probes
                 enabled: true
