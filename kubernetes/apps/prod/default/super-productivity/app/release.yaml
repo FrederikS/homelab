@@ -34,10 +34,11 @@ spec:
               repository: johannesjo/super-productivity
               tag: v16.7.3
             env:
-              WEBDAV_BASE_URL: https://opencloud.${SECRET_DOMAIN}/remote.php/dav
               WEBDAV_SYNC_FOLDER_PATH: super-productivity
               SYNC_INTERVAL: 5
               IS_COMPRESSION_ENABLED: "true"
+            envFrom:
+              - secret: super-productivity-secret
             # FIXME
             # securityContext:
             #   allowPrivilegeEscalation: false
