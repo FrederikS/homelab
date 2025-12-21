@@ -54,6 +54,7 @@ spec:
               # IDP_ACCOUNT_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/account
 
               OC_ADMIN_USER_ID: ""
+              OC_CORS_ALLOW_ORIGINS: https://sp.fdk.codes
               OC_ENABLE_OCM: false
               OC_EXCLUDE_RUN_SERVICES: idp
               OC_OIDC_ISSUER: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"

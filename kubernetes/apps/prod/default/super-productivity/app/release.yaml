@@ -21,22 +21,23 @@ spec:
   values:
     controllers:
       super-productivity:
-        pod:
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: OnRootMismatch
+        # pod:
+        #   securityContext:
+        #     runAsNonRoot: true
+        #     runAsUser: 1000
+        #     runAsGroup: 1000
+        #     fsGroup: 1000
+        #     fsGroupChangePolicy: OnRootMismatch
         containers:
           app:
             image:
               repository: johannesjo/super-productivity
               tag: v16.7.3
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+            # FIXME
+            # securityContext:
+            #   allowPrivilegeEscalation: false
+            #   readOnlyRootFilesystem: true
+            #   capabilities: { drop: ["ALL"] }
 
     service:
       app:
