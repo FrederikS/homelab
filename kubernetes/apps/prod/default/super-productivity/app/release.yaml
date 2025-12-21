@@ -33,6 +33,11 @@ spec:
             image:
               repository: johannesjo/super-productivity
               tag: v16.7.3
+            env:
+              WEBDAV_BASE_URL: https://opencloud.${SECRET_DOMAIN}/remote.php/dav
+              WEBDAV_SYNC_FOLDER_PATH: super-productivity
+              SYNC_INTERVAL: 5
+              IS_COMPRESSION_ENABLED: "true"
             # FIXME
             # securityContext:
             #   allowPrivilegeEscalation: false
@@ -47,8 +52,9 @@ spec:
 
     ingress:
       app:
-        className: internal
+        className: external
         annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/auth-url: "http://tinyauth.auth.svc.cluster.local:3000/api/auth/nginx"
           nginx.ingress.kubernetes.io/auth-signin: "https://tinyauth.${SECRET_DOMAIN}/login"
           nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
