@@ -48,6 +48,10 @@ spec:
     ingress:
       app:
         className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: "http://tinyauth.auth.svc.cluster.local:3000/api/auth/nginx"
+          nginx.ingress.kubernetes.io/auth-signin: "https://$host/login"
+          nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
         hosts:
           - host: &host "sp.${SECRET_DOMAIN}"
             paths:
