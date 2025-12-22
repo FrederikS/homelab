@@ -13,11 +13,13 @@ spec:
   install:
     remediation:
       retries: -1
+    timeout: 10m
   upgrade:
     cleanupOnFail: true
     remediation:
       strategy: rollback
       retries: 3
+    timeout: 10m
   values:
     controllers:
       openwebui:
