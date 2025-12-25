@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: rostislavdugin/postgresus
-              tag: v2.13.0
+              tag: v2.15.3
             probes:
               liveness: &probes
                 enabled: true
