@@ -36,9 +36,8 @@ spec:
               tag: v0.1.64
             env:
               DT_ENV: selfhosted
-              DT_IS_USER_CREATION_DISABLED: "true"
               DT_SQLITE_PATH: /donetick-data/donetick.db
-              DONETICK_DISABLE_SIGNUP: "false"
+              DONETICK_DISABLE_SIGNUP: "true"
               TZ: "${TIMEZONE}"
             envFrom:
               - secretRef:
