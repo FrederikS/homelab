@@ -18,3 +18,4 @@ resources:
   - "./vaultwarden/ks.yaml"
   - "./mathesar/ks.yaml"
   - "./super-productivity/ks.yaml"
+  - "./donetick/ks.yaml"
