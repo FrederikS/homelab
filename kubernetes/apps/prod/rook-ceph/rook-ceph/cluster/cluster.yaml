@@ -252,7 +252,7 @@ spec:
         memory: 512Mi
         cpu: 200m
       limits:
-        memory: 512Mi
+        memory: 1Gi
     mgr:
       requests:
         memory: 1Gi
@@ -330,8 +330,7 @@ spec:
           - name: "/dev/sdb"
           # - name: "/dev/disk/by-id/nvme-SAMSUNG_MZVLB256HAHQ-000L7_S41GNX2M197040-part3"
           # - name: "/dev/md0" # devices can be specified using full udev paths
-        config:
-          {} # configuration can be specified at the node level which overrides the cluster level config
+        config: {} # configuration can be specified at the node level which overrides the cluster level config
           # osdsPerDevice: "2" # this value can be overridden at the node or device level
       # - name: "172.17.4.301"
       #   deviceFilter: "^sd."
@@ -368,8 +367,7 @@ spec:
       enabled: false
 
     # cephfs driver specific settings.
-    cephfs:
-      {}
+    cephfs: {}
       # Set CephFS Kernel mount options to use https://docs.ceph.com/en/latest/man/8/mount.ceph/#options.
       # kernelMountOptions: ""
       # Set CephFS Fuse mount options to use https://docs.ceph.com/en/latest/man/8/ceph-fuse/#options.
