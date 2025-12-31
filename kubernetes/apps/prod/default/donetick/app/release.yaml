@@ -74,10 +74,9 @@ spec:
 
     ingress:
       app:
-        # annotations:
-        # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        # className: external
-        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
         hosts:
           - host: &host "donetick.${SECRET_DOMAIN}"
             paths:
