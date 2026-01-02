@@ -24,9 +24,9 @@ spec:
         pod:
           securityContext:
             runAsNonRoot: true
-            runAsUser: 1001
-            runAsGroup: 1001
-            fsGroup: 1001
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile: { type: RuntimeDefault }
         containers:
@@ -34,6 +34,13 @@ spec:
             image:
               repository: chrisvel/tududi
               tag: 0.88.2
+            command:
+              - /bin/sh
+              - -c
+              - |
+                cd /app/backend
+                mkdir -p db certs || true
+                exec /app/backend/cmd/start.sh
             env:
               TZ: "${TIMEZONE}"
               TUDUDI_ALLOWED_ORIGINS: https://tududi.${SECRET_DOMAIN}
