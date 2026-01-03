@@ -20,3 +20,4 @@ resources:
   - "./super-productivity/ks.yaml"
   - "./donetick/ks.yaml"
   - "./tududi/ks.yaml"
+  - "./vikunja/ks.yaml"
