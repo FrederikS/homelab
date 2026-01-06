@@ -97,7 +97,7 @@ spec:
         globalMounts:
           - path: /code/static
             subPath: static
-          - path: /code/media
+          - path: /code/.media
             subPath: media
           - path: /code/.secrets
             subPath: secrets
