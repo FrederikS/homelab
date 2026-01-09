@@ -121,11 +121,3 @@ spec:
           openwebui:
             app:
               - path: /app/backend/data
-      run:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 128Mi
-      tmp:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 128Mi

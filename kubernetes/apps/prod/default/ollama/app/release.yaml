@@ -125,6 +125,14 @@ spec:
                 subPath: .ollama
               - path: *modelPath
                 subPath: models
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi
 
       # dev:
       #   type: hostPath
