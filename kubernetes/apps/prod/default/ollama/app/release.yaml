@@ -32,45 +32,37 @@ spec:
           nodeSelector:
             nvidia.com/gpu.present: "true"
           runtimeClassName: nvidia
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
         containers:
           app:
             image:
-              # repository: intelanalytics/ipex-llm-inference-cpp-xpu
-              # tag: latest@sha256:74c7fba6e12a083ff664ae54e1ff16a977a39caa03d272125db406eeddaee09e
               repository: ollama/ollama
               tag: 0.13.5
-
-            # command:
-            #   - sh
-            #   - -c
-            #   - >-
-            #     mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
-
             env:
+              TZ: ${TIMEZONE}
               OLLAMA_MODELS: &modelPath /models
-              OLLAMA_HOST: "0.0.0.0"
-              OLLAMA_LOAD_TIMEOUT: 10m
+              # OLLAMA_LOAD_TIMEOUT: 10m
               OLLAMA_KV_CACHE_TYPE: q8_0
               OLLAMA_FLASH_ATTENTION: 1
-              # OLLAMA_CONTEXT_LENGTH: 8192
-              # no_proxy: "localhost,127.0.0.1"
-              # DEVICE: iGPU
-              # OLLAMA_INTEL_GPU: "true"
-              # OLLAMA_NUM_GPU: "999"
-              # ZES_ENABLE_SYSMAN: "1"
+              OLLAMA_CONTEXT_LENGTH: 8092
 
             resources:
               requests:
                 cpu: 2
                 memory: 12Gi
                 nvidia.com/gpu: 1
-                # gpu.intel.com/i915: 1
               limits:
                 memory: 20Gi
                 nvidia.com/gpu: 1
-                # gpu.intel.com/i915: 1
             securityContext:
-              privileged: true
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
 
             probes:
               readiness:
@@ -129,7 +121,7 @@ spec:
         advancedMounts:
           ollama:
             app:
-              - path: /root/.ollama
+              - path: /home/ubuntu/.ollama
                 subPath: .ollama
               - path: *modelPath
                 subPath: models
