@@ -101,6 +101,7 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/proxy-body-size: 10m
         className: external
         hosts:
           - host: &host "openwebui.${SECRET_DOMAIN}"
