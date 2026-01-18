@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: chrisvel/tududi
-              tag: 0.88.2
+              tag: 0.88.4
             command:
               - /bin/sh
               - -c
