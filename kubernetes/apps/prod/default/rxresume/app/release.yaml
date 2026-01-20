@@ -50,52 +50,43 @@ spec:
           app:
             image:
               repository: ghcr.io/amruthpillai/reactive-resume
-              tag: v4.5.6
+              tag: v5.0.3
             env:
               TZ: ${TIMEZONE}
               PORT: &port 3001
               NODE_ENV: production
-              PUBLIC_URL: http://rxresume.${SECRET_DOMAIN}
-              CHROME_URL: ws://localhost:3000
-              DISABLE_SIGNUPS: "false"
+              APP_URL: https://rxresume.${SECRET_DOMAIN}
+              PRINTER_APP_URL: http://rxresume-app:3001
               DISABLE_EMAIL_AUTH: "true"
+              FLAG_DISABLE_SIGNUP: "true"
+              FLAG_DISABLE_EMAIL_AUTH: "true"
               # -- OpenID (Optional) --
-              VITE_OPENID_NAME: Keycloak
-              OPENID_AUTHORIZATION_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
-              OPENID_CALLBACK_URL: https://rxresume.${SECRET_DOMAIN}/api/auth/openid/callback
-              OPENID_CLIENT_ID: rxresume
-              OPENID_ISSUER: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}
-              OPENID_SCOPE: openid profile email
-              OPENID_TOKEN_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
-              OPENID_USER_INFO_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
-              # S3
-              STORAGE_URL: https://s3.${SECRET_DOMAIN}/rxresume
+              OAUTH_PROVIDER_NAME: Keycloak
+              OAUTH_SCOPES: openid profile email
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
                     name: postgres-rxresume-app
                     key: uri
-              STORAGE_ENDPOINT:
-                valueFrom:
-                  configMapKeyRef:
-                    name: rxresume-bucket
-                    key: BUCKET_HOST
-              STORAGE_BUCKET:
+              # S3
+              S3_ENDPOINT: https://s3.${SECRET_DOMAIN}
+              S3_FORCE_PATH_STYLE: "true"
+              S3_BUCKET:
                 valueFrom:
                   configMapKeyRef:
                     name: rxresume-bucket
                     key: BUCKET_NAME
-              STORAGE_PORT:
+              S3_PORT:
                 valueFrom:
                   configMapKeyRef:
                     name: rxresume-bucket
                     key: BUCKET_PORT
-              STORAGE_ACCESS_KEY:
+              S3_ACCESS_KEY_ID:
                 valueFrom:
                   secretKeyRef:
                     name: rxresume-bucket
                     key: AWS_ACCESS_KEY_ID
-              STORAGE_SECRET_KEY:
+              S3_SECRET_ACCESS_KEY:
                 valueFrom:
                   secretKeyRef:
                     name: rxresume-bucket
