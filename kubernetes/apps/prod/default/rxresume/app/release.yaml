@@ -50,7 +50,7 @@ spec:
           app:
             image:
               repository: ghcr.io/amruthpillai/reactive-resume
-              tag: v4.5.6
+              tag: v5.0.0
             env:
               TZ: ${TIMEZONE}
               PORT: &port 3001
