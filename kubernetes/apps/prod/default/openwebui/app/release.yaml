@@ -30,8 +30,10 @@ spec:
               tag: 0.7.2
             env:
               # Open-webui settings
-              ENABLE_OPENAI_API: "False"
-              ENABLE_OLLAMA_API: "True"
+              CORS_ALLOW_ORIGIN: "https://openwebui.${SECRET_DOMAIN}"
+              ENABLE_API_KEYS: "true"
+              ENABLE_OPENAI_API: "true"
+              ENABLE_OLLAMA_API: "true"
               OLLAMA_BASE_URL: http://ollama:11434
               ENABLE_WEBSOCKET_SUPPORT: "true"
               WEBSOCKET_MANAGER: "redis"
