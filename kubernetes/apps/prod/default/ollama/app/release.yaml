@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ollama/ollama
-              tag: 0.14.2
+              tag: 0.14.3
             env:
               TZ: ${TIMEZONE}
               OLLAMA_MODELS: &modelPath /models
