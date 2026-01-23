@@ -393,7 +393,7 @@ spec:
               value: JOSDK_WATCH_CURRENT
             - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKCONTROLLER_NAMESPACES
               value: JOSDK_WATCH_CURRENT
-          image: quay.io/keycloak/keycloak-operator:26.5.1
+          image: quay.io/keycloak/keycloak-operator:26.5.2
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
