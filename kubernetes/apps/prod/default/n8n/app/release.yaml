@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/n8n-io/n8n
-              tag: latest@sha256:1e57b650fa1884af5c52cac2e3d9f05bb6701a6b4214bb74d2a334cc0bb9296d
+              tag: latest@sha256:b4ce485c070c95efae9f42fa39918623f821d70ea255cdf6467b02865db3a00e
             env:
               NODE_ENV: production
               DB_SQLITE_POOL_SIZE: 10
