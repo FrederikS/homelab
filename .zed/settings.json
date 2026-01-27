@@ -1,0 +1,17 @@
+{
+  "lsp": {
+    "yaml-language-server": {
+      "settings": {
+        "yaml": {
+          "completion": true,
+          "schemaStore": {
+            "enable": true
+          },
+          "schemas": {
+            "kubernetes": "kubernetes/**/*.yaml"
+          }
+        }
+      }
+    }
+  }
+}
