@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: johannesjo/super-productivity
-              tag: v16.8.3
+              tag: v17.0.5
             env:
               WEBDAV_SYNC_FOLDER_PATH: super-productivity
               SYNC_INTERVAL: 5
