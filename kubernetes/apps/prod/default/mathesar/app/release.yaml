@@ -35,7 +35,7 @@ spec:
             image:
               repository: mathesar/mathesar
               # renovate: datasource=github-releases depName=mathesar-foundation/mathesar
-              tag: 0.8.0
+              tag: 0.9.0
             env:
               ALLOWED_HOSTS: mathesar.${SECRET_DOMAIN}
               DOMAIN_NAME: https://mathesar.${SECRET_DOMAIN}
