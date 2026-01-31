@@ -151,6 +151,12 @@
     {
       "matchDatasources": ["github-releases"],
       "addLabels": ["renovate/github-release"]
+    },
+    {
+      "description": "Disable docker datasource for image (use github-releases instead)",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["mathesar/mathesar"],
+      "enabled": false
     }
   ],
   "customManagers": [
