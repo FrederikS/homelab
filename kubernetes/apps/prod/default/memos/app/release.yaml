@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/usememos/memos
-              tag: 0.25.3
+              tag: 0.26.0
             env:
               TZ: ${TIMEZONE}
               MEMOS_MODE: prod
@@ -63,6 +63,11 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
 
     service:
       app:
