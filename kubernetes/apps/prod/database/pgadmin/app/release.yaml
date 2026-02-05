@@ -25,7 +25,7 @@ spec:
           pgadmin:
             image:
               repository: docker.io/dpage/pgadmin4
-              tag: "9.11"
+              tag: "9.12"
             env:
               PGADMIN_LISTEN_PORT: &port 80
             envFrom:
