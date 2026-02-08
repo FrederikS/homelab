@@ -1,0 +1,22 @@
+---
+# Create virtiofs mount points
+- name: Ensure virtiofs mount points exist
+  ansible.builtin.file:
+    path: "{{ item.key }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop: "{{ virtiofs_mounts | dict2items }}"
+  become: true
+
+# Add entries to /etc/fstab so they persist across reboots
+- name: Add virtiofs mounts to fstab
+  ansible.builtin.mount:
+    path: "{{ item.key }}"
+    src: "{{ item.value }}"
+    fstype: virtiofs
+    opts: defaults
+    state: mounted
+  loop: "{{ virtiofs_mounts | dict2items }}"
+  become: true

@@ -70,6 +70,15 @@
         flat: true
       when: ansible_hostname == hostvars[groups[group_name_master | default('master')][0]]['ansible_hostname']
 
+- name: Setup NAS server
+  hosts: nas
+  environment: "{{ proxy_env | default({}) }}"
+  roles:
+    - role: nas_server
+      become: true
+    - role: geerlingguy.nfs
+      become: true
+
 - name: Setup NFS server on storage nodes
   hosts: nfs
   environment: "{{ proxy_env | default({}) }}"

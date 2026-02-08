@@ -1,0 +1,4 @@
+---
+# Map: mount_point -> virtiofs tag
+virtiofs_mounts:
+  /mnt/tank/media: tank-media
