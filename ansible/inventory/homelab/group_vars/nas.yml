@@ -1,10 +1,10 @@
 virtiofs_mounts:
   /mnt/tank/media: tank-media
 
-nfs_exports:
-  - "/mnt/tank/media/movies 192.168.0.0/24(rw,sync,no_subtree_check,no_root_squash)"
-  - "/mnt/tank/media/shows 192.168.0.0/24(rw,sync,no_subtree_check,no_root_squash)"
-  - "/mnt/tank/media/photos 192.168.0.0/24(rw,sync,no_subtree_check,no_root_squash)"
+# nfs_exports:
+#   - "/mnt/tank/media/movies 192.168.0.0/24(rw,sync,no_subtree_check,no_root_squash)"
+#   - "/mnt/tank/media/shows 192.168.0.0/24(rw,sync,no_subtree_check,no_root_squash)"
+#   - "/mnt/tank/media/photos 192.168.0.0/24(rw,sync,no_subtree_check,no_root_squash)"
 
 extra_args: >-
   {{ '--flannel-iface=' + flannel_iface if calico_iface is not defined and cilium_iface is not defined else '' }}
