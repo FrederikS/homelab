@@ -2,3 +2,10 @@
 # Map: mount_point -> virtiofs tag
 virtiofs_mounts:
   /mnt/tank/media: tank-media
+
+# Create groups according to proxmox host groups
+storage_groups:
+  jellyfin:
+    gid: 2001
+  immich:
+    gid: 2002

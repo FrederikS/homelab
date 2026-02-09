@@ -20,3 +20,10 @@
     state: mounted
   loop: "{{ virtiofs_mounts | dict2items }}"
   become: true
+
+- name: Ensure service groups exist
+  ansible.builtin.group:
+    name: "{{ item.key }}"
+    gid: "{{ item.value.gid }}"
+    state: present
+  loop: "{{ storage_groups | dict2items }}"
