@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: vikunja/vikunja
-              tag: 1.0.0
+              tag: 1.1.0
             env:
               TZ: ${TIMEZONE}
               VIKUNJA_AUTH_LOCAL: false
