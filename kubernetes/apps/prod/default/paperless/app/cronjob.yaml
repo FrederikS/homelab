@@ -36,20 +36,19 @@ data:
   backup.sh: |
     #!/bin/sh
 
-    TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
-    FILENAME="export-$${TIMESTAMP}"
-    FILENAME_ZIP="$${FILENAME}.zip"
     PL_POD_NAME=$(kubectl get pod -l app.kubernetes.io/name=paperless -n default -o jsonpath='{.items[0].metadata.name}')
 
     echo "Creating paperless-ngx backup"
     kubectl exec -n default $${PL_POD_NAME} --container app -- \
       document_exporter \
+      --delete \
+      --compare-checksums \
+      --compare-json \
+      --use-filename-format \
+      --no-archive \
+      --no-thumbnail \
       --no-progress-bar \
-      --split-manifest \
-      --use-folder-prefix \
-      --zip \
-      --zip-name $${FILENAME} \
-      /data/nfs/export
+      /data/nas/export
 
     echo "finished paperless-ngx backup"
 ---
