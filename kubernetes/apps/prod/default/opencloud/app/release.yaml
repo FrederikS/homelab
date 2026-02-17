@@ -34,7 +34,7 @@ spec:
           opencloud:
             image:
               repository: opencloudeu/opencloud-rolling
-              tag: 5.0.2
+              tag: 5.1.0
             command:
               - "/bin/sh"
               - "-c"
