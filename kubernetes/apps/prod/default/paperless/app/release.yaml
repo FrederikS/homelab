@@ -191,9 +191,3 @@ spec:
           paperless:
             app:
               - path: /data/nas
-      export:
-        existingClaim: backup-nfs-${APP}
-        advancedMounts:
-          paperless:
-            app:
-              - path: /data/nfs/export
