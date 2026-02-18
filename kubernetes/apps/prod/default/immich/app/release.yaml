@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -14,23 +15,14 @@ spec:
       server:
         pod:
           nodeSelector:
-            kubernetes.io/arch: amd64
-          affinity:
-            podAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  podAffinityTerm:
-                    labelSelector:
-                      matchExpressions:
-                        - key: app.kubernetes.io/name
-                          operator: In
-                          values:
-                            - immich
-                        - key: app.kubernetes.io/controller
-                          operator: In
-                          values:
-                            - microservices
-                    topologyKey: kubernetes.io/hostname
+            role: media
+          securityContext: &podSecurityContext
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 2002
+            fsGroup: 2002
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile: { type: RuntimeDefault }
         containers:
           main:
             image:
@@ -41,7 +33,7 @@ spec:
               TZ: &tz "${TIMEZONE}"
               REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
               IMMICH_LOG_LEVEL: debug
-              IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
+              UPLOAD_LOCATION: &uploadLocation /usr/src/app/upload
               IMMICH_WORKERS_INCLUDE: api
               <<: &db-env
                 DB_HOSTNAME:
@@ -70,25 +62,18 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 2Gi
+            securityContext: &containerSecurityContext
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
 
       microservices:
         pod:
           nodeSelector:
-            kubernetes.io/arch: amd64
-          affinity:
-            podAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/name
-                        operator: In
-                        values:
-                          - immich
-                      - key: app.kubernetes.io/controller
-                        operator: In
-                        values:
-                          - server
-                  topologyKey: kubernetes.io/hostname
+            role: media
+          securityContext: *podSecurityContext
         containers:
           main:
             image:
@@ -98,7 +83,7 @@ spec:
               TZ: *tz
               REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
               IMMICH_LOG_LEVEL: debug
-              IMMICH_MEDIA_LOCATION: *mediaLocation
+              UPLOAD_LOCATION: *uploadLocation
               IMMICH_WORKERS_EXCLUDE: api
               <<: *db-env
             resources:
@@ -107,6 +92,7 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 6Gi
+            securityContext: *containerSecurityContext
 
       redis:
         containers:
@@ -125,6 +111,7 @@ spec:
         pod:
           nodeSelector:
             kubernetes.io/hostname: x240
+          securityContext: *podSecurityContext
         containers:
           main:
             image:
@@ -134,7 +121,6 @@ spec:
               TZ: *tz
               REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
               IMMICH_LOG_LEVEL: debug
-              IMMICH_MEDIA_LOCATION: *mediaLocation
               MPLCONFIGDIR: "/cache/matplotlib"
             resources:
               requests:
@@ -142,6 +128,7 @@ spec:
                 memory: 250M
               limits:
                 memory: 2Gi
+            securityContext: *containerSecurityContext
 
     service:
       server:
@@ -172,10 +159,21 @@ spec:
         advancedMounts:
           server:
             main:
-              - path: *mediaLocation
+              - path: *uploadLocation
           microservices:
             main:
-              - path: *mediaLocation
+              - path: *uploadLocation
+      upload:
+        enabled: true
+        type: hostPath
+        hostPath: /mnt/tank/media/immich
+        advancedMounts:
+          server:
+            main:
+              - path: /data
+          microservices:
+            main:
+              - path: /data
       cache:
         type: persistentVolumeClaim
         existingClaim: immich-ml-cache
@@ -186,6 +184,10 @@ spec:
                 subPath: cache
               - path: /.cache
                 subPath: dotCache
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
 
     ingress:
       server:
