@@ -33,7 +33,7 @@ spec:
               TZ: &tz "${TIMEZONE}"
               REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
               IMMICH_LOG_LEVEL: debug
-              UPLOAD_LOCATION: &uploadLocation /usr/src/app/upload
+              UPLOAD_LOCATION: &uploadLocation /data
               IMMICH_WORKERS_INCLUDE: api
               <<: &db-env
                 DB_HOSTNAME:
@@ -154,15 +154,6 @@ spec:
             port: 3003
 
     persistence:
-      library:
-        existingClaim: immich-library
-        advancedMounts:
-          server:
-            main:
-              - path: *uploadLocation
-          microservices:
-            main:
-              - path: *uploadLocation
       upload:
         enabled: true
         type: hostPath
@@ -170,7 +161,7 @@ spec:
         advancedMounts:
           server:
             main:
-              - path: /data
+              - path: *uploadLocation
           microservices:
             main:
               - path: /data
