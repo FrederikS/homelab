@@ -44,8 +44,6 @@ spec:
       namespace: flux-system
     - name: immich-db
       namespace: flux-system
-  components:
-    - "../../../../../components/app-backup-nfs"
   postBuild:
     substitute:
       APP: *appname
