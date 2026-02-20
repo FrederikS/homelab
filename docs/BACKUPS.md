@@ -26,7 +26,32 @@ Relevant dataset:
 tank/backups
 ```
 
-Snapshots are managed by Sanoid.
+Snapshots are managed by Sanoid configured in `/etc/sanoid/sanoid.conf`
+
+```
+[tank/media]
+    use_template = media
+    recursive = yes
+
+[template_media]
+    hourly = 24
+    daily = 7
+    weekly = 4
+    monthly = 3
+    autosnap = yes
+    autoprune = yes
+
+[tank/backups]
+    use_template = backups
+    recursive = yes
+
+[template_backups]
+    daily = 7
+    weekly = 4
+    monthly = 3
+    autosnap = yes
+    autoprune = yes
+```
 
 ---
 
