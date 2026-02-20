@@ -1,3 +1,2 @@
 # interface which will be used for flannel
 flannel_iface: enp0s25
-nfs_device_uuid: 1e7c08e1-f5b6-4eab-9458-4dc4e3ca9fc7

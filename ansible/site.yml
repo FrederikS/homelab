@@ -76,8 +76,6 @@
   roles:
     - role: nas_server
       become: true
-    - role: geerlingguy.nfs
-      become: true
 
 - name: Setup NFS server on storage nodes
   hosts: nfs

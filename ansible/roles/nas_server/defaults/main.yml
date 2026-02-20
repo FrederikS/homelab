@@ -9,3 +9,5 @@ storage_groups:
     gid: 2001
   immich:
     gid: 2002
+  paperless:
+    gid: 2003

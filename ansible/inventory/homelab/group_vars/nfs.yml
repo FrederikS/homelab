@@ -1,6 +1,0 @@
-nfs_mount_point: /mnt/nfs
-export_directories:
-  - backup/apps
-
-nfs_exports:
-  - "/mnt/nfs/backup/apps *(rw,sync,no_subtree_check,no_root_squash)"
