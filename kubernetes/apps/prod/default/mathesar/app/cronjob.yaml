@@ -1,0 +1,107 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mathesar-backup-job
+data:
+  backup.sh: |
+    #!/bin/bash
+    set -euo pipefail
+
+    TIMESTAMP=$(TZ="${TIMEZONE}" date +"%Y-%m-%d_%H-%M-%S")
+    TARGET_DIR="/mnt/backup"
+    WORK_DIR="/tmp/backup-$${TIMESTAMP}"
+    TARGET_BACKUP_ARCHIVE="$${TARGET_DIR}/export-$${TIMESTAMP}.tar.gz"
+
+    echo "Starting PostgreSQL logical backup at $${TIMESTAMP}"
+
+    mkdir -p "$${WORK_DIR}"
+
+    # Dump globals (roles, tablespaces)
+    echo "Dumping globals..."
+    pg_dumpall --globals-only > "$${WORK_DIR}/globals.sql"
+
+    # Discover all non-template databases
+    echo "Discovering databases..."
+    DATABASES=$(psql -Atc \
+        "SELECT datname FROM pg_database WHERE datistemplate = false;")
+
+    # Dump each database separately
+    for DB in $${DATABASES}; do
+        echo "Dumping database: $${DB}"
+        pg_dump -Fc -d "$${DB}" -f "$${WORK_DIR}/$${DB}.dump"
+    done
+
+    # Create compressed archive
+    echo "Creating archive..."
+    tar czf "$${TARGET_BACKUP_ARCHIVE}" -C "$${WORK_DIR}" .
+
+    # Cleanup temp working directory
+    rm -rf "$${WORK_DIR}"
+
+    echo "Backup completed: $${TARGET_BACKUP_ARCHIVE}"
+
+    # Retention: delete backups older than 14 days
+    echo "Applying retention policy..."
+    find "$${TARGET_DIR}" -type f -name "export-*.tar.gz" -mtime +14 -delete
+
+    echo "Retention cleanup complete."
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mathesar-backup
+spec:
+  schedule: "45 4 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 900
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          containers:
+            - name: backup
+              image: postgres:17
+              command: ["sh", "-c", "/scripts/backup.sh"]
+              volumeMounts:
+                - name: backup-nfs
+                  mountPath: /mnt/backup
+                - name: script-volume
+                  mountPath: /scripts/backup.sh
+                  subPath: backup.sh
+              env:
+                - name: PGHOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-mathesar-app
+                      key: host
+                - name: PGPORT
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-mathesar-app
+                      key: port
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-mathesar-superuser
+                      key: username
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-mathesar-superuser
+                      key: password
+          restartPolicy: OnFailure
+          volumes:
+            - name: backup-nfs
+              persistentVolumeClaim:
+                claimName: backup-nfs-${APP}
+            - name: script-volume
+              configMap:
+                name: mathesar-backup-job
+                items:
+                  - key: backup.sh
+                    path: backup.sh
+                defaultMode: 0555 # read and execute
