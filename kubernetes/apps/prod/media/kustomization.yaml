@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - "./namespace.yaml"
   - "./jellyfin/ks.yaml"
+  - "./sabnzbd/ks.yaml"
