@@ -1,0 +1,12 @@
+[Unit]
+Description=Disable NIC offloading on {{ flannel_iface }}
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/ethtool -K {{ flannel_iface }} gro off gso off tso off
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
