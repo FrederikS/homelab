@@ -63,9 +63,12 @@ k3s_master_taint: false
 # k3s_master_taint: "{{ true if groups['node'] | default([]) | length >= 1 else false }}"
 
 # these arguments are recommended for servers as well as agents:
+#   --kubelet-arg=node-status-update-frequency=20s
+#   --kubelet-arg=node-monitor-grace-period=60s
 extra_args: >-
   {{ '--flannel-iface=' + flannel_iface if calico_iface is not defined and cilium_iface is not defined else '' }}
   --node-ip={{ k3s_node_ip }}
+  {{ extra_args_host | default('') }}
 
 # change these to your liking, the only required are: --disable servicelb, --tls-san {{ apiserver_endpoint }}
 # the contents of the if block is also required if using calico or cilium

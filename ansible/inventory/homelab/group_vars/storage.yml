@@ -1,3 +1,3 @@
-extra_args: >-
+extra_args_host: >-
   --node-label role=storage
   --node-taint storage=ceph:NoSchedule

@@ -1,7 +1,5 @@
 # Configure this node as an AI-only on-demand node
 # Add taint to prevent regular workloads from being scheduled
 # Only pods with matching tolerations will be scheduled here
-extra_args: >-
-  {{ '--flannel-iface=' + flannel_iface if calico_iface is not defined and cilium_iface is not defined else '' }}
-  --node-ip={{ k3s_node_ip }}
+extra_args_host: >-
   --node-label role=ai
