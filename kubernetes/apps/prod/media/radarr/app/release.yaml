@@ -117,6 +117,15 @@ spec:
             app:
               - path: /media
 
+      backups:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/backups/apps/${APP}
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config/Backups
+
       logs:
         type: emptyDir
         globalMounts:
