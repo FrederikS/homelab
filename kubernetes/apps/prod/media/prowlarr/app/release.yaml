@@ -105,5 +105,14 @@ spec:
             app:
               - path: /config
 
+      backups:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/backups/apps/${APP}
+        advancedMounts:
+          prowlarr:
+            app:
+              - path: /config/Backups
+
       tmp:
         type: emptyDir
