@@ -190,6 +190,15 @@ spec:
             app:
               - path: /media
 
+      backups:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/backups/apps/${APP}
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /config/backups
+
       scripts:
         type: configMap
         name: sabnzbd-scripts
