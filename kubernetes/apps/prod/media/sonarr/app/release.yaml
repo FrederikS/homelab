@@ -113,5 +113,14 @@ spec:
             app:
               - path: /media
 
+      backups:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/backups/apps/${APP}
+        advancedMounts:
+          sonarr:
+            app:
+              - path: /config/Backups
+
       tmp:
         type: emptyDir

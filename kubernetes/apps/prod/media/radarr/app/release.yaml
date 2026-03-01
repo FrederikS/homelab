@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/radarr
-              tag: 6.0.4.10291
+              tag: 6.1.1.10317
             env:
               RADARR__APP__INSTANCENAME: Radarr
               RADARR__APP__THEME: auto
@@ -35,7 +35,7 @@ spec:
               # RADARR__AUTH__REQUIRED: Disabled
               RADARR__LOG__LEVEL: info
               RADARR__SERVER__PORT: &port 7878
-              RADARR__UPDATE__BRANCH: master
+              RADARR__UPDATE__BRANCH: develop
               TZ: ${TIMEZONE}
             envFrom:
               - secretRef:
@@ -116,6 +116,15 @@ spec:
           radarr:
             app:
               - path: /media
+
+      backups:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/backups/apps/${APP}
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config/Backups
 
       logs:
         type: emptyDir
