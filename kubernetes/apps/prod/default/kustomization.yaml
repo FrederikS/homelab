@@ -9,7 +9,6 @@ resources:
   - "./grist/ks.yaml"
   - "./n8n/ks.yaml"
   - "./rxresume/ks.yaml"
-  - "./stirling-pdf/ks.yaml"
   - "./it-tools/ks.yaml"
   - "./opencloud/ks.yaml"
   - "./ollama/ks.yaml"
