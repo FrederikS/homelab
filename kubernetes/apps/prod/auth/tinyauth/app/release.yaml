@@ -25,19 +25,19 @@ spec:
           app:
             image:
               repository: ghcr.io/steveiliop56/tinyauth
-              tag: v4.1.0
+              tag: v5.0.0
             env:
               TZ: ${TIMEZONE}
-              APP_URL: https://tinyauth.${SECRET_DOMAIN}
-              DISABLE_ANALYTICS: true
-              PROVIDERS_KEYCLOAK_NAME: Keycloak
-              PROVIDERS_KEYCLOAK_AUTH_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
-              PROVIDERS_KEYCLOAK_TOKEN_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
-              PROVIDERS_KEYCLOAK_USER_INFO_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
-              PROVIDERS_KEYCLOAK_SCOPES: openid email profile groups
-              PROVIDERS_KEYCLOAK_REDIRECT_URL: https://tinyauth.${SECRET_DOMAIN}/api/oauth/callback/keycloak
-              SECURE_COOKIE: true
-              SESSION_EXPIRY: 604800
+              TINYAUTH_APPURL: https://tinyauth.${SECRET_DOMAIN}
+              TINYAUTH_ANALYTICS_ENABLED: "true"
+              TINYAUTH_AUTH_SECURECOOKIE: "true"
+              TINYAUTH_AUTH_SESSIONEXPIRY: 604800
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_NAME: Keycloak
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_AUTH_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_TOKEN_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_USER_INFO_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_SCOPES: openid email profile groups
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_REDIRECT_URL: https://tinyauth.${SECRET_DOMAIN}/api/oauth/callback/keycloak
             envFrom:
               - secretRef:
                   name: tinyauth-secret
