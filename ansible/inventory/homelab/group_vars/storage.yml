@@ -1,3 +1,5 @@
 extra_args_host: >-
   --node-label role=storage
   --node-taint storage=ceph:NoSchedule
+  --kubelet-arg=system-reserved=cpu=500m,memory=512Mi
+  --kubelet-arg=kube-reserved=cpu=500m,memory=512Mi

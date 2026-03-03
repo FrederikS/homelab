@@ -1,2 +1,6 @@
 # interface which will be used for flannel
 flannel_iface: enp0s25
+
+extra_args_host: >-
+  --kubelet-arg=system-reserved=cpu=750m,memory=1Gi
+  --kubelet-arg=kube-reserved=cpu=750m,memory=1Gi

@@ -28,18 +28,18 @@
     state: present
   loop: "{{ storage_groups | dict2items }}"
 
-- name: Copy Disable NIC offload service file
-  register: k3s_service
-  ansible.builtin.template:
-    src: disable-nic-offload.service.j2
-    dest: "{{ systemd_dir }}/disable-nic-offload.service"
-    owner: root
-    group: root
-    mode: "0644"
+# - name: Copy Disable NIC offload service file
+#   register: nic_offload_service
+#   ansible.builtin.template:
+#     src: disable-nic-offload.service.j2
+#     dest: "{{ systemd_dir }}/disable-nic-offload.service"
+#     owner: root
+#     group: root
+#     mode: "0644"
 
-- name: Enable and check Disable NIC offload service
-  ansible.builtin.systemd:
-    name: disable-nic-offload.service
-    daemon_reload: yes
-    state: started
-    enabled: true
+# - name: Enable and check Disable NIC offload service
+#   ansible.builtin.systemd:
+#     name: disable-nic-offload.service
+#     daemon_reload: yes
+#     state: started
+#     enabled: true

@@ -60,12 +60,12 @@ graph TB
         end
 
         master --> tc01
+        master --> tc02
         master --> x240
-        master --> nas01
-        worker --> tc02
         worker --> pi1
         worker --> pi2
         worker --> pi3
+        worker --> nas01
 
     end
 ```
