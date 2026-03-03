@@ -33,11 +33,11 @@ spec:
               TINYAUTH_AUTH_SECURECOOKIE: "true"
               TINYAUTH_AUTH_SESSIONEXPIRY: 604800
               TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_NAME: Keycloak
-              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_AUTH_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
-              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_TOKEN_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
-              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_USER_INFO_URL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_AUTHURL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_TOKENURL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_USERINFOURL: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
               TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_SCOPES: openid email profile groups
-              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_REDIRECT_URL: https://tinyauth.${SECRET_DOMAIN}/api/oauth/callback/keycloak
+              TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_REDIRECTURL: https://tinyauth.${SECRET_DOMAIN}/api/oauth/callback/keycloak
             envFrom:
               - secretRef:
                   name: tinyauth-secret
