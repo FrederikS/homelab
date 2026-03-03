@@ -33,6 +33,9 @@ spec:
               ND_ENABLEEXTERNALSERVICES: "false"
               ND_ENABLESHARING: "false"
               ND_ENABLESTARRATING: "false"
+              ND_EXTAUTH_TRUSTEDSOURCES: 10.42.0.0/16
+              ND_ENABLEUSEREDITING: "true"
+              ND_EXTAUTH_USERHEADER: Remote-User
               ND_LOGLEVEL: info
               ND_MUSICFOLDER: /media/music
               ND_PORT: &port 4533
@@ -76,13 +79,32 @@ spec:
 
     ingress:
       app:
-        # annotations:
-        #   external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: "http://tinyauth.auth.svc.cluster.local:3000/api/auth/nginx"
+          nginx.ingress.kubernetes.io/auth-signin: "https://tinyauth.${SECRET_DOMAIN}/login"
+          nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: Remote-User
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+      subsonic:
+        annotations:
+          external-dns.alpha.kubernetes.io/exclude: "true"
+        className: external
+        hosts:
+          - host: *host
+            paths:
+              - path: /rest
                 pathType: Prefix
                 service:
                   identifier: app

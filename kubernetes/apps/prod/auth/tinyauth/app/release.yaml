@@ -29,7 +29,7 @@ spec:
             env:
               TZ: ${TIMEZONE}
               TINYAUTH_APPURL: https://tinyauth.${SECRET_DOMAIN}
-              TINYAUTH_ANALYTICS_ENABLED: "true"
+              TINYAUTH_ANALYTICS_ENABLED: "false"
               TINYAUTH_AUTH_SECURECOOKIE: "true"
               TINYAUTH_AUTH_SESSIONEXPIRY: 604800
               TINYAUTH_OAUTH_PROVIDERS_KEYCLOAK_NAME: Keycloak
