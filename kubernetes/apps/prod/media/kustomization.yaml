@@ -7,3 +7,4 @@ resources:
   - "./radarr/ks.yaml"
   - "./prowlarr/ks.yaml"
   - "./sonarr/ks.yaml"
+  - "./lidarr/ks.yaml"
