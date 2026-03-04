@@ -30,7 +30,7 @@ spec:
               ND_DATAFOLDER: /data
               ND_DEFAULTTHEME: Spotify-ish
               ND_ENABLEDOWNLOADS: "true"
-              ND_ENABLEEXTERNALSERVICES: "false"
+              ND_ENABLEEXTERNALSERVICES: "true"
               ND_ENABLESHARING: "false"
               ND_ENABLESTARRATING: "false"
               ND_EXTAUTH_TRUSTEDSOURCES: 10.42.0.0/16
