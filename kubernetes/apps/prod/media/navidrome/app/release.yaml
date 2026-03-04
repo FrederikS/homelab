@@ -36,6 +36,7 @@ spec:
               ND_EXTAUTH_TRUSTEDSOURCES: 10.42.0.0/16
               ND_ENABLEUSEREDITING: "true"
               ND_EXTAUTH_USERHEADER: Remote-User
+              ND_LASTFM_ENABLED: "true"
               ND_LOGLEVEL: info
               ND_MUSICFOLDER: /media/music
               ND_PORT: &port 4533
