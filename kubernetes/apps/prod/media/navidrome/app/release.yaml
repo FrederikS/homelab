@@ -104,11 +104,14 @@ spec:
         hosts:
           - host: *host
             paths:
-              - path: /rest
+              - &path
+                path: /rest
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
+              - <<: *path
+                path: /auth
         tls:
           - hosts:
               - *host
