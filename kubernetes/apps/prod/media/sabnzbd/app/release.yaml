@@ -13,6 +13,9 @@ spec:
   values:
     controllers:
       sabnzbd:
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: x240
         strategy: Recreate
         initContainers:
           gluetun:
