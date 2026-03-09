@@ -10,3 +10,4 @@ resources:
   - "./lidarr/ks.yaml"
   - "./navidrome/ks.yaml"
   - "./dispatcharr/ks.yaml"
+  - "./readmeabook/ks.yaml"
