@@ -57,7 +57,7 @@
                 claude-code
                 libargon2
               ]
-              ++ (with pkgs.python311Packages; [
+              ++ (with pkgs.python314Packages; [
                 pip
                 netaddr
                 ipython
