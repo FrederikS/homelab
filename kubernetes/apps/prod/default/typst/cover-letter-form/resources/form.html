@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generate Cover Letter</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --coral: #e8604a;
+        --coral-dark: #d04e39;
+        --coral-light: #fdf1ee;
+        --ink: #1a1a1a;
+        --muted: #6b6b6b;
+        --border: #e2e2e2;
+        --bg: #f7f5f2;
+        --white: #ffffff;
+        --radius: 10px;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+      }
+
+      /* Subtle background texture */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          radial-gradient(
+            circle at 20% 20%,
+            rgba(232, 96, 74, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(232, 96, 74, 0.04) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .card {
+        position: relative;
+        z-index: 1;
+        background: var(--white);
+        border-radius: 20px;
+        padding: 2.8rem 2.4rem 2.4rem;
+        width: 100%;
+        max-width: 520px;
+        box-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.04),
+          0 12px 40px rgba(0, 0, 0, 0.08),
+          0 0 0 1px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-header {
+        text-align: center;
+        margin-bottom: 2.2rem;
+      }
+
+      .card-header .eyebrow {
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--coral);
+        margin-bottom: 0.5rem;
+      }
+
+      .card-header h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: var(--ink);
+        line-height: 1.2;
+      }
+
+      .divider {
+        width: 40px;
+        height: 2px;
+        background: var(--coral);
+        margin: 0.9rem auto 0;
+        border-radius: 2px;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--ink);
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.01em;
+      }
+
+      label .required {
+        color: var(--coral);
+        margin-left: 2px;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 0.72rem 1rem;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        color: var(--ink);
+        background: var(--white);
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: #b0b0b0;
+        font-weight: 300;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: var(--coral);
+        box-shadow: 0 0 0 3px rgba(232, 96, 74, 0.1);
+        background: #fffefе;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 110px;
+        line-height: 1.6;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.9rem;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 0.9rem;
+        background: var(--coral);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        transition:
+          background 0.2s,
+          transform 0.15s,
+          box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .submit-btn:hover {
+        background: var(--coral-dark);
+        box-shadow: 0 4px 16px rgba(232, 96, 74, 0.35);
+        transform: translateY(-1px);
+      }
+
+      .submit-btn:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      .submit-btn.loading {
+        pointer-events: none;
+        opacity: 0.8;
+      }
+
+      .submit-btn.loading::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        animation: shimmer 1.2s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* Staggered field entrance */
+      .form-group {
+        opacity: 0;
+        transform: translateY(12px);
+        animation: fadeUp 0.4s forwards;
+      }
+      .form-group:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .form-group:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .form-group:nth-child(3) {
+        animation-delay: 0.15s;
+      }
+      .form-group:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+      .form-group:nth-child(5) {
+        animation-delay: 0.25s;
+      }
+      .form-group:nth-child(6) {
+        animation-delay: 0.3s;
+      }
+      .submit-btn {
+        opacity: 0;
+        animation: fadeUp 0.4s 0.35s forwards;
+      }
+
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 2rem 1.4rem;
+        }
+        .row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <p class="eyebrow">Automatisiert mit n8n</p>
+        <h1>Generate Cover Letter</h1>
+        <div class="divider"></div>
+      </div>
+
+      <form
+        action="https://n8n.fdk.codes/webhook/bc797e32-d74b-443b-99d6-645899e77686"
+        method="POST"
+        target="_blank"
+        enctype="application/x-www-form-urlencoded"
+        id="coverLetterForm"
+      >
+        <div class="form-group">
+          <label for="greeting">Anrede <span class="required">*</span></label>
+          <input
+            type="text"
+            id="greeting"
+            name="greeting"
+            placeholder="Sehr geehrte Damen und Herren"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="position">Position <span class="required">*</span></label>
+          <input
+            type="text"
+            id="position"
+            name="position"
+            placeholder="Senior Softwareentwickler (m/w/d)"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="company_name"
+            >Unternehmen <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="company_name"
+            name="compan_name"
+            placeholder="Bayes Esports Solutions GmbH"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="company_street"
+            >Strasse und Hausnummer <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="company_street"
+            name="company_street"
+            placeholder="Kottbusser Strasse 11"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div>
+              <label for="company_zip"
+                >PLZ <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="company_zip"
+                name="company_zip"
+                placeholder="11110"
+                required
+              />
+            </div>
+            <div>
+              <label for="company_city"
+                >Ort <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="company_city"
+                name="company_city"
+                placeholder="Berlin"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="motivation"
+            >Motivation <span class="required">*</span></label
+          >
+          <textarea
+            id="motivation"
+            name="motivation"
+            placeholder="mit großer Begeisterung habe ich Ihre Stellenausschreibung für..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Generate
+        </button>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("coverLetterForm");
+      const btn = document.getElementById("submitBtn");
+
+      form.addEventListener("submit", () => {
+        btn.classList.add("loading");
+        btn.textContent = "Generating…";
+        setTimeout(() => {
+          btn.classList.remove("loading");
+          btn.textContent = "Submit";
+        }, 4000);
+      });
+    </script>
+  </body>
+</html>
