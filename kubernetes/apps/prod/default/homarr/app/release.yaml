@@ -9,6 +9,16 @@ spec:
   chartRef:
     kind: OCIRepository
     name: *app
+  install:
+    remediation:
+      retries: -1
+    timeout: 10m
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+    timeout: 10m
   values:
     image:
       repository: ghcr.io/homarr-labs/homarr
