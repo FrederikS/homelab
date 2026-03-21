@@ -163,7 +163,17 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/n8n-io/n8n"],
       "sourceUrl": "https://github.com/n8n-io/n8n",
-      "versioning": "semver"
+      "versioning": "semver",
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Homarr Group",
+      "groupName": "Homarr",
+      "matchDatasources": ["docker", "helm"],
+      "matchPackageNames": ["/homarr/"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
     }
   ],
   "customManagers": [
