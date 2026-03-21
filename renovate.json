@@ -157,6 +157,13 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["mathesar/mathesar"],
       "enabled": false
+    },
+    {
+      "description": "n8n - ignore pre-releases via GitHub release metadata",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["n8n-io/n8n"],
+      "sourceUrl": "https://github.com/n8n-io/n8n",
+      "versioning": "semver"
     }
   ],
   "customManagers": [
