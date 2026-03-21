@@ -20,62 +20,62 @@ spec:
   values:
     controllers:
       dispatcharr:
-        # strategy: Recreate
-        # initContainers:
-        #   gluetun:
-        #     image:
-        #       repository: ghcr.io/qdm12/gluetun
-        #       tag: v3.41.1
-        #     lifecycle:
-        #       postStart:
-        #         exec:
-        #           command:
-        #             - /bin/sh
-        #             - -c
-        #             - (ip rule del table 51820; ip -6 rule del table 51820) || true
-        #     restartPolicy: Always
-        #     securityContext:
-        #       runAsUser: 0
-        #       runAsGroup: 0
-        #       runAsNonRoot: false
-        #       capabilities:
-        #         add: ["NET_ADMIN"]
-        #       allowPrivilegeEscalation: true
-        #     env:
-        #       # Health server so Kubernetes knows when the tunnel is up
-        #       HEALTH_SERVER_ADDRESS: ":9999"
-        #       # Gluetun control API
-        #       HTTP_CONTROL_SERVER_ADDRESS: ":8000"
-        #       # Allow inbound traffic on the health port
-        #       FIREWALL_INPUT_PORTS: "8000,9191,9999"
-        #       # No internal cluster subnets to bypass since this app
-        #       # doesn't talk to any internal services.
-        #       # If your app does, add your pod/service CIDRs here e.g.:
-        #       FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
-        #       TZ: ${TIMEZONE}
-        #     envFrom:
-        #       - secretRef:
-        #           name: dispatcharr-gluetun-secret
-        #     probes:
-        #       startup:
-        #         enabled: true
-        #         custom: true
-        #         spec:
-        #           httpGet:
-        #             path: /
-        #             port: 9999
-        #           # Give the tunnel up to 5 minutes to come up
-        #           failureThreshold: 30
-        #           periodSeconds: 10
-        #       liveness:
-        #         enabled: true
-        #         custom: true
-        #         spec:
-        #           httpGet:
-        #             path: /
-        #             port: 9999
-        #           periodSeconds: 30
-        #           failureThreshold: 3
+        strategy: Recreate
+        initContainers:
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.41.1
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -c
+                    - (ip rule del table 51820; ip -6 rule del table 51820) || true
+            restartPolicy: Always
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+              capabilities:
+                add: ["NET_ADMIN"]
+              allowPrivilegeEscalation: true
+            env:
+              # Health server so Kubernetes knows when the tunnel is up
+              HEALTH_SERVER_ADDRESS: ":9999"
+              # Gluetun control API
+              HTTP_CONTROL_SERVER_ADDRESS: ":8000"
+              # Allow inbound traffic on the health port
+              FIREWALL_INPUT_PORTS: "8000,9191,9999"
+              # No internal cluster subnets to bypass since this app
+              # doesn't talk to any internal services.
+              # If your app does, add your pod/service CIDRs here e.g.:
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
+              TZ: ${TIMEZONE}
+            envFrom:
+              - secretRef:
+                  name: dispatcharr-gluetun-secret
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  # Give the tunnel up to 5 minutes to come up
+                  failureThreshold: 30
+                  periodSeconds: 10
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  periodSeconds: 30
+                  failureThreshold: 3
 
         containers:
           app:
