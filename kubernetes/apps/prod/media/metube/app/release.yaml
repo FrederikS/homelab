@@ -1,0 +1,159 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app metube
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      metube:
+        strategy: Recreate
+        initContainers:
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.41.1
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -c
+                    - (ip rule del table 51820; ip -6 rule del table 51820) || true
+            restartPolicy: Always
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+              capabilities:
+                add: ["NET_ADMIN"]
+              allowPrivilegeEscalation: true
+            env:
+              # Health server so Kubernetes knows when the tunnel is up
+              HEALTH_SERVER_ADDRESS: ":9999"
+              # Gluetun control API
+              HTTP_CONTROL_SERVER_ADDRESS: ":8000"
+              # Allow inbound traffic on the health port
+              FIREWALL_INPUT_PORTS: "8000,8081,9999"
+              # No internal cluster subnets to bypass since this app
+              # doesn't talk to any internal services.
+              # If your app does, add your pod/service CIDRs here e.g.:
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
+              TZ: ${TIMEZONE}
+            envFrom:
+              - secretRef:
+                  name: metube-gluetun-secret
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  # Give the tunnel up to 5 minutes to come up
+                  failureThreshold: 30
+                  periodSeconds: 10
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  periodSeconds: 30
+                  failureThreshold: 3
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/alexta69/metube
+              tag: 2026.03.21
+            env:
+              AUDIO_DOWNLOAD_DIR: "/downloads/audio"
+              DOWNLOAD_DIR: "/downloads/video"
+              # DOWNLOAD_MODE: concurrent # defaults to limited
+              DOWNLOAD_MODE: limited
+              MAX_CONCURRENT_DOWNLOADS: 5 #only used with limited, default to 3
+              STATE_DIR: "/config"
+              YTDL_OPTIONS: '{"http_headers":{"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0"}}'
+            resources:
+              requests:
+                cpu: 15m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        ports:
+          http:
+            port: 8081
+
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        existingClaim: *app
+        advancedMounts:
+          metube:
+            app:
+              - path: /config
+
+      downloads:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/media/downloads
+        advancedMounts:
+          metube:
+            app:
+              - path: /downloads
+                subPath: manual/metube
+
+      tmpfs:
+        type: emptyDir
+        sizeLimit: 1G
+        advancedMounts:
+          metube:
+            app:
+              - path: /tmp
+                subPath: tmp
+              - path: /.cache
+                subPath: dotCache
