@@ -1,0 +1,101 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: stash-db-backup
+spec:
+  schedule: "0 6 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          backoffLimit: 3
+          containers:
+            - name: backup
+              image: curlimages/curl:latest
+              args:
+                - curl
+                - -f
+                - -X
+                - POST
+                - -H
+                - "Content-Type: application/json"
+                - --data
+                - '{ "query": "mutation { backupDatabase(input: { download: false }) }" }'
+                - http://stash.media.svc.cluster.local:9999/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stash-blobs-backup-script
+data:
+  backup.sh: |
+    #!/bin/sh
+    # abort immediately on any error
+    set -e
+
+    echo "Installing rsync..."
+    apk add --no-cache rsync
+
+    echo "Starting sync..."
+    rsync -rlvz --delete --mkpath \
+      /mnt/blobs/ \
+      /mnt/backup/blobs/
+
+    echo "Done."
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: stash-blobs-backup
+spec:
+  schedule: "0 6 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      activeDeadlineSeconds: 300
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: Never
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: stash
+                  topologyKey: kubernetes.io/hostname
+          containers:
+            - name: rsync
+              image: alpine:3.23
+              command: ["/bin/sh", "/scripts/backup.sh"]
+              volumeMounts:
+                - name: stash-config
+                  mountPath: /mnt/blobs
+                  subPath: blobs
+                  readOnly: true
+                - name: backup-nfs
+                  mountPath: /mnt/backup
+                - name: script
+                  mountPath: /scripts/backup.sh
+                  subPath: backup.sh
+          volumes:
+            - name: stash-config
+              persistentVolumeClaim:
+                claimName: stash-config
+            - name: backup-nfs
+              nfs:
+                server: ${NAS_SERVER_IP}
+                path: /tank/backups/apps/stash
+            - name: script
+              configMap:
+                name: stash-blobs-backup-script
+                defaultMode: 0555
+                items:
+                  - key: backup.sh
+                    path: backup.sh

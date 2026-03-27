@@ -29,6 +29,8 @@ spec:
             env:
               TZ: ${TIMEZONE}
               TINYAUTH_APPURL: https://tinyauth.${SECRET_DOMAIN}
+              TINYAUTH_APPS_STASH_CONFIG_DOMAIN: stash.${SECRET_DOMAIN}
+              TINYAUTH_APPS_STASH_OAUTH_GROUPS: stash
               TINYAUTH_ANALYTICS_ENABLED: "false"
               TINYAUTH_AUTH_SECURECOOKIE: "true"
               TINYAUTH_AUTH_SESSIONEXPIRY: 604800
