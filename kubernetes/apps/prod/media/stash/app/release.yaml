@@ -123,6 +123,15 @@ spec:
               - path: /media
                 subPath: manual/metube/video
 
+      backups:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/backups/apps/${APP}
+        advancedMounts:
+          stash:
+            app:
+              - path: /backups
+
       tmpfs:
         type: emptyDir
         advancedMounts:
