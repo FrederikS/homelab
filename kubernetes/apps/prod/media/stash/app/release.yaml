@@ -79,8 +79,14 @@ spec:
 
     ingress:
       app:
-        # annotations:
-        #   external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: "http://tinyauth.auth.svc.cluster.local:3000/api/auth/nginx"
+          nginx.ingress.kubernetes.io/auth-signin: "https://tinyauth.${SECRET_DOMAIN}/login"
+          nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: Remote-User
+          nginx.ingress.kubernetes.io/auth-snippet: |
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
         className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
