@@ -1,3 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stash-db-backup-script
+  namespace: media
+data:
+  backup.sh: |
+    #!/bin/sh
+    set -e
+
+    echo "Triggering Stash DB backup..."
+    echo "Using API endpoint: http://stash.media.svc.cluster.local:9999/graphql"
+
+    curl -f -X POST \
+      -H "Content-Type: application/json" \
+      -H "ApiKey: $${API_KEY}" \
+      --data '{ "query": "mutation { backupDatabase(input: { download: false }) }" }' \
+      http://stash.media.svc.cluster.local:9999/graphql
+
+    echo "Done."
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -13,17 +34,26 @@ spec:
           backoffLimit: 3
           containers:
             - name: backup
-              image: curlimages/curl:latest
-              args:
-                - curl
-                - -f
-                - -X
-                - POST
-                - -H
-                - "Content-Type: application/json"
-                - --data
-                - '{ "query": "mutation { backupDatabase(input: { download: false }) }" }'
-                - http://stash.media.svc.cluster.local:9999/graphql
+              image: curlimages/curl:8.17.0
+              command: ["/bin/sh", "/scripts/backup.sh"]
+              env:
+                - name: API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: stash-secret
+                      key: API_KEY
+              volumeMounts:
+                - name: script
+                  mountPath: /scripts/backup.sh
+                  subPath: backup.sh
+          volumes:
+            - name: script
+              configMap:
+                name: stash-db-backup-script
+                defaultMode: 0555
+                items:
+                  - key: backup.sh
+                    path: backup.sh
 ---
 apiVersion: v1
 kind: ConfigMap
