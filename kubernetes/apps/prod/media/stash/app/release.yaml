@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: stashapp/stash
-              tag: v0.30.1
+              tag: v0.31.0
             env:
               STASH_STASH: /media/
               STASH_BLOBS_PATH: /blobs
