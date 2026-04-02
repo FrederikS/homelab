@@ -81,7 +81,7 @@ spec:
           app:
             image:
               repository: ghcr.io/alexta69/metube
-              tag: 2026.03.21
+              tag: 2026.04.02
             env:
               AUDIO_DOWNLOAD_DIR: "/downloads/audio"
               DOWNLOAD_DIR: "/downloads/video"
@@ -96,7 +96,7 @@ spec:
                 cpu: 15m
                 memory: 128Mi
               limits:
-                memory: 512Mi
+                memory: 1024Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
