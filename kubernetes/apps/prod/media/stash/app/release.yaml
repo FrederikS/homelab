@@ -122,6 +122,16 @@ spec:
             app:
               - path: /media
 
+      downloads:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/media/downloads
+        advancedMounts:
+          stash:
+            app:
+              - path: /downloads
+                subPath: manual/metube/video
+
       backups:
         type: nfs
         server: ${NAS_SERVER_IP}
