@@ -100,3 +100,7 @@
       become: true
     - role: nvidia
       become: true
+
+- hosts: vpn_router
+  roles:
+    - role: artis3n.tailscale.machine
