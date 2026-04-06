@@ -17,3 +17,4 @@ resources:
   - "./mathesar/ks.yaml"
   - "./vikunja/ks.yaml"
   - "./typst/ks.yaml"
+  - "./bentopdf/ks.yaml"
