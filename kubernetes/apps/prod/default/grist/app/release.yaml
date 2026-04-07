@@ -58,9 +58,7 @@ spec:
 
     ingress:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: external
+        className: internal
         hosts:
           - host: &host "grist.${SECRET_DOMAIN}"
             paths:
