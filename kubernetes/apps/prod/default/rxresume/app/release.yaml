@@ -140,9 +140,7 @@ spec:
           - hosts:
               - *browserlesshost
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: external
+        className: internal
         hosts:
           - host: &host rxresume.${SECRET_DOMAIN}
             paths:
