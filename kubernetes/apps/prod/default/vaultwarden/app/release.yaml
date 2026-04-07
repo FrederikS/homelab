@@ -66,30 +66,11 @@ spec:
 
     ingress:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: external
+        className: internal
         hosts:
           - host: &host "vaultwarden.${SECRET_DOMAIN}"
             paths:
               - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-      admin:
-        annotations:
-          external-dns.alpha.kubernetes.io/exclude: "true"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            allow 10.42.3.0/24;
-            deny all;
-        className: external
-        hosts:
-          - host: *host
-            paths:
-              - path: /admin
                 service:
                   identifier: app
                   port: http
