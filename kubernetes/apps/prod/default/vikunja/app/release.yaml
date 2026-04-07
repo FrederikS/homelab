@@ -45,6 +45,7 @@ spec:
               VIKUNJA_MAILER_ENABLED: true
               VIKUNJA_MAILER_HOST: smtp.protonmail.ch
               VIKUNJA_MAILER_PORT: 587
+              VIKUNJA_OUTGOINGREQUESTS_ALLOWNONROUTABLEIPS: true
               VIKUNJA_SERVICE_PUBLICURL: https://vikunja.${SECRET_DOMAIN}
               VIKUNJA_SERVICE_TIMEZONE: ${TIMEZONE}
               VIKUNJA_SERVICE_ENABLETASKATTACHMENTS: true
