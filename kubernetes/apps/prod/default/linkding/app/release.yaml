@@ -27,7 +27,22 @@ spec:
               tag: 1.45.0
             env:
               TZ: ${TIMEZONE}
+              LD_CSRF_TRUSTED_ORIGINS: "https://linkding.${SECRET_DOMAIN}"
+              LD_DISABLE_BACKGROUND_TASKS: false
+              LD_DISABLE_URL_VALIDATION: false
+              LD_DISABLE_LOGIN_FORM: true
+              LD_ENABLE_OIDC: true
               LD_SERVER_PORT: "9090"
+              OIDC_OP_AUTHORIZATION_ENDPOINT: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/auth
+              OIDC_OP_TOKEN_ENDPOINT: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/token
+              OIDC_OP_USER_ENDPOINT: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/userinfo
+              OIDC_OP_JWKS_ENDPOINT: https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}/protocol/openid-connect/certs
+              OIDC_USE_PKCE: false
+              OIDC_VERIFY_SSL: true
+              OIDC_USERNAME_CLAIM: preferred_username
+            envFrom:
+              - secretRef:
+                  name: linkding-secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
