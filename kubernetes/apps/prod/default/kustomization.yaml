@@ -18,3 +18,4 @@ resources:
   - "./vikunja/ks.yaml"
   - "./typst/ks.yaml"
   - "./bentopdf/ks.yaml"
+  - "./linkding/ks.yaml"
