@@ -24,6 +24,13 @@ spec:
       repository: ghcr.io/homarr-labs/homarr
       tag: v1.58.1
 
+    podSecurityContext:
+      fsGroup: 0
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+      allowPrivilegeEscalation: false
+
     env:
       AUTH_PROVIDERS: oidc
       TZ: "${TIMEZONE}"
@@ -52,9 +59,7 @@ spec:
 
     ingress:
       enabled: true
-      annotations:
-        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-      ingressClassName: external
+      ingressClassName: internal
       hosts:
         - host: "dash.${SECRET_DOMAIN}"
           paths:
