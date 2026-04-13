@@ -174,6 +174,15 @@
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       }
+    },
+    {
+      "description": "k8s-gateway Group",
+      "groupName": "k8s-gateway",
+      "matchDatasources": ["docker", "helm"],
+      "matchPackageNames": ["/k8s-gateway/"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
     }
   ],
   "customManagers": [
