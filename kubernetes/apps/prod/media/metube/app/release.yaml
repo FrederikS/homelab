@@ -81,7 +81,7 @@ spec:
           app:
             image:
               repository: ghcr.io/alexta69/metube
-              tag: 2026.04.05
+              tag: 2026.04.12
             env:
               AUDIO_DOWNLOAD_DIR: "/downloads/audio"
               DOWNLOAD_DIR: "/downloads/video"
