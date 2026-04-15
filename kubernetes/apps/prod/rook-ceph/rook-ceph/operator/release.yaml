@@ -19,6 +19,7 @@ spec:
   values:
     nodeSelector:
       kubernetes.io/arch: amd64
+    obcAllowAdditionalConfigFields: "bucketPolicy,bucketOwner,bucketLifecycle,maxObjects,maxSize"
     monitoring:
       enabled: true
     csi:

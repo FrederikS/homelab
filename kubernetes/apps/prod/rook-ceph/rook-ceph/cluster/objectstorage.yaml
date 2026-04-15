@@ -4,6 +4,8 @@ kind: CephObjectStore
 metadata:
   name: rook-ceph-object-store
 spec:
+  allowUsersInNamespaces:
+    - default
   metadataPool:
     failureDomain: host
     replicated:

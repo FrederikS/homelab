@@ -1,0 +1,38 @@
+---
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStoreUser
+metadata:
+  name: ${APP}
+spec:
+  store: rook-ceph-object-store
+  clusterNamespace: rook-ceph
+  displayName: ${APP}
+  keys:
+    - accessKeyRef:
+        name: ${APP}-secret
+        key: AWS_ACCESS_KEY_ID
+      secretKeyRef:
+        name: ${APP}-secret
+        key: AWS_SECRET_ACCESS_KEY
+---
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: ${APP}-bucket
+spec:
+  bucketName: ${APP}
+  storageClassName: rook-ceph-bucket
+  additionalConfig:
+    bucketOwner: mathesar
+    bucketPolicy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::mathesar/*"
+          }
+        ]
+      }
