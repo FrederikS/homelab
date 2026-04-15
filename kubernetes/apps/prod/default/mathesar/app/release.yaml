@@ -59,6 +59,10 @@ spec:
                 secretKeyRef:
                   name: mathesar-secret
                   key: OIDC_CONFIG_DICT
+              FILE_STORAGE_DICT:
+                secretKeyRef:
+                  name: mathesar-secret
+                  key: FILE_STORAGE_DICT
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
