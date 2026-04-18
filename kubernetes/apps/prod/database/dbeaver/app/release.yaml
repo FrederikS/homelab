@@ -29,6 +29,7 @@ spec:
               tag: 26.0.2
             env:
               HTTP_PORT: &port 8978
+              CLOUDBEAVER_RESOURCE_QUOTA_SQL_TEXT_PREVIEW_MAX_LENGTH: 30000
             resources:
               requests:
                 cpu: 50m
