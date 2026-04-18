@@ -82,6 +82,8 @@ spec:
     ingress:
       app:
         className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: 10m
         hosts:
           - host: &host "mathesar.${SECRET_DOMAIN}"
             paths:
