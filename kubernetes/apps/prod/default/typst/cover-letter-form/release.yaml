@@ -33,7 +33,7 @@ spec:
           nginx:
             image:
               repository: nginxinc/nginx-unprivileged
-              tag: 1.29-alpine
+              tag: 1.30.0-alpine
             env:
               TZ: ${TIMEZONE}
             probes:
