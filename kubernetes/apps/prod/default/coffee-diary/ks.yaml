@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname coffee-diary-api
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/apps/prod/default/coffee-diary/api
+  prune: true
+  wait: true
+  postBuild:
+    substitute:
+      APP: *appname
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname coffee-diary-ui
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/apps/prod/default/coffee-diary/ui
+  prune: true
+  wait: true
+  dependsOn:
+    - name: coffee-diary-api
+  postBuild:
+    substitute:
+      APP: *appname

@@ -19,3 +19,4 @@ resources:
   - "./typst/ks.yaml"
   - "./bentopdf/ks.yaml"
   - "./linkding/ks.yaml"
+  - "./coffee-diary/ks.yaml"
