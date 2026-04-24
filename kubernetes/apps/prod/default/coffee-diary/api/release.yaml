@@ -33,9 +33,28 @@ spec:
           app:
             image:
               repository: ghcr.io/frederiks/coffee-diary-api
-              tag: 0.0.1
+              tag: 0.0.2
             env:
               TZ: ${TIMEZONE}
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /q/health/live
+                    port: &port 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 45
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /q/health/ready
+                    port: *port
+                  initialDelaySeconds: 5
+                  periodSeconds: 45
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -51,7 +70,7 @@ spec:
       app:
         ports:
           http:
-            port: 8080
+            port: *port
 
     persistence:
       tmp:
