@@ -33,9 +33,12 @@ spec:
           app:
             image:
               repository: ghcr.io/frederiks/coffee-diary-api
-              tag: 0.0.2
+              tag: 0.0.3@sha256:5d955218c55d58376195024ef4b2d60f982d7ce0035ed79b2a27814c11927d6c
             env:
               TZ: ${TIMEZONE}
+            envFrom:
+              - secretRef:
+                  name: coffee-diary-api-secret
             probes:
               liveness:
                 enabled: true
@@ -64,13 +67,32 @@ spec:
                 cpu: 50m
                 memory: 64Mi
               limits:
-                memory: 128Mi
+                memory: 256Mi
 
     service:
       app:
         ports:
           http:
             port: *port
+
+    ingress:
+      app:
+        annotations:
+          nginx.ingress.kubernetes.io/enable-cors: "true"
+          nginx.ingress.kubernetes.io/cors-allow-origin: "https://coffee.${SECRET_DOMAIN}"
+          nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS"
+          nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, Authorization"
+        className: internal
+        hosts:
+          - host: &host "coffee-api.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
 
     persistence:
       tmp:
