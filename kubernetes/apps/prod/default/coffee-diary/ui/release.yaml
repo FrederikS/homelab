@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/frederiks/coffee-diary-ui
-              tag: 0.0.2
+              tag: 0.0.3
             env:
               TZ: ${TIMEZONE}
               API_URL: http://coffee-diary-api:8080
