@@ -85,6 +85,7 @@ spec:
               repository: ghcr.io/alexta69/metube
               tag: 2026.04.26
             env:
+              ALLOW_YTDL_OPTIONS_OVERRIDES: "true"
               AUDIO_DOWNLOAD_DIR: "/downloads/audio"
               DOWNLOAD_DIR: "/downloads/video"
               # DOWNLOAD_MODE: concurrent # defaults to limited
@@ -93,6 +94,7 @@ spec:
               STATE_DIR: "/config"
               OUTPUT_TEMPLATE: "%(upload_date)s - %(title)s - %(id)s (%(extractor)s).%(ext)s"
               YTDL_OPTIONS: '{"http_headers":{"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0"}}'
+              YTDL_OPTIONS_PRESETS_FILE: /resources/presets.json
             resources:
               requests:
                 cpu: 15m
@@ -139,6 +141,16 @@ spec:
           metube:
             app:
               - path: /config
+
+      resources:
+        type: configMap
+        name: metube-resources
+        defaultMode: 0555
+        advancedMounts:
+          metube:
+            app:
+              - path: /resources
+                readOnly: true
 
       downloads:
         type: nfs
