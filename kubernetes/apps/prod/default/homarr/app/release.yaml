@@ -37,6 +37,7 @@ spec:
       AUTH_OIDC_CLIENT_NAME: Keycloak
       AUTH_OIDC_ISSUER: "https://iam.${SECRET_DOMAIN}/realms/${SECRET_DOMAIN}"
       AUTH_OIDC_AUTO_LOGIN: "true"
+      AUTH_OIDC_GROUPS_ATTRIBUTE: homarr_role
       #LOG_LEVEL: "debug"
 
     envSecrets:
