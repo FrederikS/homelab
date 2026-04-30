@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/n8n-io/n8n
-              tag: 2.12.3
+              tag: 2.18.5
             env:
               NODE_ENV: production
               DB_SQLITE_POOL_SIZE: 10
