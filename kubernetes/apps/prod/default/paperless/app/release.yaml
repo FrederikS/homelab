@@ -96,6 +96,8 @@ spec:
               PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"
               PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
               PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS: "true"
+              # not released yet
+              # PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS_CLAIM:  paperless_role | resource_access.paperless.roles
               PAPERLESS_FILENAME_FORMAT: "{{ `{{ owner_username }}/{{ created_year }}/{{ correspondent }}/{{ created }}_{{ title }}` }}"
               PAPERLESS_GMAIL_OAUTH_CLIENT_ID:
                 valueFrom:
