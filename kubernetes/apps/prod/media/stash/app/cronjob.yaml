@@ -34,7 +34,7 @@ spec:
           backoffLimit: 3
           containers:
             - name: backup
-              image: curlimages/curl:8.19.0
+              image: curlimages/curl:8.20.0
               command: ["/bin/sh", "/scripts/backup.sh"]
               env:
                 - name: API_KEY
