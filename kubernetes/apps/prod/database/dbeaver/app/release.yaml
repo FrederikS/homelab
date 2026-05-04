@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: dbeaver/cloudbeaver
-              tag: 26.0.3
+              tag: 26.0.4
             env:
               HTTP_PORT: &port 8978
               CLOUDBEAVER_RESOURCE_QUOTA_SQL_TEXT_PREVIEW_MAX_LENGTH: 100000
