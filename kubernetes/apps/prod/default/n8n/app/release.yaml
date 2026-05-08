@@ -6,8 +6,7 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: flux-system
+    name: n8n
   interval: 15m
   install:
     remediation:

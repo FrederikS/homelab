@@ -226,9 +226,35 @@ kubernetes/apps/<cluster>/<namespace>/<app>/
 ├── ks.yaml                      # Flux Kustomization for this app
 └── app/
     ├── kustomization.yaml
+    ├── repository.yaml        # OCIRepository for bjw-s app-template
     ├── helmrelease.yaml         # Or raw manifests
     └── *.sops.yaml             # Encrypted secrets if needed
 ```
+
+**Important**: When using the bjw-s app-template, each app must have its own local OCIRepository in `repository.yaml`. This provides version isolation and allows each app to pin its own chart version independently.
+
+Example `repository.yaml` for an app using app-template:
+
+```yaml
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: my-app
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.6.2
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+```
+
+- `metadata.name`: Set to the app name (e.g., `my-app`)
+- `spec.ref.tag`: Use the latest [app-template release](https://github.com/bjw-s-labs/helm-charts/releases) version
+- Do NOT specify namespace - it will be injected via `targetNamespace`
 
 README.md must include:
 
@@ -265,8 +291,26 @@ README.md must include:
        type: RuntimeDefault
    ```
 
-7. Add to `kubernetes/clusters/prod/apps.yaml` if needed
-8. Test with: `flux get hr -n <namespace> <app>`
+7. Update `app/kustomization.yaml` to include `repository.yaml` in resources:
+
+   ```yaml
+   resources:
+     - "./repository.yaml"
+     - "./release.yaml"
+     # ... other resources
+   ```
+
+8. Update `app/helmrelease.yaml` chartRef to use the local repository:
+
+   ```yaml
+   spec:
+     chartRef:
+       kind: OCIRepository
+       name: my-app
+   ```
+
+9. Add to `kubernetes/clusters/prod/apps.yaml` if needed
+10. Test with: `flux get hr -n <namespace> <app>`
 
 ### WHEN Modifying Existing Apps
 
@@ -405,6 +449,7 @@ pre-commit run --all-files
 
 ## File Naming Conventions
 
+- **OCIRepository files**: `repository.yaml` (for bjw-s app-template apps)
 - **SOPS encrypted files**: `*.sops.yaml` (templates without secret values are `*.sops.yaml.tmpl`)
 - **Kustomization files**: `kustomization.yaml` or `ks.yaml`
 - **HelmRelease files**: `helmrelease.yaml` or `<app>-helmrelease.yaml`
