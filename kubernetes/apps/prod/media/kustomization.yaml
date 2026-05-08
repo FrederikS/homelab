@@ -9,6 +9,5 @@ resources:
   - "./sonarr/ks.yaml"
   - "./lidarr/ks.yaml"
   - "./navidrome/ks.yaml"
-  - "./dispatcharr/ks.yaml"
   - "./metube/ks.yaml"
   - "./stash/ks.yaml"
