@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/frederiks/coffee-diary-ui
-              tag: 0.0.5@sha256:c9ec592efda75e18bc8481d653f32e32339e537ce7b7f506dc776e818de64942
+              tag: 0.0.6@sha256:16fa5b2fd1ebefdbc24d90c90c2e2334ed0c63c579fc153732b1a1124691f6b7
             env:
               TZ: ${TIMEZONE}
             probes:

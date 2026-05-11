@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/frederiks/coffee-diary-api
-              tag: 0.0.5@sha256:45844ae4f357f87fb2745095735acda548021f51a87455117e4df179247f1d7c
+              tag: 0.0.6@sha256:e7a541568bc2fd7058029703eb3c0948ac386f22285d0f63ce7e3a88da340e77
             env:
               TZ: ${TIMEZONE}
             envFrom:
