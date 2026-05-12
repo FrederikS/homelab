@@ -165,6 +165,12 @@
       "enabled": false
     },
     {
+      "description": "n8n - strip prefix from github release tag",
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["n8n-io/n8n"],
+      "extractVersion": "^n8n@(?<version>.+)$"
+    },
+    {
       "description": "Homarr Group",
       "groupName": "Homarr",
       "matchDatasources": ["docker", "helm"],
