@@ -162,7 +162,7 @@
       "description": "n8n - ignore pre-releases via GitHub release metadata",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/n8n-io/n8n"],
-      "minimumReleaseAge": "3 days"
+      "enabled": false
     },
     {
       "description": "Homarr Group",
