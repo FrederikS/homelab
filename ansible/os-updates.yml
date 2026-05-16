@@ -1,0 +1,146 @@
+---
+# =============================================================================
+# k3s Node OS Update Playbook
+# Target: Ubuntu Server (VMs on Proxmox + bare metal, mixed amd64/arm)
+#
+# Strategy:
+#   - Updates agent nodes first, then control plane nodes
+#   - One node at a time (serial: 1)
+#   - Reboots only if required
+#   - Waits for the node to be Ready in k3s before moving on
+#
+# Usage:
+#   # Update all k3s nodes
+#   ansible-playbook k3s_os_updates.yml -i inventory.ini
+#
+#   # Preview available updates without applying
+#   ansible-playbook k3s_os_updates.yml -i inventory.ini -e "os_update_preview=true"
+#
+#   # Skip reboots (reboot separately later)
+#   ansible-playbook k3s_os_updates.yml -i inventory.ini -e "os_update_reboot=false"
+#
+#   # Limit to a single node for testing
+#   ansible-playbook k3s_os_updates.yml -i inventory.ini --limit 192.168.0.101
+#
+# Inventory groups expected:
+#   [master]  - control plane nodes
+#   [node]    - agent/worker nodes
+# =============================================================================
+
+- name: Update k3s nodes
+  hosts: k3s_cluster
+  gather_facts: true
+  become: true
+  serial: 1
+
+  vars:
+    os_update_reboot: true
+    os_update_reboot_timeout: 600
+    os_update_pre_reboot_delay: 15
+    os_update_post_reboot_delay: 30
+    os_update_preview: false
+    os_update_ready_retries: 20
+    os_update_ready_delay: 15
+    # Delegate kubectl to a master that isn't currently being updated
+    k3s_control_node: "{{ (groups['master'] | difference([inventory_hostname])) | first }}"
+    hostname: "{{ ansible_facts.hostname }}"
+
+  pre_tasks:
+    - name: Show host info
+      ansible.builtin.debug:
+        msg: "Starting update on {{ hostname }} ({{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }})"
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+  tasks:
+    # ---------------------------------------------------------------------------
+    # Preview mode
+    # ---------------------------------------------------------------------------
+    - name: Preview available updates
+      ansible.builtin.command: apt list --upgradable
+      changed_when: false
+      register: apt_preview
+      when: os_update_preview | bool
+
+    - name: Show available updates
+      ansible.builtin.debug:
+        msg: "{{ apt_preview.stdout_lines }}"
+      when:
+        - os_update_preview | bool
+        - apt_preview.stdout_lines | length > 0
+
+    - name: Stop here in preview mode
+      ansible.builtin.meta: end_host
+      when: os_update_preview | bool
+
+    # ---------------------------------------------------------------------------
+    # Apply updates
+    # ---------------------------------------------------------------------------
+    - name: Apply all available updates
+      ansible.builtin.apt:
+        upgrade: full
+        autoremove: true
+        autoclean: true
+        purge: false
+      register: apt_upgrade
+      retries: 5
+      delay: 10
+      until: apt_upgrade is success
+      environment:
+        DEBIAN_FRONTEND: noninteractive
+
+    # ---------------------------------------------------------------------------
+    # Reboot if needed
+    # ---------------------------------------------------------------------------
+    - name: Check if reboot is required
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+        get_checksum: false
+      register: reboot_required_file
+      when: os_update_reboot | bool
+
+    - name: Reboot node (if required)
+      ansible.builtin.reboot:
+        reboot_timeout: "{{ os_update_reboot_timeout }}"
+        pre_reboot_delay: "{{ os_update_pre_reboot_delay }}"
+        post_reboot_delay: "{{ os_update_post_reboot_delay }}"
+        test_command: uptime
+      when:
+        - os_update_reboot | bool
+        - reboot_required_file.stat.exists | default(false)
+
+    - name: Report no reboot needed
+      ansible.builtin.debug:
+        msg: "No reboot required for {{ hostname }}"
+      when:
+        - os_update_reboot | bool
+        - not (reboot_required_file.stat.exists | default(false))
+
+    # ---------------------------------------------------------------------------
+    # Wait for node to rejoin — delegate to a different master, not the one
+    # being updated
+    # ---------------------------------------------------------------------------
+    - name: Wait for node to be Ready in k3s
+      ansible.builtin.command: >
+        kubectl get node {{ hostname }} --no-headers
+      delegate_to: "{{ k3s_control_node }}"
+      become: true
+      register: node_status
+      until: "'Ready' in node_status.stdout and 'NotReady' not in node_status.stdout"
+      retries: "{{ os_update_ready_retries }}"
+      delay: "{{ os_update_ready_delay }}"
+      changed_when: false
+      when: reboot_required_file.stat.exists | default(false)
+
+    # ---------------------------------------------------------------------------
+    # Summary
+    # ---------------------------------------------------------------------------
+    - name: Update summary
+      ansible.builtin.debug:
+        msg:
+          - "Host    : {{ hostname }}"
+          - "Rebooted: {{ reboot_required_file.stat.exists | default(false) }}"
+          - "Status  : Done"
