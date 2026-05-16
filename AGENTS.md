@@ -452,7 +452,7 @@ pre-commit run --all-files
 - **OCIRepository files**: `repository.yaml` (for bjw-s app-template apps)
 - **SOPS encrypted files**: `*.sops.yaml` (templates without secret values are `*.sops.yaml.tmpl`)
 - **Kustomization files**: `kustomization.yaml` or `ks.yaml`
-- **HelmRelease files**: `helmrelease.yaml` or `<app>-helmrelease.yaml`
+- **HelmRelease files**: `release.yaml`
 - **App README**: Always `README.md` (not readme.md or README.MD)
 - **ConfigMaps/Secrets**: Descriptive names like `app-config.yaml`, `app-secret.sops.yaml`
 - **PVCs**: If an app uses a single PVC, name it exactly as the app (e.g., `linkding` not `linkding-data`)
