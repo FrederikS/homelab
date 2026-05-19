@@ -11,3 +11,4 @@ resources:
   - "./navidrome/ks.yaml"
   - "./metube/ks.yaml"
   - "./stash/ks.yaml"
+  - "./profilarr/ks.yaml"
