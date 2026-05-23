@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/alam00000/bentopdf-simple
-              tag: 2.8.4
+              tag: 2.8.5
             env:
               TZ: ${TIMEZONE}
             securityContext:
