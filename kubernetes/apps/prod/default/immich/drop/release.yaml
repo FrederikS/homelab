@@ -30,6 +30,7 @@ spec:
                     name: immich-drop-secret
                     key: IMMICH_API_KEY
               PUBLIC_UPLOAD_PAGE_ENABLED: "false"
+              PUBLIC_BASE_URL: "https://drop.${SECRET_DOMAIN}"
             resources:
               requests:
                 cpu: 10m
