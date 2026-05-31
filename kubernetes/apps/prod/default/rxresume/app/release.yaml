@@ -19,6 +19,7 @@ spec:
   values:
     controllers:
       rxresume:
+        replicas: 0
         pod:
           nodeSelector:
             kubernetes.io/arch: amd64
