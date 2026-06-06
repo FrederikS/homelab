@@ -82,7 +82,7 @@ spec:
           app:
             image:
               repository: ghcr.io/alexta69/metube
-              tag: 2026.05.30
+              tag: 2026.06.06
             env:
               ALLOW_YTDL_OPTIONS_OVERRIDES: "true"
               AUDIO_DOWNLOAD_DIR: "/downloads/audio"
