@@ -102,7 +102,7 @@ spec:
                   topologyKey: kubernetes.io/hostname
           containers:
             - name: rsync
-              image: alpine:3.23
+              image: alpine:3.24
               command: ["/bin/sh", "/scripts/backup.sh"]
               volumeMounts:
                 - name: stash-config
