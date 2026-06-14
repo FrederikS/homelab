@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/orangecoding/fredy
-              tag: 22.8.0
+              tag: 22.9.1
             env:
               TZ: ${TIMEZONE}
               NODE_ENV: production
