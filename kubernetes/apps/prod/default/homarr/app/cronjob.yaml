@@ -42,7 +42,7 @@ spec:
                   topologyKey: kubernetes.io/hostname
           containers:
             - name: backup
-              image: alpine/sqlite:3.51.2
+              image: alpine/sqlite:3.53.2
               command: ["sh", "/scripts/backup.sh"]
               securityContext:
                 allowPrivilegeEscalation: false
