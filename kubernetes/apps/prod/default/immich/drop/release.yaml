@@ -19,8 +19,8 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/nasogaa/immich-drop
-              tag: v0.5.0
+              repository: ttlequals0/immich-drop
+              tag: 1.8.2
             env:
               CHUNKED_UPLOADS_ENABLED: "true"
               IMMICH_BASE_URL: http://immich-server:2283/api
@@ -51,7 +51,7 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/proxy-body-size: 10m
+          nginx.ingress.kubernetes.io/proxy-body-size: 100m
         hosts:
           - host: "drop.${SECRET_DOMAIN}"
             paths:
