@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: ghcr.io/sissbruecker/linkding
-              tag: 1.46.0
+              tag: 1.46.2
             env:
               TZ: ${TIMEZONE}
               LD_CSRF_TRUSTED_ORIGINS: "https://linkding.${SECRET_DOMAIN}"
