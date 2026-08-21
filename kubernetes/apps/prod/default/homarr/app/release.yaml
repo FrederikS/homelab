@@ -22,7 +22,7 @@ spec:
   values:
     image:
       repository: ghcr.io/homarr-labs/homarr
-      tag: v1.75.0
+      tag: v1.76.0
 
     podSecurityContext:
       fsGroup: 0
