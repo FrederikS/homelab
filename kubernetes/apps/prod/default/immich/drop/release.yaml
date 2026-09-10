@@ -20,7 +20,7 @@ spec:
           main:
             image:
               repository: ttlequals0/immich-drop
-              tag: 1.8.2
+              tag: 1.9.1
             env:
               CHUNKED_UPLOADS_ENABLED: "true"
               IMMICH_BASE_URL: http://immich-server:2283/api
