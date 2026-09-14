@@ -12,3 +12,5 @@ resources:
   - "./metube/ks.yaml"
   - "./stash/ks.yaml"
   - "./profilarr/ks.yaml"
+  - "./audiobookshelf/ks.yaml"
+  - "./shelfmark/ks.yaml"
