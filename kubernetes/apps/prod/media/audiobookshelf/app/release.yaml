@@ -98,7 +98,7 @@ spec:
         server: ${NAS_SERVER_IP}
         path: /tank/media/audiobooks
         globalMounts:
-          - path: /media
+          - path: /media/audiobooks
             readOnly: true
       tmp:
         type: emptyDir

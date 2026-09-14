@@ -13,3 +13,4 @@ resources:
   - "./stash/ks.yaml"
   - "./profilarr/ks.yaml"
   - "./audiobookshelf/ks.yaml"
+  - "./shelfmark/ks.yaml"

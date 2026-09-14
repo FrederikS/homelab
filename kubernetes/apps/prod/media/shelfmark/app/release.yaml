@@ -1,0 +1,141 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app shelfmark
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: shelfmark
+  install:
+    timeout: 10m
+    remediation:
+      retries: -1
+  upgrade:
+    timeout: 10m
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      shelfmark:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/calibrain/shelfmark-lite
+              tag: v1.3.15
+            command:
+              - gunicorn
+            args:
+              - --access-logfile=-
+              - --error-logfile=-
+              - --worker-class=geventwebsocket.gunicorn.workers.GeventWebSocketWorker
+              - --workers=1
+              - -t
+              - "300"
+              - -b
+              - 0.0.0.0:8084
+              - shelfmark.main:app
+            env:
+              TZ: ${TIMEZONE}
+              FLASK_PORT: &port 8084
+              SEARCH_MODE: universal
+              AUDIOBOOK_LIBRARY_URL: https://audiobookshelf.${SECRET_DOMAIN}
+              DESTINATION_AUDIOBOOK: /media/audiobooks
+              FILE_ORGANIZATION_AUDIOBOOK: organize
+              TEMPLATE_AUDIOBOOK_ORGANIZE: "{Author}/{Title}/{Author} - {Title} ({PartNumber})"
+              PROWLARR_ENABLED: "true"
+              PROWLARR_URL: http://prowlarr
+              DEFAULT_RELEASE_SOURCE_AUDIOBOOK: prowlarr
+              CUSTOM_DNS: system
+              AUTH_METHOD: builtin
+              ONBOARDING: "false"
+              SESSION_COOKIE_SECURE: "true"
+              PROWLARR_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: prowlarr-secret
+                    key: PROWLARR__AUTH__APIKEY
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: *port
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        controller: shelfmark
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: *app
+        globalMounts:
+          - path: /config
+      media:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/media/audiobooks
+        globalMounts:
+          - path: /media/audiobooks
+      downloads:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/media/downloads
+        globalMounts:
+          - path: /media/downloads/complete/audiobooks
+            subPath: complete/audiobooks
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+          - path: /var/log
+            subPath: var-log
+          - path: /home/shelfmark/.gunicorn
+            subPath: gunicorn
