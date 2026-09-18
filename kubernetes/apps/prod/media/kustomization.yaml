@@ -14,3 +14,4 @@ resources:
   - "./profilarr/ks.yaml"
   - "./audiobookshelf/ks.yaml"
   - "./shelfmark/ks.yaml"
+  - "./audiobookrequest/ks.yaml"
