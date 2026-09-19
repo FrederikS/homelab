@@ -14,5 +14,6 @@ configMapGenerator:
       - "./resources/scripts/clean_nzb_name.py"
       - "./resources/scripts/replace_for.py"
       - "./resources/scripts/post_process.sh"
+      - "./resources/scripts/audiobooks.py"
 generatorOptions:
   disableNameSuffixHash: true
