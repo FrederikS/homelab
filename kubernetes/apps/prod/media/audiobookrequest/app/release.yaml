@@ -28,12 +28,6 @@ spec:
               TZ: ${TIMEZONE}
               ABR_APP__PORT: &port 8000
               ABR_APP__LOG_LEVEL: info
-              PROWLARR_URL: http://prowlarr
-              PROWLARR_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: prowlarr-secret
-                    key: PROWLARR__AUTH__APIKEY
             probes:
               liveness: &probes
                 enabled: true
@@ -56,7 +50,7 @@ spec:
                 cpu: 15m
                 memory: 145M
               limits:
-                memory: 191M
+                memory: 512M
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
