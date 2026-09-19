@@ -101,7 +101,7 @@ spec:
                 {{ .Release.Name }}.${SECRET_DOMAIN}
               TZ: ${TIMEZONE}
               PYTHONPATH: /deps
-              AUDIOBOOK_FOLDER: /media/downloads/complete/audiobooks
+              AUDIOBOOK_FOLDER: /media/audiobooks
               ABS_URL: http://audiobookshelf
               ABS_LIBRARY: nas
             envFrom:
