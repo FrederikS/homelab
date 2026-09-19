@@ -101,6 +101,9 @@ spec:
                 {{ .Release.Name }}.${SECRET_DOMAIN}
               TZ: ${TIMEZONE}
               PYTHONPATH: /deps
+              AUDIOBOOK_FOLDER: /media/downloads/complete/audiobooks
+              ABS_URL: http://audiobookshelf
+              ABS_LIBRARY: nas
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
@@ -224,14 +227,14 @@ spec:
               - path: /scripts
                 readOnly: true
 
-    pydeps:
-      type: emptyDir
-      advancedMounts:
-        sabnzbd:
-          pip-deps:
-            - path: /deps
-          app:
-            - path: /deps
+      pydeps:
+        type: emptyDir
+        advancedMounts:
+          sabnzbd:
+            pip-deps:
+              - path: /deps
+            app:
+              - path: /deps
 
       temp:
         type: emptyDir

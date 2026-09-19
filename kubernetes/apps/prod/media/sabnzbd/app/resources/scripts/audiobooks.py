@@ -5,16 +5,24 @@ import sys
 import requests
 import shutil
 import re
+import os
 from pathlib import Path
 from mutagen import File
 from unidecode import unidecode
 
-AUDIOBOOK_FOLDER = "" # "/audiobooks" - Path where you mounted your audiobooks in the SABnzbd docker container
-ABS_URL = "" # "http://localhost:13378"
-ABS_LIBRARY = None # "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-ABS_BEARER = None # "eyHUAFHW…"
-PUSHOVER_TOKEN = None # Pushover app token "xxxxxxxxxxxxxxxxxxxxx"
-PUSHOVER_USER = None # Pushover user key "xxxxxxxxxxxxxxxxxxxxx"
+# AUDIOBOOK_FOLDER = "" # "/audiobooks" - Path where you mounted your audiobooks in the SABnzbd docker container
+# ABS_URL = "" # "http://localhost:13378"
+# ABS_LIBRARY = None # "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+# ABS_BEARER = None # "eyHUAFHW…"
+# PUSHOVER_TOKEN = None # Pushover app token "xxxxxxxxxxxxxxxxxxxxx"
+# PUSHOVER_USER = None # Pushover user key "xxxxxxxxxxxxxxxxxxxxx"
+
+AUDIOBOOK_FOLDER = os.environ.get("AUDIOBOOK_FOLDER", "")
+ABS_URL          = os.environ.get("ABS_URL", "")
+ABS_LIBRARY      = os.environ.get("ABS_LIBRARY") or None
+ABS_BEARER       = os.environ.get("ABS_BEARER") or None
+PUSHOVER_TOKEN   = os.environ.get("PUSHOVER_TOKEN") or None
+PUSHOVER_USER    = os.environ.get("PUSHOVER_USER") or None
 
 # Common audiobook extensions to check for
 AUDIO_EXTENSIONS = ('.mp3', '.m4a', '.m4b', '.aac', '.ogg', '.opus', '.flac')
