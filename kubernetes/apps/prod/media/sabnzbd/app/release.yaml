@@ -103,7 +103,7 @@ spec:
               PYTHONPATH: /deps
               AUDIOBOOK_FOLDER: /media/audiobooks
               ABS_URL: http://audiobookshelf
-              ABS_LIBRARY: nas
+              ABS_LIBRARY: 52fcafde-7b29-492d-8709-6bc7bf0098fc
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
