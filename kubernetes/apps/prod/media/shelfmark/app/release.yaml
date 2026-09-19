@@ -42,7 +42,7 @@ spec:
               TZ: ${TIMEZONE}
               FLASK_PORT: &port 8084
               SEARCH_MODE: universal
-              AUDIOBOOK_LIBRARY_URL: https://audiobookshelf.${SECRET_DOMAIN}
+              AUDIOBOOK_LIBRARY_URL: https://abs.${SECRET_DOMAIN}
               DESTINATION_AUDIOBOOK: /media/audiobooks
               FILE_ORGANIZATION_AUDIOBOOK: organize
               TEMPLATE_AUDIOBOOK_ORGANIZE: "{Author}/{Title}/{Author} - {Title} ({PartNumber})"
