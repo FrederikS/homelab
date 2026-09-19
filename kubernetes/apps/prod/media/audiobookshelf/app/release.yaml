@@ -99,6 +99,5 @@ spec:
         path: /tank/media/audiobooks
         globalMounts:
           - path: /media/audiobooks
-            readOnly: true
       tmp:
         type: emptyDir
