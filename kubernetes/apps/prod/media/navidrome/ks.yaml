@@ -19,6 +19,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: flux-system
+  components:
+    - "../../../../../components/app-backup-nfs"
   postBuild:
     substitute:
       APP: *appname
