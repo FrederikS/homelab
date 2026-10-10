@@ -271,12 +271,27 @@ Full restore procedure should be tested periodically — not yet done as of this
 
 ## 8.1 Add a new dataset to `tank`
 
-1. Create the dataset under the appropriate parent:
+1. Create the dataset under the appropriate parent **and set ownership/permissions immediately, in the same command sequence**:
+
    ```bash
-   zfs create tank/backups/apps/newapp
-   # or, for media:
+   app=newapp
+   zfs create tank/backups/apps/${app}
+   chown nfs:nfs /tank/backups/apps/${app}
+   chmod 775 /tank/backups/apps/${app}
+   # or, for media (adjust owner/mode to what that dataset needs):
    zfs create tank/media/newthing
    ```
+
+   > **Why this must happen immediately (see Section 8.4):** the owner and mode of a dataset's root directory are stored _inside_ the filesystem, so they are only replicated if a snapshot exists that was taken _after_ the `chown`/`chmod`. Syncoid runs with `--no-sync-snap` and only sends snapshots that already exist. The first Sanoid run after `zfs create` creates the first snapshots of the new dataset (`hourly`, `daily`, `weekly`, `monthly` all at once). If that run happens before the `chown`, every one of those snapshots contains `root:root 755`, and `pond` will receive exactly that — no matter what the live dataset on `tank` looks like. Changing ownership "a bit later" or "before running replication" is **not** sufficient.
+
+   **Ensure a snapshot exists that contains the correct ownership** (do this step if there is any chance Sanoid ran between `zfs create` and `chown`, e.g. if the commands were not run back-to-back):
+
+   ```bash
+   zfs snapshot tank/backups/apps/${app}@autosnap_$(date -u +%F_%H:%M:%S)_daily
+   ```
+
+   The `autosnap_<timestamp>_daily` naming matches Sanoid's pattern, so Sanoid prunes it like any other daily snapshot (it simply counts towards `daily = 7`). Do not use arbitrary snapshot names here — Sanoid ignores them and they would never be pruned.
+
 2. Confirm it inherits Sanoid snapshotting:
    - Datasets under `tank/backups` and `tank/media` are covered automatically, since both parents are configured with `recursive = yes` in `/etc/sanoid/sanoid.conf` (see Section 1). No config change needed for a plain nested dataset.
    - Verify on the next Sanoid run (or force one) that snapshots appear:
@@ -311,11 +326,53 @@ Only datasets explicitly listed in `/usr/local/bin/syncoid-replicate.sh` get rep
    /usr/local/bin/syncoid-replicate.sh
    ```
 4. Verify the new dataset now exists on `pond` with a matching latest snapshot:
+
    ```bash
    zfs list -t snapshot -o name,creation -s creation tank/media/newthing | tail -3
    zfs list -t snapshot -o name,creation -s creation pond/media/newthing | tail -3
    ```
+
+   For datasets under `tank/backups` also check ownership/permissions on `pond` (see Section 8.3 and 8.4 if it shows `root:root 755`).
+
 5. Update this document's replication table in Section 3 ("Current replication set") and the dataset lists in Section 1 to keep them accurate — this doc has already drifted from reality once (see Section 5.1); keeping it in sync going forward avoids repeating that.
+
+## 8.3 Verify ownership and permissions on `pond`
+
+After the first replication of a new dataset, compare the dataset root on both pools:
+
+```bash
+stat -c '%U:%G %a' /tank/backups/apps/${app} /pond/backups/apps/${app}
+# expected for apps: nfs:nfs 775 on both
+```
+
+To see what each snapshot actually contains, stat the dataset root _inside_ the snapshot — note the trailing `/.`:
+
+```bash
+cd /tank/backups/apps/${app}
+for s in .zfs/snapshot/*; do echo "$s: $(stat -c '%U:%G %a' "$s/.")"; done
+```
+
+> **Gotcha:** `stat .zfs/snapshot/<name>` **without** the trailing `/.` reports the snapshot's control directory, which is always `root:root 777` and says nothing about the dataset contents. This is easy to misread as "the snapshot has the wrong owner".
+
+## 8.4 Troubleshooting: dataset arrives on `pond` as `root:root 755`
+
+Symptom: on `tank` the dataset is `nfs:nfs 775`, but after replication `/pond/backups/apps/${app}` is `root:root 755` — and destroying the dataset on `pond` and replicating again gives the same result.
+
+Cause: all existing snapshots on `tank` were taken before the `chown`/`chmod` (see the note in 8.1). Re-replicating just resends those same snapshots, so destroying the `pond` copy does not help. Also, `pond/backups` is `readonly=on`, so ownership cannot be fixed by hand on `pond`.
+
+Fix: take a snapshot on `tank` _after_ the correct ownership is in place, then replicate. This is an incremental send, so nothing needs to be destroyed on `pond`:
+
+```bash
+zfs snapshot tank/backups/apps/${app}@autosnap_$(date -u +%F_%H:%M:%S)_daily
+/usr/sbin/syncoid --no-sync-snap --compress=lz4 tank/backups/apps/${app} pond/backups/apps/${app}
+stat -c '%U:%G %a' /pond/backups/apps/${app}   # expect nfs:nfs 775
+```
+
+Left alone, it would also self-heal after the next scheduled `daily` Sanoid snapshot plus the following syncoid run — but until then the copy on `pond` has the wrong ownership, which matters if you restore from it.
+
+Alternative (not currently used): dropping `--no-sync-snap` on the `tank/backups` syncoid line would make syncoid take its own snapshot at replication time, which always includes the latest ownership. This adds `syncoid_*` snapshots on the source (syncoid prunes those itself) and changes the "Sanoid is the only snapshot creator" design, so it was not adopted.
+
+Incident reference: observed 2026-10-10 with `tank/backups/apps/navidrome` — Sanoid created `monthly`/`weekly`/`daily`/`hourly` snapshots at 11:30:39, before the `chown`; a manual `autosnap_..._daily` snapshot taken afterwards and replicated fixed it.
 
 ---
 
@@ -346,4 +403,4 @@ This setup provides a backup structure of:
 3. Selectively replicated ZFS USB pool (`pond`) — critical/irreplaceable data only
 
 Date documented: 2026-02
-Last revised: 2026-07-25 (post-incident update, reflects actual script contents and current replication scope; added auto-import TODO)
+Last revised: 2026-10-10 (Section 8: set ownership right after `zfs create` and ensure a post-chown snapshot before replication; added 8.3/8.4 on verifying and fixing `root:root` on `pond`). Previous: 2026-07-25 (post-incident update, reflects actual script contents and current replication scope; added auto-import TODO)
