@@ -27,6 +27,9 @@ spec:
             env:
               ND_ENABLEINSIGHTSCOLLECTOR: "false"
               ND_DATAFOLDER: /data
+              ND_BACKUP_PATH: /backup
+              ND_BACKUP_SCHEDULE: "0 4 * * *"
+              ND_BACKUP_COUNT: 7
               ND_DEFAULTTHEME: Spotify-ish
               ND_ENABLEDOWNLOADS: "true"
               ND_ENABLEEXTERNALSERVICES: "true"
@@ -140,6 +143,15 @@ spec:
             app:
               - path: /media
                 readOnly: true
+
+      backups:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/backups/apps/${APP}
+        advancedMounts:
+          navidrome:
+            app:
+              - path: /backup
 
       tmp:
         type: emptyDir
