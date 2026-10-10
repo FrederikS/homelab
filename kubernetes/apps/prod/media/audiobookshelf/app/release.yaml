@@ -27,6 +27,7 @@ spec:
             env:
               AUDIOBOOKSHELF_UID: 1000
               AUDIOBOOKSHELF_GID: 1000
+              BACKUP_PATH: /backups
               CONFIG_PATH: /config
               METADATA_PATH: /config/metadata
               TZ: ${TIMEZONE}
@@ -89,6 +90,12 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /config
+      backups:
+        type: nfs
+        server: ${NAS_SERVER_IP}
+        path: /tank/backups/apps/${APP}
+        globalMounts:
+          - path: /backups
       cache:
         type: emptyDir
         globalMounts:
