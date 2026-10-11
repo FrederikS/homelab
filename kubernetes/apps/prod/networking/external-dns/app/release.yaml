@@ -37,12 +37,11 @@ spec:
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --annotation-prefix=external-dns.alpha.kubernetes.io/
     policy: sync
     sources: [crd, ingress]
     txtPrefix: homelab.
     txtOwnerId: homelab-prod
     domainFilters: ["${SECRET_DOMAIN}"]
-    annotationFilter: "external-dns.alpha.kubernetes.io/exclude notin (true)"
+    annotationFilter: "external-dns.kubernetes.io/exclude notin (true)"
     serviceMonitor:
       enabled: true
