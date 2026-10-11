@@ -93,7 +93,7 @@ spec:
           nginx.ingress.kubernetes.io/auth-snippet: |
             proxy_set_header X-Forwarded-Host $host;
             proxy_set_header X-Forwarded-Proto $scheme;
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.kubernetes.io/target: external.${SECRET_DOMAIN}
         className: external
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
@@ -108,7 +108,7 @@ spec:
               - *host
       subsonic:
         annotations:
-          external-dns.alpha.kubernetes.io/exclude: "true"
+          external-dns.kubernetes.io/exclude: "true"
         className: external
         hosts:
           - host: *host
