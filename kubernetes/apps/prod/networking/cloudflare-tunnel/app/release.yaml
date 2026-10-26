@@ -14,7 +14,7 @@ spec:
         name: cloudflare
   values:
     image:
-      tag: "2026.10.3"
+      tag: "2026.10.4"
     cloudflare:
       tunnelName: homelab_ingress
       secretName: cloudflare-tunnel-credentials
