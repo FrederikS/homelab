@@ -85,9 +85,7 @@ spec:
 
     ingress:
       app:
-        annotations:
-          external-dns.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: external
+        className: internal
         hosts:
           - host: &host "vikunja.${SECRET_DOMAIN}"
             paths:
