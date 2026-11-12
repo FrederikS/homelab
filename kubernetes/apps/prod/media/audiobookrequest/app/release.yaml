@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: markbeep/audiobookrequest
-              tag: 1
+              tag: 2
             env:
               TZ: ${TIMEZONE}
               ABR_APP__PORT: &port 8000
