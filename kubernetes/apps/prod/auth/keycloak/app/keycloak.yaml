@@ -38,7 +38,17 @@ spec:
   ingress:
     enabled: false
   # Additional Options
+  # KC_* server options belong here, JVM flags belong in env/JAVA_OPTS_APPEND below.
   additionalOptions: []
+  # JVM flags for the Keycloak server process, appended by kc.sh.
+  env:
+    # CVE-2026-114938 "Java4Shell": out-of-bounds write in the AVX-512 VBMI
+    # Base64 intrinsic (OpenJDK >= 17.0.6, x86-64 only). No node in this cluster
+    # exposes avx512vbmi, so the vulnerable intrinsic is never selected, but
+    # this keeps Keycloak safe if it is ever scheduled onto AVX-512 hardware.
+    # Drop once the keycloak image ships a patched JDK.
+    - name: JAVA_OPTS_APPEND
+      value: "-XX:-UseBASE64Intrinsics"
   unsupported:
     podTemplate:
       spec:
