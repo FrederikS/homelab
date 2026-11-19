@@ -40,6 +40,8 @@ spec:
       config:
         allow-snippet-annotations: true
         annotations-risk-level: Critical
+        # NGINX2Root stopgap, see ../README.md (CVE-2026-123007, CVE-2026-123633)
+        use-http2: "false"
         use-forwarded-headers: true
         proxy-buffer-size: "128k"
         proxy-busy-buffers-size: "256k"

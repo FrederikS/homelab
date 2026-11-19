@@ -32,6 +32,9 @@ spec:
           nginx:
             image:
               repository: nginxinc/nginx-unprivileged
+              # Pinned: 1.31.7 predates the nginx2root fixes (1.31.9/1.30.7), but
+              # nginx-unprivileged has not published a fixed tag yet. Harmless here
+              # because the stock config has no HTTP/2, HTTP/3 or resolver use.
               tag: 1.31.7-alpine
             env:
               TZ: ${TIMEZONE}
